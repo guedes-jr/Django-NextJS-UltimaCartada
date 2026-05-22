@@ -43,5 +43,11 @@ class User(AbstractUser):
     def is_player(self) -> bool:
         return self.role == UserRole.PLAYER
 
+    def save(self, *args, **kwargs):
+        if self.is_superuser or self.is_staff:
+            self.role = UserRole.ADMIN
+
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return self.get_full_name() or self.username
