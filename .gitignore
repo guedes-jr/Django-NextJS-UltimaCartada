@@ -1,0 +1,266 @@
+# =========================================================
+# Sistema / OS
+# =========================================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# =========================================================
+# Editores / IDEs
+# =========================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*.temp
+*.orig
+*.rej
+
+# =========================================================
+# Variáveis de ambiente e segredos
+# =========================================================
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# =========================================================
+# Python / Django
+# =========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.python-version
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
+
+# Builds Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+backend/db.sqlite3
+backend/media/
+backend/staticfiles/
+backend/static/
+media/
+staticfiles/
+
+# Uploads e arquivos gerados
+uploads/
+reports/
+exports/
+tmp/
+temp/
+
+# Migrations cache
+*/migrations/__pycache__/
+
+# Testes Python
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# MyPy / Ruff / Pyright
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+.pyright/
+
+# =========================================================
+# Node / Next.js
+# =========================================================
+node_modules/
+frontend/node_modules/
+
+.next/
+frontend/.next/
+
+out/
+frontend/out/
+
+.vercel/
+frontend/.vercel/
+
+.turbo/
+frontend/.turbo/
+
+# Build/cache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Opcional: remova estes 3 acima se quiser versionar lockfile.
+# Em produção, geralmente é recomendado versionar package-lock.json.
+
+# =========================================================
+# TypeScript / JavaScript
+# =========================================================
+*.tsbuildinfo
+next-env.d.ts
+
+# =========================================================
+# Logs
+# =========================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================================================
+# Banco de dados local / dumps
+# =========================================================
+*.sqlite3
+*.sqlite
+*.db
+*.dump
+*.sql
+*.backup
+*.psql
+
+# =========================================================
+# Arquivos compactados
+# =========================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# =========================================================
+# Arquivos de mídia pesados
+# =========================================================
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.mp3
+*.wav
+*.ogg
+
+# =========================================================
+# Certificados / chaves
+# =========================================================
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# =========================================================
+# Docker / infraestrutura local
+# =========================================================
+.docker/
+docker-compose.override.yml
+
+# =========================================================
+# Celery / Redis / filas locais
+# =========================================================
+celerybeat-schedule
+celerybeat.pid
+
+# =========================================================
+# Arquivos temporários de sistema
+# =========================================================
+*.pid
+*.seed
+*.pid.lock
+
+# =========================================================
+# Jupyter / notebooks, caso use
+# =========================================================
+.ipynb_checkpoints/
+
+# =========================================================
+# Arquivos gerados por PDF/relatórios
+# =========================================================
+*.pdf
+*.xlsx
+*.xls
+*.csv
+
+# =========================================================
+# Exceções úteis
+# =========================================================
+!.gitkeep
+!README.md
+!backend/requirements.txt
+!frontend/package.json
+!frontend/tsconfig.json
+!frontend/next.config.js
+!frontend/next.config.ts
+!frontend/eslint.config.mjs
+!frontend/public/
+!frontend/public/**
