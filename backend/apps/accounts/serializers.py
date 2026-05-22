@@ -45,7 +45,6 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
     phone = serializers.CharField(max_length=20, required=False, allow_blank=True)
     nickname = serializers.CharField(max_length=80, required=False, allow_blank=True)
-    birth_date = serializers.DateField(required=False, allow_null=True)
     notes = serializers.CharField(required=False, allow_blank=True)
 
     def validate_username(self, value: str) -> str:
@@ -63,7 +62,6 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
     @transaction.atomic
     def create(self, validated_data: dict) -> User:
         nickname = validated_data.pop("nickname", "")
-        birth_date = validated_data.pop("birth_date", None)
         notes = validated_data.pop("notes", "")
         password = validated_data.pop("password")
 
@@ -79,7 +77,6 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
         PlayerProfile.objects.create(
             user=user,
             nickname=nickname,
-            birth_date=birth_date,
             notes=notes,
             created_by=self.context["request"].user,
         )
