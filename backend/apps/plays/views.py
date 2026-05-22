@@ -4,6 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from apps.accounts.models import UserRole
 from apps.plays.models import Play
 from apps.plays.serializers import PlaySerializer
+from apps.plays.services.play_creation_service import PlayCreationService
 
 
 class PlayViewSet(ModelViewSet):
@@ -32,10 +33,11 @@ class PlayViewSet(ModelViewSet):
         return queryset.filter(player=user)
 
     def perform_create(self, serializer):
-        round_instance = serializer.validated_data["round"]
-
-        serializer.save(
+        service = PlayCreationService()
+        play = service.create_play(
             player=self.request.user,
-            game=round_instance.game,
-            group=round_instance.game.group,
+            round_instance=serializer.validated_data["round"],
+            card=serializer.validated_data["card"],
         )
+
+        serializer.instance = play
