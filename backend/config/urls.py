@@ -13,6 +13,7 @@ urlpatterns = [
     path("api/v1/groups/", include("apps.groups.urls")),
     path("api/v1/plays/", include("apps.plays.urls")),
     path("api/v1/evidences/", include("apps.evidences.urls")),
+    path("api/v1/rounds/", include("apps.rounds.urls")),
 ]
 
 if settings.DEBUG:
