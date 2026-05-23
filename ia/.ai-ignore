@@ -1,0 +1,21 @@
+# Arquivos e pastas que agentes de IA devem ignorar
+
+backend/venv/
+frontend/node_modules/
+backend/db.sqlite3
+backend/.env
+frontend/.env
+frontend/.env.local
+*.sqlite3
+*.log
+*.pyc
+__pycache__/
+.next/
+dist/
+build/
+coverage/
+media/private/
+*.zip
+*.tar
+*.gz
+.DS_Store

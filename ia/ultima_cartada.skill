@@ -1,0 +1,33 @@
+# Skill — Última Cartada / Cartada Viva
+
+## Missão
+
+Ajudar a evoluir uma aplicação Django + Next.js + PostgreSQL para digitalização de um jogo terapêutico de hábitos saudáveis.
+
+## Contexto obrigatório
+
+- Dois perfis: ADMIN e PLAYER.
+- Backend em Django/DRF.
+- Frontend em Next.js/TypeScript/CSS Modules.
+- Banco PostgreSQL.
+- Não usar Tailwind.
+- Admin gerencia jogadores, grupos, jogos, cartas, rodadas, evidências e desempenho.
+- Player joga cartas e envia evidências.
+
+## Padrão de resposta para implementação
+
+Sempre entregar:
+
+1. Arquivos a criar/alterar.
+2. Código completo por arquivo.
+3. Comandos para testar.
+4. Checklist curto.
+5. Mensagem de commit.
+
+## Prioridades
+
+1. Simplicidade.
+2. Segurança.
+3. Clareza do fluxo.
+4. Separação de responsabilidades.
+5. Boa experiência mobile.

@@ -1,0 +1,154 @@
+# Cursor Rules — Última Cartada
+
+Você está trabalhando no projeto Última Cartada, uma aplicação web com:
+
+- Backend em Python + Django + Django REST Framework
+- Frontend em Next.js + TypeScript
+- Banco de dados PostgreSQL
+- Autenticação com JWT
+- Perfis principais: ADMIN e PLAYER
+- Interface sem Tailwind CSS, usando CSS Modules
+- Cadastros administrativos usando modal
+
+Antes de gerar, alterar ou sugerir código, consulte e respeite os arquivos da pasta `ia/`.
+
+## Contexto obrigatório
+
+Sempre considere os seguintes arquivos como fonte principal de contexto:
+
+- `ia/project-context.md`
+- `ia/architecture.md`
+- `ia/domain-map.md`
+- `ia/backend-guidelines.md`
+- `ia/frontend-guidelines.md`
+- `ia/api-contracts.md`
+- `ia/database-models.md`
+- `ia/implementation-roadmap.md`
+- `ia/prompts.md`
+
+## Regras gerais do projeto
+
+1. Não usar Tailwind CSS.
+2. No frontend, usar CSS Modules.
+3. Todo cadastro administrativo deve abrir em modal.
+4. Separar as áreas principais em:
+   - Admin
+   - Player
+5. O backend deve manter organização por apps dentro de `backend/apps/`.
+6. O frontend deve manter organização por rotas dentro de `frontend/src/app/`.
+7. Services HTTP devem ficar em `frontend/src/services/`.
+8. Tipagens devem ficar em `frontend/src/types/`.
+9. Componentes reutilizáveis devem ficar em `frontend/src/components/`.
+10. Não criar regras de negócio importantes diretamente no frontend.
+11. Regras do jogo devem ficar no backend, preferencialmente em services.
+12. Não duplicar lógica de autenticação.
+13. Não alterar nomes de endpoints sem atualizar `ia/api-contracts.md`.
+14. Não alterar models sem considerar migrations e impacto no banco.
+15. Sempre preservar compatibilidade com PostgreSQL.
+
+## Backend
+
+Ao trabalhar no backend:
+
+- Usar Django REST Framework.
+- Usar ViewSets quando fizer sentido.
+- Usar serializers para validação de entrada e saída.
+- Usar services para regras de negócio.
+- Usar permissões por papel de usuário.
+- Manter ADMIN com acesso gerencial.
+- Manter PLAYER com acesso restrito aos próprios dados.
+- Evitar lógica complexa dentro das views.
+- Evitar consultas N+1 usando `select_related` e `prefetch_related`.
+- Criar management commands para carga inicial de dados.
+- Toda alteração em models deve vir acompanhada de migration.
+
+## Frontend
+
+Ao trabalhar no frontend:
+
+- Usar Next.js com TypeScript.
+- Usar `"use client"` apenas quando necessário.
+- Usar CSS Modules.
+- Não usar Tailwind CSS.
+- Não usar bibliotecas visuais pesadas sem necessidade.
+- Toda tela admin de cadastro deve seguir o padrão:
+  - listagem principal;
+  - botão de ação;
+  - modal de cadastro;
+  - feedback de sucesso/erro;
+  - carregamento;
+  - tabela responsiva.
+- Usar services para chamadas API.
+- Usar types dedicados para entidades.
+- Não chamar `fetch` direto dentro de vários componentes quando já existir service.
+
+## Domínio do jogo
+
+O sistema representa um jogo usado por psicóloga para apoiar pacientes no desenvolvimento de hábitos saudáveis.
+
+Entidades principais:
+
+- User
+- PlayerProfile
+- PlayerGroup
+- Suit
+- Card
+- Game
+- RoundSchedule
+- Round
+- Play
+- Evidence
+- ScoreLog
+
+Regras importantes:
+
+- O jogador pertence a um grupo.
+- O jogo pertence a um grupo.
+- O jogo possui rodadas.
+- O jogador faz jogadas em rodadas.
+- A primeira jogada da rodada define o naipe.
+- Os demais jogadores devem jogar carta do mesmo naipe.
+- O mesmo jogador não pode jogar mais de uma vez na mesma rodada.
+- Evidências podem ser aprovadas ou rejeitadas pelo admin.
+- Evidência aprovada pode gerar bônus de pontuação.
+- O dashboard admin deve mostrar desempenho individual e do grupo.
+
+## Estilo de resposta esperado
+
+Ao sugerir implementação:
+
+1. Explicar o objetivo do passo.
+2. Informar arquivos que serão criados ou alterados.
+3. Fornecer código completo quando o arquivo for pequeno.
+4. Fornecer trechos claros quando o arquivo for grande.
+5. Indicar comandos necessários.
+6. Finalizar com checklist.
+7. Finalizar com mensagem de commit.
+
+## Mensagem de commit
+
+Ao final de cada passo, sugerir uma mensagem de commit no formato:
+
+```bash
+make commit-{type} msg="descrição curta"
+````
+
+Tipos preferidos:
+
+* `feat`
+* `fix`
+* `refactor`
+* `docs`
+* `chore`
+* `style`
+* `test`
+
+## Restrições
+
+* Não usar Tailwind CSS.
+* Não criar telas de cadastro inline quando for área admin.
+* Não misturar regra de negócio do jogo no frontend.
+* Não usar SQLite como banco final do projeto.
+* Não remover suporte a PostgreSQL.
+* Não criar endpoints sem autenticação, exceto login/token.
+* Não expor dados de outros jogadores para PLAYER sem regra explícita.
