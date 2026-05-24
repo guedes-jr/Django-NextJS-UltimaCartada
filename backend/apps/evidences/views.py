@@ -1,13 +1,14 @@
+from django.utils import timezone
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from apps.accounts.models import UserRole
 from apps.evidences.models import Evidence
-from apps.evidences.serializers import EvidenceReviewSerializer
+from apps.evidences.models import EvidenceStatus
 from apps.evidences.serializers import EvidenceSerializer
-from apps.evidences.services.evidence_review_service import EvidenceReviewService
 
 
 class EvidenceViewSet(ModelViewSet):
@@ -17,63 +18,72 @@ class EvidenceViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
-        queryset = (
-            Evidence.objects
-            .select_related(
-                "play",
-                "play__player",
-                "play__card",
-                "play__game",
-                "play__group",
-                "play__round",
-                "reviewed_by",
-            )
-            .order_by("-created_at")
-        )
+        queryset = Evidence.objects.select_related(
+            "play",
+            "play__player",
+            "play__player__user",
+            "play__card",
+            "reviewed_by",
+        ).order_by("-created_at")
 
         if user.role == UserRole.ADMIN:
             return queryset
 
-        return queryset.filter(play__player=user)
+        return queryset.filter(play__player__user=user)
 
-    @action(detail=True, methods=["post"])
+    def perform_create(self, serializer):
+        user = self.request.user
+
+        if user.role != UserRole.PLAYER:
+            raise PermissionDenied("Apenas jogadores podem enviar evidências.")
+
+        play = serializer.validated_data["play"]
+
+        if play.player.user != user:
+            raise PermissionDenied(
+                "Você só pode enviar evidência da sua própria jogada."
+            )
+
+        serializer.save()
+
+    @action(detail=True, methods=["post"], url_path="approve")
     def approve(self, request, pk=None):
         if request.user.role != UserRole.ADMIN:
-            return Response(
-                {"detail": "Apenas administradores podem aprovar evidências."},
-                status=403,
-            )
-
-        serializer = EvidenceReviewSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+            raise PermissionDenied("Apenas administradores podem aprovar evidências.")
 
         evidence = self.get_object()
-        service = EvidenceReviewService()
-        evidence = service.approve(
-            evidence=evidence,
-            reviewed_by=request.user,
-            notes=serializer.validated_data["notes"],
-        )
+        evidence.status = EvidenceStatus.APPROVED
+        evidence.reviewed_by = request.user
+        evidence.reviewed_at = timezone.now()
+        evidence.admin_notes = request.data.get("admin_notes", "")
+        evidence.save()
 
-        return Response(EvidenceSerializer(evidence).data)
+        play = evidence.play
+        play.bonus_points = play.game.evidence_bonus_points
+        play.total_points = play.base_points + play.bonus_points
+        play.save()
 
-    @action(detail=True, methods=["post"])
+        serializer = self.get_serializer(evidence)
+
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["post"], url_path="reject")
     def reject(self, request, pk=None):
         if request.user.role != UserRole.ADMIN:
-            return Response(
-                {"detail": "Apenas administradores podem rejeitar evidências."},
-                status=403,
-            )
-
-        serializer = EvidenceReviewSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+            raise PermissionDenied("Apenas administradores podem rejeitar evidências.")
 
         evidence = self.get_object()
-        service = EvidenceReviewService()
-        evidence = service.reject(
-            evidence=evidence,
-            reviewed_by=request.user,
-            notes=serializer.validated_data["notes"],
-        )
+        evidence.status = EvidenceStatus.REJECTED
+        evidence.reviewed_by = request.user
+        evidence.reviewed_at = timezone.now()
+        evidence.admin_notes = request.data.get("admin_notes", "")
+        evidence.save()
 
-        return Response(EvidenceSerializer(evidence).data)
+        play = evidence.play
+        play.bonus_points = 0
+        play.total_points = play.base_points
+        play.save()
+
+        serializer = self.get_serializer(evidence)
+
+        return Response(serializer.data)

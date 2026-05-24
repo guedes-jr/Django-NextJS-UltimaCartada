@@ -1,0 +1,267 @@
+.header {
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #302457;
+  font-size: 30px;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: #777184;
+  font-size: 15px;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+}
+
+.card h2 {
+  margin: 0 0 18px;
+  color: #302457;
+  font-size: 22px;
+}
+
+.message {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f4f0ff;
+  color: #302457;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.success {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #eefaf5;
+  color: #24775c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.error {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff1f1;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: 12px;
+  border-bottom: 1px solid #ece6ff;
+  color: #777184;
+  font-size: 13px;
+  text-align: left;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f1edff;
+  color: #302457;
+  font-size: 14px;
+}
+
+.mainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mainInfo strong {
+  color: #302457;
+}
+
+.mainInfo span {
+  color: #777184;
+  font-size: 13px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pending {
+  background: #fff7e6;
+  color: #b76e00;
+}
+
+.approved {
+  background: #eefaf5;
+  color: #24775c;
+}
+
+.rejected {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.actionButton {
+  height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.reviewContent {
+  display: grid;
+  gap: 16px;
+}
+
+.previewBox {
+  padding: 16px;
+  border-radius: 16px;
+  background: #fbfaff;
+  border: 1px solid #eee8ff;
+}
+
+.previewBox span {
+  display: block;
+  margin-bottom: 6px;
+  color: #777184;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.previewBox strong,
+.previewBox p {
+  margin: 0;
+  color: #302457;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.previewFile {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fbfaff;
+  border: 1px solid #eee8ff;
+}
+
+.fileLink {
+  display: inline-flex;
+  width: fit-content;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: #302457;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.field textarea {
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #ded7f4;
+  border-radius: 12px;
+  background: #fbfaff;
+  color: #302457;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.approveButton,
+.rejectButton,
+.secondaryButton {
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.approveButton {
+  background: #24775c;
+  color: #ffffff;
+}
+
+.rejectButton {
+  background: #b42318;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.approveButton:disabled,
+.rejectButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 18px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .approveButton,
+  .rejectButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}

@@ -1,5 +1,9 @@
 import { api } from "@/lib/api";
-import { CreateEvidencePayload, Evidence } from "@/types/evidences";
+import {
+  CreateEvidencePayload,
+  Evidence,
+  ReviewEvidencePayload,
+} from "@/types/evidences";
 
 export async function getEvidences(): Promise<Evidence[]> {
   const response = await api.get<Evidence[]>("/evidences/evidences/");
@@ -24,6 +28,30 @@ export async function createEvidence(
       "Content-Type": "multipart/form-data",
     },
   });
+
+  return response.data;
+}
+
+export async function approveEvidence(
+  evidenceId: number,
+  payload: ReviewEvidencePayload
+): Promise<Evidence> {
+  const response = await api.post<Evidence>(
+    `/evidences/evidences/${evidenceId}/approve/`,
+    payload
+  );
+
+  return response.data;
+}
+
+export async function rejectEvidence(
+  evidenceId: number,
+  payload: ReviewEvidencePayload
+): Promise<Evidence> {
+  const response = await api.post<Evidence>(
+    `/evidences/evidences/${evidenceId}/reject/`,
+    payload
+  );
 
   return response.data;
 }
