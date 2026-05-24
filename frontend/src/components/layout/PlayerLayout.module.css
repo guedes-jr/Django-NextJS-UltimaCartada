@@ -1,59 +1,106 @@
 .page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f4f0ff 0%, #eefaf5 100%);
+  background: #f7f4ff;
 }
 
 .header {
-  height: 72px;
+  position: sticky;
+  top: 0;
+  height: 76px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  background: #ffffff;
-  border-bottom: 1px solid #e8e0ff;
+  gap: 18px;
+  padding: 0 32px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #eee8ff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.06);
+  box-sizing: border-box;
+  z-index: 20;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-right: auto;
 }
 
 .logo {
   width: 44px;
   height: 44px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 16px;
   background: #5b3cc4;
-  color: #f5c542;
-  font-size: 26px;
-  font-weight: 700;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 900;
 }
 
 .brand strong {
   display: block;
   color: #302457;
-  font-size: 17px;
+  font-size: 18px;
+  line-height: 1.2;
 }
 
 .brand span {
   display: block;
   margin-top: 3px;
-  color: #3f9d7e;
+  color: #777184;
   font-size: 13px;
   font-weight: 700;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav a {
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #5b3cc4;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav a:hover {
+  background: #f4f0ff;
+}
+
+.nav a.activeLink {
+  background: #5b3cc4;
+  color: #ffffff;
+}
+
 .logoutButton {
-  height: 38px;
-  padding: 0 16px;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff1f1;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.menuButton {
+  display: none;
+  height: 40px;
+  padding: 0 14px;
   border: 0;
   border-radius: 12px;
   background: #5b3cc4;
   color: #ffffff;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
 }
 
@@ -66,77 +113,57 @@
 }
 
 .welcome {
-  display: block;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
+  padding: 22px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
 }
 
 .welcome span {
   display: block;
   color: #777184;
   font-size: 14px;
+  font-weight: 700;
 }
 
 .welcome strong {
   display: block;
-  margin-top: 4px;
+  margin-top: 6px;
   color: #302457;
   font-size: 28px;
+  line-height: 1.15;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .header {
     height: auto;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
+    flex-wrap: wrap;
     padding: 18px;
   }
 
-  .logoutButton {
-    width: 100%;
+  .brand {
+    width: calc(100% - 92px);
+    margin-right: 0;
   }
 
-  .main {
-    padding: 22px 16px 40px;
-  }
-
-  .welcome strong {
-    font-size: 24px;
-  }
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nav a {
-  padding: 10px 12px;
-  border-radius: 12px;
-  color: #5b3cc4;
-  font-size: 14px;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.nav a:hover {
-  background: #f4f0ff;
-}
-
-@media (max-width: 760px) {
-  .header {
-    height: auto;
-    align-items: stretch;
-    flex-direction: column;
-    gap: 14px;
-    padding: 18px;
+  .menuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
   }
 
   .nav {
+    display: none;
     width: 100%;
     flex-direction: column;
     align-items: stretch;
+    order: 3;
+  }
+
+  .navOpen {
+    display: flex;
   }
 
   .nav a {
@@ -145,7 +172,44 @@
     box-sizing: border-box;
   }
 
+  .nav a.activeLink {
+    background: #5b3cc4;
+    color: #ffffff;
+  }
+
   .logoutButton {
+    order: 4;
     width: 100%;
+  }
+
+  .main {
+    padding: 24px 18px 44px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 14px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .menuButton {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 20px 14px 40px;
+  }
+
+  .welcome {
+    padding: 18px;
+  }
+
+  .welcome strong {
+    font-size: 24px;
   }
 }
