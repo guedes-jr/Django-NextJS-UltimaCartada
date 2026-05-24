@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { ReactNode, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { getAuthUser } from "@/lib/auth";
@@ -53,10 +54,22 @@ const menuItems = [
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const user = getAuthUser();
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
+  function closeMenu() {
+    setIsMenuOpen(false);
+  }
 
   return (
     <div className={styles.page}>
-      <aside className={styles.sidebar}>
+      <aside
+        className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""}`}
+      >
         <div className={styles.brand}>
           <div className={styles.logo}>♦</div>
           <div>
@@ -67,18 +80,42 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
         <nav className={styles.nav}>
           {menuItems.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link
+              key={item.href}
+              href={item.href}
+              className={isActive(item.href) ? styles.activeLink : ""}
+              onClick={closeMenu}
+            >
               {item.label}
             </Link>
           ))}
         </nav>
       </aside>
 
+      {isMenuOpen && (
+        <button
+          className={styles.overlay}
+          type="button"
+          aria-label="Fechar menu"
+          onClick={closeMenu}
+        />
+      )}
+
       <main className={styles.main}>
         <header className={styles.header}>
-          <div>
+          <button
+            className={styles.menuButton}
+            type="button"
+            onClick={() => setIsMenuOpen((current) => !current)}
+          >
+            Menu
+          </button>
+
+          <div className={styles.userInfo}>
             <span>Bem-vindo(a)</span>
-            <strong>{user?.full_name || user?.username}</strong>
+            <strong>
+              {user?.full_name || user?.first_name || user?.username}
+            </strong>
           </div>
 
           <LogoutButton className={styles.logoutButton} />
