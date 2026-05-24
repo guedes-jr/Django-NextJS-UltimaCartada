@@ -1,0 +1,83 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f4f0ff 0%, #eefaf5 100%);
+}
+
+.header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e0ff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #5b3cc4;
+  color: #f5c542;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.brand strong {
+  display: block;
+  color: #302457;
+  font-size: 17px;
+}
+
+.brand span {
+  display: block;
+  margin-top: 3px;
+  color: #3f9d7e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.logoutButton {
+  height: 38px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #5b3cc4;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.main {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 22px 16px 40px;
+}
+
+.welcome {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.welcome span {
+  display: block;
+  color: #777184;
+  font-size: 14px;
+}
+
+.welcome strong {
+  display: block;
+  margin-top: 4px;
+  color: #302457;
+  font-size: 28px;
+}

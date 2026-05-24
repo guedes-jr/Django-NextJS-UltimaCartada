@@ -1,0 +1,130 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #f4f0ff 0%, #eefaf5 100%);
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  padding: 32px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(72, 52, 130, 0.14);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.logo {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #5b3cc4;
+  color: #f5c542;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #302457;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.brand p {
+  margin: 6px 0 0;
+  color: #3f9d7e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: #302457;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.field input {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #ded7f4;
+  border-radius: 14px;
+  background: #fbfaff;
+  color: #302457;
+  font-size: 15px;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: #5b3cc4;
+  box-shadow: 0 0 0 3px rgba(91, 60, 196, 0.12);
+}
+
+.button {
+  height: 50px;
+  border: 0;
+  border-radius: 16px;
+  background: #5b3cc4;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.googleButton {
+  height: 50px;
+  border: 1px solid #ded7f4;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #302457;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.error {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff1f1;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.helper {
+  margin: 0;
+  color: #777184;
+  font-size: 13px;
+  text-align: center;
+}
