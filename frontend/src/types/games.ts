@@ -8,6 +8,8 @@ export type Game = {
   group_name: string;
   start_date: string;
   end_date: string;
+  total_rounds: number;
+  rounds_count?: number;
   duration_days: number;
   status: GameStatus;
   evidence_bonus_points: number;
@@ -29,6 +31,7 @@ export type CreateGamePayload = {
   group: number | "";
   start_date: string;
   end_date: string;
+  total_rounds: number;
   duration_days: number;
   status: GameStatus;
   evidence_bonus_points: number;
@@ -39,4 +42,9 @@ export type CreateGamePayload = {
   allow_late_play: boolean;
   show_ranking_to_players: boolean;
   is_active: boolean;
+};
+
+export type GameActionResponse = {
+  detail: string;
+  is_active?: boolean;
 };

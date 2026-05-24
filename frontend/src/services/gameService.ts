@@ -1,10 +1,9 @@
 import { api } from "@/lib/api";
-import { CreateGamePayload, Game } from "@/types/games";
-
-type GenerateRoundsResponse = {
-  detail: string;
-  created_rounds: number;
-};
+import {
+  CreateGamePayload,
+  Game,
+  GameActionResponse,
+} from "@/types/games";
 
 export async function getGames(): Promise<Game[]> {
   const response = await api.get<Game[]>("/games/games/");
@@ -18,10 +17,20 @@ export async function createGame(payload: CreateGamePayload): Promise<Game> {
   return response.data;
 }
 
+export async function toggleGameActive(
+  gameId: number
+): Promise<GameActionResponse> {
+  const response = await api.post<GameActionResponse>(
+    `/games/games/${gameId}/toggle-active/`
+  );
+
+  return response.data;
+}
+
 export async function generateGameRounds(
   gameId: number
-): Promise<GenerateRoundsResponse> {
-  const response = await api.post<GenerateRoundsResponse>(
+): Promise<GameActionResponse> {
+  const response = await api.post<GameActionResponse>(
     `/games/games/${gameId}/generate-rounds/`
   );
 

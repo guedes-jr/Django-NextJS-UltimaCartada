@@ -8,6 +8,7 @@ class GameSerializer(serializers.ModelSerializer):
         source="group.name",
         read_only=True,
     )
+    rounds_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Game
@@ -20,7 +21,9 @@ class GameSerializer(serializers.ModelSerializer):
             "start_date",
             "end_date",
             "duration_days",
+            "total_rounds",
             "status",
+            "rounds_count",
             "evidence_bonus_points",
             "lowest_card_points",
             "middle_card_points",
@@ -38,3 +41,6 @@ class GameSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+    def get_rounds_count(self, obj):
+        return obj.rounds.count()

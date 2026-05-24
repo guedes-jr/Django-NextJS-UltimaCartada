@@ -9,6 +9,7 @@ import {
   createGame,
   generateGameRounds,
   getGames,
+  toggleGameActive,
 } from "@/services/gameService";
 import { getGroups } from "@/services/groupService";
 import { CreateGamePayload, Game } from "@/types/games";
@@ -22,15 +23,7 @@ const INITIAL_FORM: CreateGamePayload = {
   group: "",
   start_date: "",
   end_date: "",
-  duration_days: 10,
-  status: "DRAFT",
-  evidence_bonus_points: 3,
-  lowest_card_points: 1,
-  middle_card_points: 2,
-  highest_card_points: 3,
-  max_round_starts_per_player_per_day: 2,
-  allow_late_play: false,
-  show_ranking_to_players: true,
+  total_rounds: 7,
   is_active: true,
 };
 
@@ -38,10 +31,12 @@ export default function AdminGamesPage() {
   const [games, setGames] = useState<Game[]>([]);
   const [groups, setGroups] = useState<PlayerGroup[]>([]);
   const [form, setForm] = useState<CreateGamePayload>(INITIAL_FORM);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [generatingGameId, setGeneratingGameId] = useState<number | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -82,6 +77,7 @@ export default function AdminGamesPage() {
 
     setIsModalOpen(false);
     setForm(INITIAL_FORM);
+    setErrorMessage("");
   }
 
   function updateField(
@@ -94,11 +90,29 @@ export default function AdminGamesPage() {
     }));
   }
 
+  function formatDate(value?: string) {
+    if (!value) {
+      return "Não definido";
+    }
+
+    return new Date(value).toLocaleDateString("pt-BR");
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!form.group) {
-      setErrorMessage("Selecione um grupo para criar o jogo.");
+      setErrorMessage("Selecione um grupo.");
+      return;
+    }
+
+    if (!form.start_date) {
+      setErrorMessage("Informe a data de início.");
+      return;
+    }
+
+    if (Number(form.total_rounds) <= 0) {
+      setErrorMessage("A quantidade de rodadas deve ser maior que zero.");
       return;
     }
 
@@ -110,6 +124,7 @@ export default function AdminGamesPage() {
       await createGame({
         ...form,
         group: Number(form.group),
+        total_rounds: Number(form.total_rounds),
       });
 
       await loadData();
@@ -118,31 +133,47 @@ export default function AdminGamesPage() {
       setIsModalOpen(false);
       setFeedbackMessage("Jogo criado com sucesso.");
     } catch {
-      setErrorMessage(
-        "Não foi possível criar o jogo. Verifique os dados informados."
-      );
+      setErrorMessage("Não foi possível criar o jogo.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
+  async function handleToggleGameActive(gameId: number) {
+    try {
+      setIsUpdating(true);
+      setFeedbackMessage("");
+      setErrorMessage("");
+
+      const response = await toggleGameActive(gameId);
+
+      setFeedbackMessage(response.detail);
+
+      await loadData();
+    } catch {
+      setErrorMessage("Não foi possível alterar o status do jogo.");
+    } finally {
+      setIsUpdating(false);
+    }
+  }
+
   async function handleGenerateRounds(gameId: number) {
     try {
-      setGeneratingGameId(gameId);
+      setIsUpdating(true);
       setFeedbackMessage("");
       setErrorMessage("");
 
       const response = await generateGameRounds(gameId);
 
-      setFeedbackMessage(
-        response.created_rounds > 0
-          ? `${response.created_rounds} rodadas geradas com sucesso.`
-          : "As rodadas deste jogo já haviam sido geradas."
-      );
+      setFeedbackMessage(response.detail);
+
+      await loadData();
     } catch {
-      setErrorMessage("Não foi possível gerar as rodadas deste jogo.");
+      setErrorMessage(
+        "Não foi possível gerar as rodadas deste jogo. Verifique se elas já foram geradas."
+      );
     } finally {
-      setGeneratingGameId(null);
+      setIsUpdating(false);
     }
   }
 
@@ -152,7 +183,10 @@ export default function AdminGamesPage() {
         <div className={styles.header}>
           <div>
             <h1>Jogos</h1>
-            <p>Crie e acompanhe os jogos vinculados aos grupos.</p>
+            <p>
+              Crie jogos vinculados aos grupos, acompanhe rodadas e controle o
+              status de cada jogo.
+            </p>
           </div>
 
           <button
@@ -168,15 +202,15 @@ export default function AdminGamesPage() {
           <div className={styles.success}>{feedbackMessage}</div>
         )}
 
+        {!isModalOpen && errorMessage && (
+          <div className={styles.error}>{errorMessage}</div>
+        )}
+
         <article className={styles.card}>
           <h2>Jogos cadastrados</h2>
 
           {isLoading && (
             <div className={styles.message}>Carregando jogos...</div>
-          )}
-
-          {!isLoading && errorMessage && !isModalOpen && (
-            <div className={styles.error}>{errorMessage}</div>
           )}
 
           {!isLoading && games.length === 0 && !errorMessage && (
@@ -191,45 +225,86 @@ export default function AdminGamesPage() {
                     <th>Jogo</th>
                     <th>Grupo</th>
                     <th>Período</th>
-                    <th>Duração</th>
+                    <th>Rodadas</th>
                     <th>Status</th>
                     <th>Ações</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {games.map((game) => (
-                    <tr key={game.id}>
-                      <td>
-                        <div className={styles.gameName}>
-                          <strong>{game.name}</strong>
-                          <span>{game.description || "Sem descrição"}</span>
-                        </div>
-                      </td>
+                  {games.map((game) => {
+                    const roundsCount = game.rounds_count ?? 0;
+                    const totalRounds = game.total_rounds ?? 0;
+                    const hasRounds = roundsCount > 0;
 
-                      <td>{game.group_name}</td>
+                    return (
+                      <tr key={game.id}>
+                        <td>
+                          <div className={styles.gameName}>
+                            <strong>{game.name}</strong>
+                            <span>{game.description || "Sem descrição"}</span>
+                          </div>
+                        </td>
 
-                      <td>
-                        {game.start_date} até {game.end_date}
-                      </td>
+                        <td>
+                          <span className={styles.badge}>
+                            {game.group_name || `Grupo ${game.group}`}
+                          </span>
+                        </td>
 
-                      <td>{game.duration_days} dias</td>
+                        <td>
+                          <div className={styles.period}>
+                            <span>Início: {formatDate(game.start_date)}</span>
+                            <span>Fim: {formatDate(game.end_date)}</span>
+                          </div>
+                        </td>
 
-                      <td>
-                        <span className={styles.badge}>{game.status}</span>
-                      </td>
-                      <td>
-                        <button
-                          className={styles.actionButton}
-                          type="button"
-                          disabled={generatingGameId === game.id}
-                          onClick={() => handleGenerateRounds(game.id)}
-                        >
-                          {generatingGameId === game.id ? "Gerando..." : "Gerar rodadas"}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        <td>
+                          <span className={styles.badge}>
+                            {roundsCount}/{totalRounds}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span
+                            className={`${styles.badge} ${
+                              game.is_active
+                                ? styles.badgeActive
+                                : styles.badgeInactive
+                            }`}
+                          >
+                            {game.is_active ? "Ativo" : "Inativo"}
+                          </span>
+                        </td>
+
+                        <td>
+                          <div className={styles.actions}>
+                            <button
+                              className={styles.secondaryButton}
+                              type="button"
+                              onClick={() => handleGenerateRounds(game.id)}
+                              disabled={isUpdating || hasRounds}
+                            >
+                              Gerar rodadas
+                            </button>
+
+                            <button
+                              className={
+                                game.is_active
+                                  ? styles.dangerButton
+                                  : styles.secondaryButton
+                              }
+                              type="button"
+                              onClick={() => handleToggleGameActive(game.id)}
+                              disabled={isUpdating}
+                            >
+                              {game.is_active ? "Desativar" : "Ativar"}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -238,31 +313,39 @@ export default function AdminGamesPage() {
 
         <Modal title="Novo jogo" isOpen={isModalOpen} onClose={closeCreateModal}>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.field}>
-              <label htmlFor="name">Nome do jogo</label>
-              <input
-                id="name"
-                value={form.name}
-                onChange={(event) => updateField("name", event.target.value)}
-                required
-              />
-            </div>
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label htmlFor="name">Nome do jogo</label>
+                <input
+                  id="name"
+                  value={form.name}
+                  onChange={(event) => updateField("name", event.target.value)}
+                  required
+                />
+              </div>
 
-            <div className={styles.field}>
-              <label htmlFor="group">Grupo</label>
-              <select
-                id="group"
-                value={form.group}
-                onChange={(event) => updateField("group", event.target.value)}
-                required
-              >
-                <option value="">Selecione um grupo</option>
-                {groups.map((group) => (
-                  <option key={group.id} value={group.id}>
-                    {group.name} ({group.total_players} jogadores)
-                  </option>
-                ))}
-              </select>
+              <div className={styles.field}>
+                <label htmlFor="group">Grupo</label>
+                <select
+                  id="group"
+                  value={form.group}
+                  onChange={(event) =>
+                    updateField(
+                      "group",
+                      event.target.value ? Number(event.target.value) : ""
+                    )
+                  }
+                  required
+                >
+                  <option value="">Selecione um grupo</option>
+
+                  {groups.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className={styles.field}>
@@ -278,7 +361,7 @@ export default function AdminGamesPage() {
 
             <div className={styles.row}>
               <div className={styles.field}>
-                <label htmlFor="start_date">Data inicial</label>
+                <label htmlFor="start_date">Data de início</label>
                 <input
                   id="start_date"
                   type="date"
@@ -291,7 +374,7 @@ export default function AdminGamesPage() {
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="end_date">Data final</label>
+                <label htmlFor="end_date">Data de fim</label>
                 <input
                   id="end_date"
                   type="date"
@@ -299,154 +382,43 @@ export default function AdminGamesPage() {
                   onChange={(event) =>
                     updateField("end_date", event.target.value)
                   }
-                  required
                 />
               </div>
             </div>
 
             <div className={styles.row}>
               <div className={styles.field}>
-                <label htmlFor="duration_days">Duração em dias</label>
+                <label htmlFor="total_rounds">Quantidade de rodadas</label>
                 <input
-                  id="duration_days"
+                  id="total_rounds"
                   type="number"
                   min={1}
-                  value={form.duration_days}
+                  value={form.total_rounds}
                   onChange={(event) =>
-                    updateField("duration_days", Number(event.target.value))
+                    updateField("total_rounds", Number(event.target.value))
                   }
                   required
                 />
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="status">Status</label>
+                <label htmlFor="is_active">Status inicial</label>
                 <select
-                  id="status"
-                  value={form.status}
-                  onChange={(event) => updateField("status", event.target.value)}
+                  id="is_active"
+                  value={form.is_active ? "true" : "false"}
+                  onChange={(event) =>
+                    updateField("is_active", event.target.value === "true")
+                  }
                 >
-                  <option value="DRAFT">Rascunho</option>
-                  <option value="ACTIVE">Ativo</option>
-                  <option value="FINISHED">Finalizado</option>
-                  <option value="CANCELED">Cancelado</option>
+                  <option value="true">Ativo</option>
+                  <option value="false">Inativo</option>
                 </select>
               </div>
             </div>
 
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label htmlFor="lowest_card_points">Pontos menor carta</label>
-                <input
-                  id="lowest_card_points"
-                  type="number"
-                  min={0}
-                  value={form.lowest_card_points}
-                  onChange={(event) =>
-                    updateField("lowest_card_points", Number(event.target.value))
-                  }
-                  required
-                />
-              </div>
-
-              <div className={styles.field}>
-                <label htmlFor="middle_card_points">Pontos intermediária</label>
-                <input
-                  id="middle_card_points"
-                  type="number"
-                  min={0}
-                  value={form.middle_card_points}
-                  onChange={(event) =>
-                    updateField(
-                      "middle_card_points",
-                      Number(event.target.value)
-                    )
-                  }
-                  required
-                />
-              </div>
-            </div>
-
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label htmlFor="highest_card_points">Pontos maior carta</label>
-                <input
-                  id="highest_card_points"
-                  type="number"
-                  min={0}
-                  value={form.highest_card_points}
-                  onChange={(event) =>
-                    updateField(
-                      "highest_card_points",
-                      Number(event.target.value)
-                    )
-                  }
-                  required
-                />
-              </div>
-
-              <div className={styles.field}>
-                <label htmlFor="evidence_bonus_points">Bônus evidência</label>
-                <input
-                  id="evidence_bonus_points"
-                  type="number"
-                  min={0}
-                  value={form.evidence_bonus_points}
-                  onChange={(event) =>
-                    updateField(
-                      "evidence_bonus_points",
-                      Number(event.target.value)
-                    )
-                  }
-                  required
-                />
-              </div>
-            </div>
-
-            <div className={styles.field}>
-              <label htmlFor="max_round_starts_per_player_per_day">
-                Limite de rodadas iniciadas por jogador/dia
-              </label>
-              <input
-                id="max_round_starts_per_player_per_day"
-                type="number"
-                min={1}
-                value={form.max_round_starts_per_player_per_day}
-                onChange={(event) =>
-                  updateField(
-                    "max_round_starts_per_player_per_day",
-                    Number(event.target.value)
-                  )
-                }
-                required
-              />
-            </div>
-
-            <div className={styles.checkRow}>
-              <label className={styles.checkboxItem}>
-                <input
-                  type="checkbox"
-                  checked={form.allow_late_play}
-                  onChange={(event) =>
-                    updateField("allow_late_play", event.target.checked)
-                  }
-                />
-                Permitir jogadas fora do horário
-              </label>
-
-              <label className={styles.checkboxItem}>
-                <input
-                  type="checkbox"
-                  checked={form.show_ranking_to_players}
-                  onChange={(event) =>
-                    updateField("show_ranking_to_players", event.target.checked)
-                  }
-                />
-                Mostrar ranking para jogadores
-              </label>
-            </div>
-
-            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
+            {isModalOpen && errorMessage && (
+              <div className={styles.error}>{errorMessage}</div>
+            )}
 
             <button
               className={styles.button}
