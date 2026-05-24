@@ -32,6 +32,7 @@ class User(AbstractUser):
         choices=AuthProvider.choices,
         default=AuthProvider.CREDENTIALS,
     )
+    must_change_password = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

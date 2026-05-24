@@ -25,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_access_completed",
             "is_active_player",
             "auth_provider",
+            "must_change_password",
         )
 
     def get_full_name(self, obj: User) -> str:
@@ -73,7 +74,8 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
             **validated_data,
         )
         user.set_password(password)
-        user.save()
+        user.must_change_password = True
+        user.save(update_fields=["password", "must_change_password"])
 
         PlayerProfile.objects.create(
             user=user,

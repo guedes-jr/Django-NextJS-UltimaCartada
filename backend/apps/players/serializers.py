@@ -19,6 +19,8 @@ class PlayerUserSerializer(serializers.ModelSerializer):
             "full_name",
             "phone",
             "is_active",
+            "is_active_player",
+            "must_change_password",
         )
 
     def get_full_name(self, obj: User) -> str:

@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 
 import { changePassword } from "@/services/accountService";
-
+import { getAuthUser } from "@/lib/auth";
 import styles from "./ChangePasswordForm.module.css";
 
 export function ChangePasswordForm() {
@@ -42,6 +42,18 @@ export function ChangePasswordForm() {
         new_password: newPassword,
         confirm_password: confirmPassword,
       });
+
+      const user = getAuthUser();
+
+      if (user) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...user,
+            must_change_password: false,
+          })
+        );
+      }
 
       setCurrentPassword("");
       setNewPassword("");
