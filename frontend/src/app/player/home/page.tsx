@@ -94,6 +94,24 @@ export default function PlayerHomePage() {
     return evidences.find((evidence) => evidence.play === playId);
   }
 
+  function getPlayByRound(roundId: number) {
+    return plays.find((play) => play.round === roundId);
+  }
+
+  function getEvidenceStatusLabel(status?: string) {
+    const labels: Record<string, string> = {
+      PENDING: "Evidência pendente",
+      APPROVED: "Evidência aprovada",
+      REJECTED: "Evidência rejeitada",
+    };
+
+    if (!status) {
+      return "Evidência não enviada";
+    }
+
+    return labels[status] ?? status;
+  }
+
   const openRounds = gameRounds.filter((round) => round.status === "OPEN");
   const scheduledRounds = gameRounds.filter(
     (round) => round.status === "SCHEDULED"
@@ -355,17 +373,57 @@ export default function PlayerHomePage() {
                         </span>
                       </div>
 
-                      <button
-                        className={styles.actionButton}
-                        type="button"
-                        disabled={
-                          round.status !== "OPEN" &&
-                          round.status !== "SCHEDULED"
+                      {(() => {
+                        const play = getPlayByRound(round.id);
+                        const evidence = play ? getEvidenceByPlay(play.id) : null;
+                        const canPlay =
+                          !play && (round.status === "OPEN" || round.status === "SCHEDULED");
+
+                        if (play) {
+                          return (
+                            <div className={styles.playStatusBox}>
+                              <strong>Jogada realizada</strong>
+                              <span>
+                                Carta: {play.card_suit_symbol} {play.card_value} —{" "}
+                                {play.card_title}
+                              </span>
+                              <span>Pontos: {play.total_points}</span>
+                              <span>{getEvidenceStatusLabel(evidence?.status)}</span>
+
+                              {!evidence && (
+                                <button
+                                  className={styles.actionButton}
+                                  type="button"
+                                  onClick={() => openEvidenceModal(play)}
+                                >
+                                  Enviar evidência
+                                </button>
+                              )}
+
+                              {evidence?.status === "REJECTED" && (
+                                <button
+                                  className={styles.actionButton}
+                                  type="button"
+                                  onClick={() => openEvidenceModal(play)}
+                                >
+                                  Reenviar evidência
+                                </button>
+                              )}
+                            </div>
+                          );
                         }
-                        onClick={() => openPlayModal(round)}
-                      >
-                        Jogar carta
-                      </button>
+
+                        return (
+                          <button
+                            className={styles.actionButton}
+                            type="button"
+                            disabled={!canPlay}
+                            onClick={() => openPlayModal(round)}
+                          >
+                            {canPlay ? "Jogar carta" : "Rodada indisponível"}
+                          </button>
+                        );
+                      })()}
                     </article>
                   ))}
                 </div>

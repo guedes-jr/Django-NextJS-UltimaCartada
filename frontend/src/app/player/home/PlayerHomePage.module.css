@@ -504,3 +504,23 @@
   }
 }
 
+.playStatusBox {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #eee8ff;
+}
+
+.playStatusBox strong {
+  color: #302457;
+  font-size: 14px;
+}
+
+.playStatusBox span {
+  color: #777184;
+  font-size: 13px;
+  line-height: 1.4;
+}
