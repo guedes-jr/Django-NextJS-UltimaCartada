@@ -279,11 +279,114 @@
   font-weight: 800;
 }
 
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.playerInfo strong {
+  color: #302457;
+  font-size: 15px;
+}
+
+.playerInfo span {
+  color: #777184;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.active {
+  background: #eefaf5;
+  color: #24775c;
+}
+
+.inactive {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.pending {
+  background: #fff7e6;
+  color: #b76e00;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.secondaryButton,
+.dangerButton {
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.secondaryButton {
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.dangerButton {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.secondaryButton:disabled,
+.dangerButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.success {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #eefaf5;
+  color: #24775c;
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .error {
+  margin-bottom: 18px;
   padding: 14px;
   border-radius: 14px;
   background: #fff1f1;
   color: #b42318;
   font-size: 14px;
   font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .secondaryButton,
+  .dangerButton {
+    width: 100%;
+  }
 }

@@ -55,3 +55,25 @@ class PlayerProfileViewSet(ModelViewSet):
                 "detail": "Senha redefinida com sucesso. O jogador deverá alterar a senha no próximo acesso."
             }
         )
+
+    @action(detail=True, methods=["post"], url_path="toggle-active")
+    def toggle_active(self, request, pk=None):
+        if request.user.role != UserRole.ADMIN:
+            raise PermissionDenied(
+                "Apenas administradores podem ativar ou desativar jogadores."
+            )
+
+        player_profile = self.get_object()
+        user = player_profile.user
+
+        user.is_active = not user.is_active
+        user.save()
+
+        status = "ativado" if user.is_active else "desativado"
+
+        return Response(
+            {
+                "detail": f"Jogador {status} com sucesso.",
+                "is_active": user.is_active,
+            }
+        )

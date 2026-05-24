@@ -1,12 +1,16 @@
 export type PlayerUser = {
   id: number;
+  user: number;
   username: string;
   email: string;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  phone: string;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  phone?: string;
   is_active: boolean;
+  must_change_password?: boolean;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type PlayerProfile = {
@@ -39,4 +43,9 @@ export type ResetPlayerPasswordPayload = {
 
 export type ResetPlayerPasswordResponse = {
   detail: string;
+};
+
+export type TogglePlayerActiveResponse = {
+  detail: string;
+  is_active: boolean;
 };

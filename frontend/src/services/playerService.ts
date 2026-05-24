@@ -5,6 +5,7 @@ import {
   PlayerUser,
   ResetPlayerPasswordPayload,
   ResetPlayerPasswordResponse,
+  TogglePlayerActiveResponse,
 } from "@/types/players";
 
 export async function getPlayers(): Promise<PlayerProfile[]> {
@@ -31,6 +32,16 @@ export async function resetPlayerPassword(
   const response = await api.post<ResetPlayerPasswordResponse>(
     `/players/players/${playerId}/reset-password/`,
     payload
+  );
+
+  return response.data;
+}
+
+export async function togglePlayerActive(
+  playerId: number
+): Promise<TogglePlayerActiveResponse> {
+  const response = await api.post<TogglePlayerActiveResponse>(
+    `/players/players/${playerId}/toggle-active/`
   );
 
   return response.data;
