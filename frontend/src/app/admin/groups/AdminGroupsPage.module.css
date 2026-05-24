@@ -16,19 +16,7 @@
   margin: 8px 0 0;
   color: #777184;
   font-size: 15px;
-}
-
-.primaryButton {
-  height: 44px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 14px;
-  background: #5b3cc4;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
+  line-height: 1.5;
 }
 
 .card {
@@ -93,6 +81,13 @@
   resize: vertical;
 }
 
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #5b3cc4;
+  box-shadow: 0 0 0 3px rgba(91, 60, 196, 0.12);
+}
+
 .playersBox {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -117,17 +112,45 @@
   height: 16px;
 }
 
+.primaryButton,
+.secondaryButton,
+.dangerButton,
 .button {
-  height: 46px;
+  min-height: 40px;
+  padding: 0 14px;
   border: 0;
-  border-radius: 14px;
-  background: #5b3cc4;
-  color: #ffffff;
-  font-size: 15px;
+  border-radius: 12px;
+  font-size: 14px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
 }
 
+.primaryButton,
+.button {
+  background: #5b3cc4;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.dangerButton {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.button {
+  width: 100%;
+  min-height: 46px;
+  font-size: 15px;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled,
+.dangerButton:disabled,
 .button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
@@ -149,16 +172,17 @@
   background: #eefaf5;
   color: #24775c;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .error {
+  margin-bottom: 18px;
   padding: 14px;
   border-radius: 14px;
   background: #fff1f1;
   color: #b42318;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .tableWrapper {
@@ -177,6 +201,7 @@
   color: #777184;
   font-size: 13px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .table td {
@@ -184,6 +209,7 @@
   border-bottom: 1px solid #f1edff;
   color: #302457;
   font-size: 14px;
+  vertical-align: top;
 }
 
 .groupName {
@@ -194,28 +220,89 @@
 
 .groupName strong {
   color: #302457;
+  font-size: 15px;
 }
 
 .groupName span {
   color: #777184;
   font-size: 13px;
+  line-height: 1.4;
+}
+
+.groupPlayers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.groupPlayers span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  height: 28px;
-  padding: 0 10px;
+  width: fit-content;
+  min-height: 28px;
+  padding: 6px 10px;
   border-radius: 999px;
-  background: #eefaf5;
-  color: #24775c;
+  background: #f4f0ff;
+  color: #5b3cc4;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.badgeActive {
+  background: #eefaf5;
+  color: #24775c;
 }
 
 .badgeInactive {
   background: #fff1f1;
   color: #b42318;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.playersList {
+  display: grid;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.playersList > strong {
+  color: #302457;
+  font-size: 15px;
+}
+
+.playerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fbfaff;
+  border: 1px solid #eee8ff;
+}
+
+.playerItem span {
+  color: #302457;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 @media (max-width: 720px) {
@@ -234,5 +321,27 @@
 
   .card {
     padding: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .table th,
+  .table td {
+    padding: 12px 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .playerItem {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .dangerButton {
+    width: 100%;
   }
 }

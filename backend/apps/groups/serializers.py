@@ -57,3 +57,31 @@ class PlayerGroupSerializer(serializers.ModelSerializer):
                 )
 
         return attrs
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    players_count = serializers.SerializerMethodField()
+    players_names = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PlayerGroup
+        fields = (
+            "id",
+            "name",
+            "description",
+            "players",
+            "players_count",
+            "players_names",
+            "is_active",
+            "created_at",
+            "updated_at",
+        )
+
+    def get_players_count(self, obj):
+        return obj.players.count()
+
+    def get_players_names(self, obj):
+        return [
+            player.user.get_full_name() or player.user.username
+            for player in obj.players.all()
+        ]
