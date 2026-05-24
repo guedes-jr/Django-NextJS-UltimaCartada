@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ReactNode } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
@@ -10,6 +11,37 @@ import styles from "./AdminLayout.module.css";
 type AdminLayoutProps = {
   children: ReactNode;
 };
+
+const menuItems = [
+  {
+    label: "Dashboard",
+    href: "/admin/dashboard",
+  },
+  {
+    label: "Jogadores",
+    href: "/admin/players",
+  },
+  {
+    label: "Grupos",
+    href: "/admin/groups",
+  },
+  {
+    label: "Jogos",
+    href: "/admin/games",
+  },
+  {
+    label: "Cartas",
+    href: "/admin/cards",
+  },
+  {
+    label: "Evidências",
+    href: "/admin/evidences",
+  },
+  {
+    label: "Desempenho",
+    href: "/admin/performance",
+  },
+];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const user = getAuthUser();
@@ -26,11 +58,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         <nav className={styles.nav}>
-          <a href="/admin/dashboard">Dashboard</a>
-          <a href="/admin/players">Jogadores</a>
-          <a href="/admin/groups">Grupos</a>
-          <a href="/admin/games">Jogos</a>
-          <a href="/admin/cards">Cartas</a>
+          {menuItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </aside>
 

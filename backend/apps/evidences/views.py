@@ -21,15 +21,15 @@ class EvidenceViewSet(ModelViewSet):
         queryset = Evidence.objects.select_related(
             "play",
             "play__player",
-            "play__player__user",
             "play__card",
+            "play__card__suit",
             "reviewed_by",
         ).order_by("-created_at")
 
         if user.role == UserRole.ADMIN:
             return queryset
 
-        return queryset.filter(play__player__user=user)
+        return queryset.filter(play__player=user)
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -39,7 +39,7 @@ class EvidenceViewSet(ModelViewSet):
 
         play = serializer.validated_data["play"]
 
-        if play.player.user != user:
+        if play.player != user:
             raise PermissionDenied(
                 "Você só pode enviar evidência da sua própria jogada."
             )

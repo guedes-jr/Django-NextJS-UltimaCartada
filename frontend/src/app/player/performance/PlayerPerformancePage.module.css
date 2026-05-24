@@ -1,0 +1,175 @@
+.header {
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #302457;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: #777184;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.summaryCard {
+  min-width: 0;
+  padding: 20px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+}
+
+.summaryCard span {
+  display: block;
+  color: #777184;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.summaryCard strong {
+  display: block;
+  margin-top: 10px;
+  color: #302457;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.section {
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+}
+
+.section h2 {
+  margin: 0 0 18px;
+  color: #302457;
+  font-size: 22px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: 12px;
+  border-bottom: 1px solid #ece6ff;
+  color: #777184;
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f1edff;
+  color: #302457;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardInfo strong {
+  color: #302457;
+}
+
+.cardInfo span {
+  color: #777184;
+  font-size: 13px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pending {
+  background: #fff7e6;
+  color: #b76e00;
+}
+
+.approved {
+  background: #eefaf5;
+  color: #24775c;
+}
+
+.rejected {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.message {
+  margin-bottom: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #302457;
+  font-weight: 700;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+}
+
+.error {
+  margin-bottom: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff1f1;
+  color: #b42318;
+  font-weight: 800;
+}
+
+@media (max-width: 1000px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 18px;
+  }
+
+  .badge {
+    white-space: normal;
+  }
+}

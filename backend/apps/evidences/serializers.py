@@ -5,13 +5,10 @@ from apps.evidences.models import Evidence
 
 class EvidenceSerializer(serializers.ModelSerializer):
     player_username = serializers.CharField(
-        source="play.player.user.username",
+        source="play.player.username",
         read_only=True,
     )
-    player_name = serializers.CharField(
-        source="play.player.user.full_name",
-        read_only=True,
-    )
+    player_name = serializers.SerializerMethodField()
     card_title = serializers.CharField(
         source="play.card.title",
         read_only=True,
@@ -67,3 +64,10 @@ class EvidenceSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+    def get_player_name(self, obj):
+        first_name = obj.play.player.first_name or ""
+        last_name = obj.play.player.last_name or ""
+        full_name = f"{first_name} {last_name}".strip()
+
+        return full_name or obj.play.player.username
