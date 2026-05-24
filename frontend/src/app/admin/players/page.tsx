@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Modal } from "@/components/ui/Modal";
-import { createPlayer, getPlayers } from "@/services/playerService";
+import { createPlayer, getPlayers, resetPlayerPassword } from "@/services/playerService";
 import { CreatePlayerPayload, PlayerProfile } from "@/types/players";
 
 import styles from "./AdminPlayersPage.module.css";
@@ -29,6 +29,13 @@ export default function AdminPlayersPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
+    const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [resetPasswordMessage, setResetPasswordMessage] = useState("");
+    const [resetPasswordError, setResetPasswordError] = useState("");
+    const [isResettingPassword, setIsResettingPassword] = useState(false);
 
     async function loadPlayers() {
         try {
@@ -118,6 +125,64 @@ export default function AdminPlayersPage() {
         }
     }
 
+    function openResetPasswordModal(playerId: number) {
+      setSelectedPlayerId(playerId);
+      setNewPassword("");
+      setConfirmPassword("");
+      setResetPasswordMessage("");
+      setResetPasswordError("");
+      setIsResetPasswordModalOpen(true);
+    }
+
+    function closeResetPasswordModal() {
+      setSelectedPlayerId(null);
+      setNewPassword("");
+      setConfirmPassword("");
+      setResetPasswordMessage("");
+      setResetPasswordError("");
+      setIsResetPasswordModalOpen(false);
+    }
+
+    async function handleResetPassword() {
+      if (!selectedPlayerId) {
+        return;
+      }
+
+      if (!newPassword || !confirmPassword) {
+        setResetPasswordError("Preencha todos os campos.");
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        setResetPasswordError("As senhas não conferem.");
+        return;
+      }
+
+      if (newPassword.length < 8) {
+        setResetPasswordError("A senha deve ter pelo menos 8 caracteres.");
+        return;
+      }
+
+      try {
+        setIsResettingPassword(true);
+        setResetPasswordError("");
+        setResetPasswordMessage("");
+
+        const response = await resetPlayerPassword(selectedPlayerId, {
+          new_password: newPassword,
+          confirm_password: confirmPassword,
+        });
+
+        setResetPasswordMessage(response.detail);
+        setNewPassword("");
+        setConfirmPassword("");
+      } catch {
+        setResetPasswordError("Não foi possível redefinir a senha.");
+      } finally {
+        setIsResettingPassword(false);
+      }
+    }
+
     return (
         <ProtectedRoute allowedRoles={["ADMIN"]}>
             <AdminLayout>
@@ -166,6 +231,7 @@ export default function AdminPlayersPage() {
                                         <th>Usuário</th>
                                         <th>Telefone</th>
                                         <th>Status</th>
+                                        <th>Ações</th>
                                     </tr>
                                 </thead>
 
@@ -194,6 +260,15 @@ export default function AdminPlayersPage() {
                                                 >
                                                     {player.is_active ? "Ativo" : "Inativo"}
                                                 </span>
+                                            </td>
+                                            <td className={styles.actions}>
+                                              <button
+                                                  className={styles.secondaryButton}
+                                                  type="button"
+                                                  onClick={() => openResetPasswordModal(player.id)}
+                                              >
+                                                  Redefinir senha
+                                              </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -316,6 +391,63 @@ export default function AdminPlayersPage() {
                             {isSubmitting ? "Salvando..." : "Cadastrar jogador"}
                         </button>
                     </form>
+                </Modal>
+                <Modal
+                  title="Redefinir senha do jogador"
+                  isOpen={isResetPasswordModalOpen}
+                  onClose={closeResetPasswordModal}
+                >
+                  <div className={styles.form}>
+                    {resetPasswordMessage && (
+                      <div className={styles.success}>{resetPasswordMessage}</div>
+                    )}
+
+                    {resetPasswordError && (
+                      <div className={styles.error}>{resetPasswordError}</div>
+                    )}
+
+                    <div className={styles.field}>
+                      <label htmlFor="newPassword">Nova senha temporária</label>
+                      <input
+                        id="newPassword"
+                        type="password"
+                        value={newPassword}
+                        onChange={(event) => setNewPassword(event.target.value)}
+                        placeholder="Ex: Junior@123"
+                      />
+                    </div>
+
+                    <div className={styles.field}>
+                      <label htmlFor="confirmPassword">Confirmar senha</label>
+                      <input
+                        id="confirmPassword"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(event) => setConfirmPassword(event.target.value)}
+                        placeholder="Confirme a senha"
+                      />
+                    </div>
+
+                    <div className={styles.modalActions}>
+                      <button
+                        className={styles.secondaryButton}
+                        type="button"
+                        onClick={closeResetPasswordModal}
+                        disabled={isResettingPassword}
+                      >
+                        Cancelar
+                      </button>
+
+                      <button
+                        className={styles.primaryButton}
+                        type="button"
+                        onClick={handleResetPassword}
+                        disabled={isResettingPassword}
+                      >
+                        {isResettingPassword ? "Redefinindo..." : "Redefinir senha"}
+                      </button>
+                    </div>
+                  </div>
                 </Modal>
             </AdminLayout>
         </ProtectedRoute>

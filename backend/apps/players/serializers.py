@@ -54,3 +54,24 @@ class PlayerProfileSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+
+class ResetPlayerPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        new_password = attrs["new_password"]
+        confirm_password = attrs["confirm_password"]
+
+        if new_password != confirm_password:
+            raise serializers.ValidationError(
+                {"confirm_password": "As senhas não conferem."}
+            )
+
+        if len(new_password) < 8:
+            raise serializers.ValidationError(
+                {"new_password": "A senha deve ter pelo menos 8 caracteres."}
+            )
+
+        return attrs

@@ -31,3 +31,12 @@ export type CreatePlayerPayload = {
   nickname: string;
   notes: string;
 };
+
+export type ResetPlayerPasswordPayload = {
+  new_password: string;
+  confirm_password: string;
+};
+
+export type ResetPlayerPasswordResponse = {
+  detail: string;
+};

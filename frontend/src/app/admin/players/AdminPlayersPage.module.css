@@ -214,3 +214,76 @@
     padding: 18px;
   }
 }
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: #302457;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.field input {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #ded7f4;
+  border-radius: 12px;
+  background: #fbfaff;
+  color: #302457;
+  font-size: 14px;
+  outline: none;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton {
+  height: 42px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: #5b3cc4;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.success {
+  padding: 14px;
+  border-radius: 14px;
+  background: #eefaf5;
+  color: #24775c;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.error {
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff1f1;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 800;
+}
