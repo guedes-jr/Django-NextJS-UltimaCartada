@@ -21,6 +21,10 @@ const menuItems = [
     label: "Meu desempenho",
     href: "/player/performance",
   },
+  {
+    label: "Ranking",
+    href: "/player/ranking",
+  },
 ];
 
 export function PlayerLayout({ children }: PlayerLayoutProps) {

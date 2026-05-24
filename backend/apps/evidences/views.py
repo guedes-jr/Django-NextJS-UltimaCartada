@@ -29,7 +29,7 @@ class EvidenceViewSet(ModelViewSet):
         if user.role == UserRole.ADMIN:
             return queryset
 
-        return queryset.filter(play__player=user)
+        return queryset.filter(play__group__players__user=user).distinct()
 
     def perform_create(self, serializer):
         user = self.request.user

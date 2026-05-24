@@ -34,6 +34,10 @@ const menuItems = [
     href: "/admin/cards",
   },
   {
+    label: "Jogadas",
+    href: "/admin/plays",
+  },
+  {
     label: "Evidências",
     href: "/admin/evidences",
   },

@@ -4,7 +4,6 @@ from rest_framework.viewsets import ModelViewSet
 from apps.accounts.models import UserRole
 from apps.plays.models import Play
 from apps.plays.serializers import PlaySerializer
-from apps.plays.services.play_creation_service import PlayCreationService
 
 
 class PlayViewSet(ModelViewSet):
@@ -14,30 +13,21 @@ class PlayViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
-        queryset = (
-            Play.objects
-            .select_related(
-                "game",
-                "group",
-                "round",
-                "player",
-                "card",
-                "card__suit",
-            )
-            .order_by("-played_at")
-        )
+        queryset = Play.objects.select_related(
+            "game",
+            "group",
+            "round",
+            "player",
+            "card",
+            "card__suit",
+        ).order_by("-played_at", "-created_at")
 
         if user.role == UserRole.ADMIN:
             return queryset
 
-        return queryset.filter(player=user)
+        return queryset.filter(group__players__user=user).distinct()
 
     def perform_create(self, serializer):
-        service = PlayCreationService()
-        play = service.create_play(
-            player=self.request.user,
-            round_instance=serializer.validated_data["round"],
-            card=serializer.validated_data["card"],
-        )
+        user = self.request.user
 
-        serializer.instance = play
+        serializer.save(player=user)
