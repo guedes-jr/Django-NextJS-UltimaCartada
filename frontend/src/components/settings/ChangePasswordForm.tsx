@@ -2,8 +2,8 @@
 
 import { FormEvent, useState } from "react";
 
-import { changePassword } from "@/services/accountService";
-import { getAuthUser } from "@/lib/auth";
+import { getCurrentUser, changePassword } from "@/services/accountService";
+import { saveAuthUser } from "@/lib/auth";
 import styles from "./ChangePasswordForm.module.css";
 
 export function ChangePasswordForm() {
@@ -43,17 +43,9 @@ export function ChangePasswordForm() {
         confirm_password: confirmPassword,
       });
 
-      const user = getAuthUser();
+      const currentUser = await getCurrentUser();
 
-      if (user) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...user,
-            must_change_password: false,
-          })
-        );
-      }
+      saveAuthUser(currentUser);
 
       setCurrentPassword("");
       setNewPassword("");

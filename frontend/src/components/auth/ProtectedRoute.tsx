@@ -2,8 +2,8 @@
 
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
-import { AuthUser, getAuthUser, isAuthenticated, UserRole } from "@/lib/auth";
+import { getCurrentUser } from "@/services/accountService";
+import { AuthUser, isAuthenticated, UserRole, saveAuthUser } from "@/lib/auth";
 
 type ProtectedRouteProps = {
   children: ReactNode;
@@ -24,42 +24,46 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
     hasChecked.current = true;
 
-    if (!isAuthenticated()) {
-      router.replace("/login");
-      return;
-    }
-
-    const authUser = getAuthUser();
-
-    if (!authUser) {
-      router.replace("/login");
-      return;
-    }
-
-    const isSettingsPage =
-      window.location.pathname === "/player/settings" ||
-      window.location.pathname === "/admin/settings";
-
-    if (authUser.must_change_password && !isSettingsPage) {
-      if (authUser.role === "ADMIN") {
-        router.replace("/admin/settings");
+    async function checkAccess() {
+      if (!isAuthenticated()) {
+        router.replace("/login");
         return;
       }
 
-      router.replace("/player/settings");
-      return;
+      try {
+        const currentUser = await getCurrentUser();
+
+        saveAuthUser(currentUser);
+
+        const isSettingsPage =
+          window.location.pathname === "/player/settings" ||
+          window.location.pathname === "/admin/settings";
+
+        if (currentUser.must_change_password && !isSettingsPage) {
+          const settingsPath =
+            currentUser.role === "ADMIN" ? "/admin/settings" : "/player/settings";
+
+          router.replace(settingsPath);
+          return;
+        }
+
+        if (!allowedRoles.includes(currentUser.role)) {
+          const fallbackPath =
+            currentUser.role === "ADMIN" ? "/admin/dashboard" : "/player/home";
+
+          router.replace(fallbackPath);
+          return;
+        }
+
+        setUser(currentUser);
+        setIsChecking(false);
+      } catch {
+        logout();
+        router.replace("/login");
+      }
     }
 
-    if (!allowedRoles.includes(authUser.role)) {
-      const fallbackPath =
-        authUser.role === "ADMIN" ? "/admin/dashboard" : "/player/home";
-
-      router.replace(fallbackPath);
-      return;
-    }
-
-    setUser(authUser);
-    setIsChecking(false);
+    checkAccess();
   }, [allowedRoles, router]);
 
   if (isChecking || !user) {

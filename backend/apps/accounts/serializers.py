@@ -1,10 +1,10 @@
+from django.db import transaction
+
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from apps.accounts.models import User
-from apps.accounts.models import UserRole
+from apps.accounts.models import User, UserRole
 from apps.players.models import PlayerProfile
-from django.db import transaction
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -115,3 +115,25 @@ class ChangePasswordSerializer(serializers.Serializer):
             )
 
         return attrs
+
+
+class CurrentUserSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "role",
+            "must_change_password",
+        )
+
+    def get_full_name(self, obj):
+        full_name = f"{obj.first_name or ''} {obj.last_name or ''}".strip()
+
+        return full_name or obj.username

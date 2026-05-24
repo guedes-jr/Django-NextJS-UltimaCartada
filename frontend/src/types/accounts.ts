@@ -1,3 +1,5 @@
+import { AuthUser } from "@/lib/auth";
+
 export type ChangePasswordPayload = {
   current_password: string;
   new_password: string;
@@ -7,3 +9,5 @@ export type ChangePasswordPayload = {
 export type ChangePasswordResponse = {
   detail: string;
 };
+
+export type CurrentUserResponse = AuthUser;
