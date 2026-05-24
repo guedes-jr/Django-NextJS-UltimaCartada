@@ -4,8 +4,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from apps.accounts.models import User
 from apps.accounts.models import UserRole
 from apps.players.models import PlayerProfile
-
 from django.db import transaction
+
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
@@ -36,6 +36,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         data["user"] = UserSerializer(self.user).data
         return data
+
 
 class AdminPlayerCreateSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
@@ -82,3 +83,33 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
         )
 
         return user
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate_current_password(self, value):
+        user = self.context["request"].user
+
+        if not user.check_password(value):
+            raise serializers.ValidationError("Senha atual incorreta.")
+
+        return value
+
+    def validate(self, attrs):
+        new_password = attrs["new_password"]
+        confirm_password = attrs["confirm_password"]
+
+        if new_password != confirm_password:
+            raise serializers.ValidationError(
+                {"confirm_password": "As senhas não conferem."}
+            )
+
+        if len(new_password) < 8:
+            raise serializers.ValidationError(
+                {"new_password": "A nova senha deve ter pelo menos 8 caracteres."}
+            )
+
+        return attrs

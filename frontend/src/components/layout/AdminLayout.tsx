@@ -50,6 +50,10 @@ const menuItems = [
     label: "Relatórios",
     href: "/admin/reports",
   },
+  {
+    label: "Configurações",
+    href: "/admin/settings",
+  },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {

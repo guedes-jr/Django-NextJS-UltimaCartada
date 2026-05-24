@@ -3,11 +3,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import api_view, permission_classes
 
 from apps.accounts.models import UserRole
-from apps.accounts.serializers import AdminPlayerCreateSerializer
-from apps.accounts.serializers import CustomTokenObtainPairSerializer
-from apps.accounts.serializers import UserSerializer
+from apps.accounts.serializers import (
+    AdminPlayerCreateSerializer,
+    CustomTokenObtainPairSerializer,
+    UserSerializer,
+    ChangePasswordSerializer,
+)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -44,3 +48,20 @@ class AdminPlayerCreateView(APIView):
             UserSerializer(user).data,
             status=status.HTTP_201_CREATED,
         )
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    serializer = ChangePasswordSerializer(
+        data=request.data,
+        context={"request": request},
+    )
+
+    serializer.is_valid(raise_exception=True)
+
+    user = request.user
+    user.set_password(serializer.validated_data["new_password"])
+    user.save()
+
+    return Response({"detail": "Senha alterada com sucesso."})

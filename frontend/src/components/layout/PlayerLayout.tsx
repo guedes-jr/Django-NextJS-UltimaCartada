@@ -26,6 +26,10 @@ const menuItems = [
     label: "Ranking",
     href: "/player/ranking",
   },
+  {
+    label: "Configurações",
+    href: "/player/settings",
+  },
 ];
 
 export function PlayerLayout({ children }: PlayerLayoutProps) {
