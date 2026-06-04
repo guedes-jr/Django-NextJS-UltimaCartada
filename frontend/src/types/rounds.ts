@@ -19,3 +19,21 @@ export type Round = {
   created_at: string;
   updated_at: string;
 };
+
+export type GameRound = {
+  id: number;
+  game: number;
+  game_name?: string;
+  day_number: number;
+  is_active: boolean;
+  starts_at?: string;
+  ends_at?: string;
+  plays_count?: number;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type RoundActionResponse = {
+  detail: string;
+  is_active?: boolean;
+};

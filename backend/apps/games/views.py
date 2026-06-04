@@ -7,7 +7,6 @@ from rest_framework.exceptions import PermissionDenied
 from apps.accounts.models import UserRole
 from apps.games.models import Game
 from apps.games.serializers import GameSerializer
-from apps.rounds.services.round_generation_service import RoundGenerationService
 
 
 class GameViewSet(ModelViewSet):
@@ -48,43 +47,3 @@ class GameViewSet(ModelViewSet):
                 "is_active": game.is_active,
             }
         )
-
-    @action(detail=True, methods=["post"], url_path="generate-rounds")
-    def generate_rounds(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
-            raise PermissionDenied("Apenas administradores podem gerar rodadas.")
-
-        game = self.get_object()
-
-        if game.rounds.exists():
-            return Response(
-                {"detail": "Este jogo já possui rodadas geradas."},
-                status=400,
-            )
-
-        total_rounds = getattr(game, "total_rounds", None) or getattr(
-            game,
-            "total_days",
-            None,
-        )
-
-        if not total_rounds:
-            return Response(
-                {"detail": "Informe a quantidade de rodadas do jogo."},
-                status=400,
-            )
-
-        rounds = []
-
-        for day_number in range(1, total_rounds + 1):
-            rounds.append(
-                game.rounds.model(
-                    game=game,
-                    day_number=day_number,
-                    is_active=day_number == 1,
-                )
-            )
-
-        game.rounds.model.objects.bulk_create(rounds)
-
-        return Response({"detail": f"{total_rounds} rodadas geradas com sucesso."})

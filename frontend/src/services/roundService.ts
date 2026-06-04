@@ -1,8 +1,34 @@
 import { api } from "@/lib/api";
-import { Round } from "@/types/rounds";
+import { GameRound, RoundActionResponse, Round } from "@/types/rounds";
 
 export async function getRounds(): Promise<Round[]> {
   const response = await api.get<Round[]>("/rounds/rounds/");
+
+  return response.data;
+}
+
+export async function getRounds(): Promise<GameRound[]> {
+  const response = await api.get<GameRound[]>("/games/rounds/");
+
+  return response.data;
+}
+
+export async function activateRound(
+  roundId: number
+): Promise<RoundActionResponse> {
+  const response = await api.post<RoundActionResponse>(
+    `/games/rounds/${roundId}/activate/`
+  );
+
+  return response.data;
+}
+
+export async function closeRound(
+  roundId: number
+): Promise<RoundActionResponse> {
+  const response = await api.post<RoundActionResponse>(
+    `/games/rounds/${roundId}/close/`
+  );
 
   return response.data;
 }
