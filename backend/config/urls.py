@@ -6,7 +6,7 @@ from django.urls import include, path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("django-admin/", admin.site.urls),
     path("api/v1/auth/", include("apps.accounts.urls")),
     path("api/v1/cards/", include("apps.cards.urls")),
     path("api/v1/players/", include("apps.players.urls")),
