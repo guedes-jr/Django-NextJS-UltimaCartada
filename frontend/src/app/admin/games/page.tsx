@@ -24,6 +24,15 @@ const INITIAL_FORM: CreateGamePayload = {
   start_date: "",
   end_date: "",
   total_rounds: 7,
+  duration_days: 7,
+  status: "DRAFT",
+  evidence_bonus_points: 10,
+  lowest_card_points: 10,
+  middle_card_points: 20,
+  highest_card_points: 30,
+  max_round_starts_per_player_per_day: 1,
+  allow_late_play: false,
+  show_ranking_to_players: true,
   is_active: true,
 };
 

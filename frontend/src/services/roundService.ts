@@ -7,7 +7,7 @@ export async function getRounds(): Promise<Round[]> {
   return response.data;
 }
 
-export async function getRounds(): Promise<GameRound[]> {
+export async function getGameRounds(): Promise<GameRound[]> {
   const response = await api.get<GameRound[]>("/games/rounds/");
 
   return response.data;

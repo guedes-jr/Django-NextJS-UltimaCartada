@@ -33,11 +33,6 @@ export type Group = {
   updated_at?: string;
 };
 
-export type CreateGroupPayload = {
-  name: string;
-  description?: string;
-  players?: number[];
-};
 
 export type AddPlayerToGroupPayload = {
   player_id: number;

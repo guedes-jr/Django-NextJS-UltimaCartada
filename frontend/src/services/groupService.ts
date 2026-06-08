@@ -2,18 +2,18 @@ import { api } from "@/lib/api";
 import {
   AddPlayerToGroupPayload,
   CreateGroupPayload,
-  Group,
+  PlayerGroup,
   GroupActionResponse
 } from "@/types/groups";
 
-export async function getGroups(): Promise<Group[]> {
-  const response = await api.get<Group[]>("/groups/groups/");
+export async function getGroups(): Promise<PlayerGroup[]> {
+  const response = await api.get<PlayerGroup[]>("/groups/groups/");
 
   return response.data;
 }
 
-export async function createGroup(payload: CreateGroupPayload): Promise<Group> {
-  const response = await api.post<Group>("/groups/groups/", payload);
+export async function createGroup(payload: CreateGroupPayload): Promise<PlayerGroup> {
+  const response = await api.post<PlayerGroup>("/groups/groups/", payload);
 
   return response.data;
 }

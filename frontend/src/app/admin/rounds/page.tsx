@@ -8,7 +8,7 @@ import { getGames } from "@/services/gameService";
 import {
   activateRound,
   closeRound,
-  getRounds,
+  getGameRounds,
 } from "@/services/roundService";
 import { Game } from "@/types/games";
 import { GameRound } from "@/types/rounds";
@@ -32,7 +32,7 @@ export default function AdminRoundsPage() {
       setErrorMessage("");
 
       const [roundsData, gamesData] = await Promise.all([
-        getRounds(),
+        getGameRounds(),
         getGames(),
       ]);
 

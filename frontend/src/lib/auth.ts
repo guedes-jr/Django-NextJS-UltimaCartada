@@ -1,141 +1,57 @@
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  InternalAxiosRequestConfig,
-} from "axios";
+export type UserRole = "ADMIN" | "PLAYER";
 
-import {
-  getAccessToken,
-  getRefreshToken,
-  logout,
-  saveAccessToken,
-} from "@/lib/auth";
-
-type FailedRequestQueueItem = {
-  resolve: (token: string) => void;
-  reject: (error: unknown) => void;
+export type AuthUser = {
+  id: number;
+  username: string;
+  email: string;
+  role: UserRole;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  must_change_password?: boolean;
+  first_access_completed?: boolean;
+  is_active_player?: boolean;
 };
 
-type RetriableRequestConfig = AxiosRequestConfig & {
-  _retry?: boolean;
-};
-
-const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
-
-let isRefreshing = false;
-let failedQueue: FailedRequestQueueItem[] = [];
-
-function processQueue(error: unknown, token: string | null = null) {
-  failedQueue.forEach((promise) => {
-    if (error) {
-      promise.reject(error);
-      return;
-    }
-
-    if (token) {
-      promise.resolve(token);
-    }
-  });
-
-  failedQueue = [];
+export function getAccessToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("accessToken");
 }
 
-function redirectToLogin() {
-  logout();
+export function getRefreshToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("refreshToken");
+}
 
-  if (typeof window !== "undefined") {
-    window.location.href = "/login";
+export function saveAccessToken(token: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem("accessToken", token);
+}
+
+export function saveAuthUser(user: AuthUser): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem("user", JSON.stringify(user));
+}
+
+export function getAuthUser(): AuthUser | null {
+  if (typeof window === "undefined") return null;
+  const userJson = localStorage.getItem("user");
+  if (!userJson) return null;
+  try {
+    return JSON.parse(userJson) as AuthUser;
+  } catch {
+    return null;
   }
 }
 
-export const api = axios.create({
-  baseURL,
-});
+export function isAuthenticated(): boolean {
+  if (typeof window === "undefined") return false;
+  return !!localStorage.getItem("accessToken");
+}
 
-const refreshApi = axios.create({
-  baseURL,
-});
-
-api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = getAccessToken();
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-
-api.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    const originalRequest = error.config as RetriableRequestConfig | undefined;
-
-    if (!originalRequest || error.response?.status !== 401) {
-      return Promise.reject(error);
-    }
-
-    if (originalRequest._retry) {
-      redirectToLogin();
-      return Promise.reject(error);
-    }
-
-    const refreshToken = getRefreshToken();
-
-    if (!refreshToken) {
-      redirectToLogin();
-      return Promise.reject(error);
-    }
-
-    originalRequest._retry = true;
-
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({
-          resolve: (token: string) => {
-            originalRequest.headers = {
-              ...originalRequest.headers,
-              Authorization: `Bearer ${token}`,
-            };
-
-            resolve(api(originalRequest));
-          },
-          reject,
-        });
-      });
-    }
-
-    isRefreshing = true;
-
-    try {
-      const response = await refreshApi.post<{ access: string }>(
-        "/token/refresh/",
-        {
-          refresh: refreshToken,
-        }
-      );
-
-      const newAccessToken = response.data.access;
-
-      saveAccessToken(newAccessToken);
-
-      api.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-
-      processQueue(null, newAccessToken);
-
-      originalRequest.headers = {
-        ...originalRequest.headers,
-        Authorization: `Bearer ${newAccessToken}`,
-      };
-
-      return api(originalRequest);
-    } catch (refreshError) {
-      processQueue(refreshError, null);
-      redirectToLogin();
-
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
-    }
-  }
-);
+export function logout(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("user");
+}

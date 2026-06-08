@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/services/accountService";
-import { AuthUser, isAuthenticated, UserRole, saveAuthUser } from "@/lib/auth";
+import { AuthUser, isAuthenticated, UserRole, saveAuthUser, logout } from "@/lib/auth";
 
 type ProtectedRouteProps = {
   children: ReactNode;

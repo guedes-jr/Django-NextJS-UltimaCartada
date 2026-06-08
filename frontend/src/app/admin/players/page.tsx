@@ -102,7 +102,7 @@ export default function AdminPlayersPage() {
   }
 
   function getPlayerPhone(player: PlayerProfile) {
-    return player.phone || player.user.phone || "-";
+    return player.user?.phone || "-";
   }
 
   function getPlayerIsActive(player: PlayerProfile) {

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { clearAuthSession } from "@/lib/auth";
+import { logout } from "@/lib/auth";
 
 type LogoutButtonProps = {
   className?: string;
@@ -12,7 +12,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
   const router = useRouter();
 
   function handleLogout() {
-    clearAuthSession();
+    logout();
     router.replace("/login");
   }
 
