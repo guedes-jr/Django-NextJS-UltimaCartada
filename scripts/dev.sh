@@ -90,6 +90,10 @@ start_backend() {
 start_frontend() {
   echo -e "${FRONTEND_PREFIX} Starting Next.js dev server on http://localhost:3000 ..."
   cd "$FRONTEND_DIR"
+  if [ -d ".next" ]; then
+    echo -e "${FRONTEND_PREFIX} Clearing stale Next.js cache..."
+    rm -rf .next
+  fi
   stream_with_prefix "$FRONTEND_PREFIX" npm run dev 2>&1 &
   FRONTEND_PID=$!
   echo -e "${FRONTEND_PREFIX} PID: $FRONTEND_PID"

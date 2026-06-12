@@ -146,7 +146,7 @@ Crie banco e usuário:
 
 ```sql
 CREATE DATABASE cartada_viva_db;
-CREATE USER cartada_viva_user WITH PASSWORD 'SENHA_FORTE_AQUI';
+CREATE USER cartada_viva_user WITH PASSWORD 'cartada_viva_pass';
 ALTER ROLE cartada_viva_user SET client_encoding TO 'utf8';
 ALTER ROLE cartada_viva_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE cartada_viva_user SET timezone TO 'America/Sao_Paulo';
@@ -438,7 +438,7 @@ Conteúdo:
 ```nginx
 server {
     listen 80;
-    server_name IP_DA_VPS;
+    server_name 2.25.183.3;
 
     client_max_body_size 20M;
 

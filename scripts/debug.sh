@@ -55,6 +55,10 @@ start_frontend_debug() {
   echo -e "${FRONTEND_PREFIX} Starting Next.js with Node inspector on port 9229..."
   echo -e "${FRONTEND_PREFIX} Open Chrome → chrome://inspect (localhost:9229)"
   cd "$FRONTEND_DIR"
+  if [ -d ".next" ]; then
+    echo -e "${FRONTEND_PREFIX} Clearing stale Next.js cache..."
+    rm -rf .next
+  fi
   stream_with_prefix "$FRONTEND_PREFIX" \
     env NODE_OPTIONS='--inspect=0.0.0.0:9229' npm run dev 2>&1 &
   FRONTEND_PID=$!

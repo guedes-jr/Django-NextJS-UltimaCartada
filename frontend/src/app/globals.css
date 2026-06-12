@@ -1,4 +1,7 @@
 :root {
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
   --landing-bg-white: #ffffff;
   --landing-bg-cream: #fbf8ef;
   --landing-bg-green-soft: #f3f7ed;
@@ -28,4 +31,17 @@
   --landing-shadow-md: 0 22px 56px rgba(67, 78, 42, 0.08);
   --landing-shadow-lg: 0 34px 90px rgba(67, 78, 42, 0.16);
   --landing-shadow-green: 0 20px 44px rgba(100, 143, 55, 0.28);
+}
+
+html,
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
 }
