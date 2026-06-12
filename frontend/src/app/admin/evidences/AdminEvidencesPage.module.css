@@ -59,10 +59,12 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 4px;
 }
 
 .table {
   width: 100%;
+  min-width: 820px;
   border-collapse: collapse;
 }
 
@@ -72,6 +74,7 @@
   color: #777184;
   font-size: 13px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .table td {
@@ -79,6 +82,7 @@
   border-bottom: 1px solid #f1edff;
   color: #302457;
   font-size: 14px;
+  vertical-align: top;
 }
 
 .mainInfo {

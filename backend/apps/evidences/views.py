@@ -1,4 +1,3 @@
-from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
@@ -7,8 +6,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from apps.accounts.models import UserRole
 from apps.evidences.models import Evidence
-from apps.evidences.models import EvidenceStatus
 from apps.evidences.serializers import EvidenceSerializer
+from apps.evidences.services.evidence_review_service import EvidenceReviewService
 
 
 class EvidenceViewSet(ModelViewSet):
@@ -29,7 +28,7 @@ class EvidenceViewSet(ModelViewSet):
         if user.role == UserRole.ADMIN:
             return queryset
 
-        return queryset.filter(play__group__players__user=user).distinct()
+        return queryset.filter(play__player=user)
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -46,22 +45,30 @@ class EvidenceViewSet(ModelViewSet):
 
         serializer.save()
 
+    def perform_update(self, serializer):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem editar evidências.")
+
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem excluir evidências.")
+
+        instance.delete()
+
     @action(detail=True, methods=["post"], url_path="approve")
     def approve(self, request, pk=None):
         if request.user.role != UserRole.ADMIN:
             raise PermissionDenied("Apenas administradores podem aprovar evidências.")
 
         evidence = self.get_object()
-        evidence.status = EvidenceStatus.APPROVED
-        evidence.reviewed_by = request.user
-        evidence.reviewed_at = timezone.now()
-        evidence.admin_notes = request.data.get("admin_notes", "")
-        evidence.save()
-
-        play = evidence.play
-        play.bonus_points = play.game.evidence_bonus_points
-        play.total_points = play.base_points + play.bonus_points
-        play.save()
+        service = EvidenceReviewService()
+        service.approve(
+            evidence=evidence,
+            reviewed_by=request.user,
+            notes=request.data.get("admin_notes", ""),
+        )
 
         serializer = self.get_serializer(evidence)
 
@@ -73,16 +80,12 @@ class EvidenceViewSet(ModelViewSet):
             raise PermissionDenied("Apenas administradores podem rejeitar evidências.")
 
         evidence = self.get_object()
-        evidence.status = EvidenceStatus.REJECTED
-        evidence.reviewed_by = request.user
-        evidence.reviewed_at = timezone.now()
-        evidence.admin_notes = request.data.get("admin_notes", "")
-        evidence.save()
-
-        play = evidence.play
-        play.bonus_points = 0
-        play.total_points = play.base_points
-        play.save()
+        service = EvidenceReviewService()
+        service.reject(
+            evidence=evidence,
+            reviewed_by=request.user,
+            notes=request.data.get("admin_notes", ""),
+        )
 
         serializer = self.get_serializer(evidence)
 

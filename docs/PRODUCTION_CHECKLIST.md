@@ -8,11 +8,12 @@
 - [ ] Banco `cartada_viva_db` criado.
 - [ ] Usuário `cartada_viva_user` criado.
 - [ ] Projeto em `/var/www/cartada-viva`.
-- [ ] Backend `.env` criado.
-- [ ] Frontend `.env.production` criado.
+- [ ] Backend `.env` criado a partir de `backend/.env.example`.
+- [ ] Frontend `.env.production` criado a partir de `frontend/.env.example`.
 - [ ] Django Admin movido para `/django-admin/`.
 - [ ] Nginx configurado.
 - [ ] Serviços systemd criados.
+- [ ] Comando global `deploy-cartada` instalado em `/usr/local/bin/deploy-cartada`.
 
 ## Backend
 
@@ -45,6 +46,7 @@
 - [ ] `http://IP_DA_VPS/admin/dashboard` abre admin Next.
 - [ ] `http://IP_DA_VPS/player/home` protege rota.
 - [ ] `http://IP_DA_VPS/django-admin/` abre Django Admin.
+- [ ] `http://IP_DA_VPS/api/v1/` passa pelo Nginx para o Django.
 - [ ] Login JWT funciona.
 - [ ] Refresh token funciona.
 - [ ] Admin cria jogador.
@@ -54,6 +56,7 @@
 - [ ] Player joga carta.
 - [ ] Player envia evidência.
 - [ ] Admin revisa evidência.
+- [ ] `deploy-cartada` executa atualização incremental sem perder `.env`, media, staticfiles ou `node_modules`.
 
 ## Quando tiver domínio
 

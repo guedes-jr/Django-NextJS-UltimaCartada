@@ -86,7 +86,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </div>
 
-        <nav className={styles.nav}>
+        <nav className={styles.nav} id="admin-navigation">
           {menuItems.map((item) => (
             <Link
               key={item.href}
@@ -114,9 +114,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <button
             className={styles.menuButton}
             type="button"
+            aria-expanded={isMenuOpen}
+            aria-controls="admin-navigation"
             onClick={() => setIsMenuOpen((current) => !current)}
           >
-            Menu
+            {isMenuOpen ? "Fechar menu" : "Menu"}
           </button>
 
           <div className={styles.userInfo}>

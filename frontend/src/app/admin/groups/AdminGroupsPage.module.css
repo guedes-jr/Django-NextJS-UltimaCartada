@@ -188,10 +188,12 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 4px;
 }
 
 .table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
 }
 

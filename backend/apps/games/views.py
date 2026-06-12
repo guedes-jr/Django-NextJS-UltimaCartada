@@ -26,7 +26,22 @@ class GameViewSet(ModelViewSet):
         return queryset.filter(group__players__user=user).distinct()
 
     def perform_create(self, serializer):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem criar jogos.")
+
         serializer.save(created_by=self.request.user)
+
+    def perform_update(self, serializer):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem editar jogos.")
+
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem excluir jogos.")
+
+        instance.delete()
 
     @action(detail=True, methods=["post"], url_path="toggle-active")
     def toggle_active(self, request, pk=None):

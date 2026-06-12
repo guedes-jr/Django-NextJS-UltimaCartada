@@ -186,6 +186,9 @@ CORS_ALLOWED_ORIGINS=http://IP_DA_VPS
 CSRF_TRUSTED_ORIGINS=http://IP_DA_VPS
 ```
 
+Use `backend/.env.example` como referência e nunca commite o arquivo `.env`
+real.
+
 Gerar secret key:
 
 ```bash
@@ -270,6 +273,11 @@ Conteúdo:
 ```env
 NEXT_PUBLIC_API_URL=/api/v1
 ```
+
+Use `frontend/.env.example` como referência. Em produção, mantenha
+`NEXT_PUBLIC_API_URL=/api/v1` para que o Nginx encaminhe as requisições para o
+Django. Em desenvolvimento local, você pode omitir o arquivo `.env.local` para
+usar o fallback `http://127.0.0.1:8000/api/v1`.
 
 Build:
 
@@ -406,10 +414,18 @@ Arquivo recomendado:
 /usr/local/bin/deploy-cartada
 ```
 
-Permissão:
+Instalação sugerida:
 
 ```bash
+sudo cp /var/www/cartada-viva/scripts/deploy-cartada /usr/local/bin/deploy-cartada
 sudo chmod +x /usr/local/bin/deploy-cartada
+```
+
+Por padrão, o script usa o IP configurado nele. Para sobrescrever sem editar o
+arquivo:
+
+```bash
+SERVER_IP=IP_DA_VPS deploy-cartada
 ```
 
 Rodar:
@@ -417,6 +433,11 @@ Rodar:
 ```bash
 deploy-cartada
 ```
+
+O deploy incremental preserva `backend/.env`, `backend/.venv`, `backend/media`,
+`backend/staticfiles`, `frontend/.env.production`, `frontend/.env.local` e
+`frontend/node_modules`. O diretório `frontend/.next` é sempre recriado antes do
+build para evitar cache quebrado entre versões do Next.js.
 
 ---
 
@@ -475,4 +496,3 @@ sudo ss -tulpn | grep -E '8000|3000|80|443'
 6. Instalar Certbot.
 7. Emitir SSL.
 8. Alterar URLs para HTTPS.
-

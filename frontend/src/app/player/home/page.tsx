@@ -1,5 +1,6 @@
 "use client";
 
+import { AxiosError } from "axios";
 import { useEffect, useMemo, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -17,6 +18,10 @@ import { Evidence } from "@/types/evidences";
 import { Play } from "@/types/plays";
 
 import styles from "./PlayerHomePage.module.css";
+
+const MAX_EVIDENCE_FILE_SIZE_MB = 10;
+const MAX_EVIDENCE_FILE_SIZE_BYTES = MAX_EVIDENCE_FILE_SIZE_MB * 1024 * 1024;
+const ALLOWED_EVIDENCE_FILE_TYPES = ["image/", "video/"];
 
 export default function PlayerHomePage() {
   const [games, setGames] = useState<Game[]>([]);
@@ -37,6 +42,7 @@ export default function PlayerHomePage() {
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState(false);
   const [evidenceText, setEvidenceText] = useState("");
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
+  const [evidencePreviewUrl, setEvidencePreviewUrl] = useState("");
   const [isSubmittingEvidence, setIsSubmittingEvidence] = useState(false);
 
   async function loadData() {
@@ -90,6 +96,24 @@ export default function PlayerHomePage() {
     return plays.filter((play) => play.game === selectedGameId);
   }, [plays, selectedGameId]);
 
+  const gameEvidences = useMemo(() => {
+    const playIds = new Set(gamePlays.map((play) => play.id));
+
+    return evidences.filter((evidence) => playIds.has(evidence.play));
+  }, [evidences, gamePlays]);
+
+  useEffect(() => {
+    if (!evidenceFile || !evidenceFile.type.startsWith("image/")) {
+      setEvidencePreviewUrl("");
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(evidenceFile);
+    setEvidencePreviewUrl(previewUrl);
+
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [evidenceFile]);
+
   function getEvidenceByPlay(playId: number) {
     return evidences.find((evidence) => evidence.play === playId);
   }
@@ -112,6 +136,16 @@ export default function PlayerHomePage() {
     return labels[status] ?? status;
   }
 
+  function getEvidenceStatusClass(status?: string) {
+    const classes: Record<string, string> = {
+      PENDING: styles.evidencePending,
+      APPROVED: styles.evidenceApproved,
+      REJECTED: styles.evidenceRejected,
+    };
+
+    return status ? classes[status] ?? "" : styles.evidenceMissing;
+  }
+
   const openRounds = gameRounds.filter((round) => round.status === "OPEN");
   const scheduledRounds = gameRounds.filter(
     (round) => round.status === "SCHEDULED"
@@ -127,6 +161,10 @@ export default function PlayerHomePage() {
 
   function formatDate(value: string) {
     return new Date(`${value}T00:00:00`).toLocaleDateString("pt-BR");
+  }
+
+  function formatDateTime(value: string) {
+    return new Date(value).toLocaleString("pt-BR");
   }
 
   function getStatusLabel(status: string) {
@@ -210,6 +248,7 @@ export default function PlayerHomePage() {
     setSelectedPlay(play);
     setEvidenceText("");
     setEvidenceFile(null);
+    setEvidencePreviewUrl("");
     setErrorMessage("");
     setFeedbackMessage("");
     setIsEvidenceModalOpen(true);
@@ -223,7 +262,56 @@ export default function PlayerHomePage() {
     setSelectedPlay(null);
     setEvidenceText("");
     setEvidenceFile(null);
+    setEvidencePreviewUrl("");
     setIsEvidenceModalOpen(false);
+  }
+
+  function getEvidenceSubmissionError(error: unknown) {
+    if (error instanceof AxiosError) {
+      const responseData = error.response?.data as
+        | { detail?: string; play?: string[]; file?: string[]; text?: string[] }
+        | undefined;
+
+      return (
+        responseData?.detail ||
+        responseData?.play?.[0] ||
+        responseData?.file?.[0] ||
+        responseData?.text?.[0] ||
+        "Não foi possível enviar a evidência."
+      );
+    }
+
+    return "Não foi possível enviar a evidência.";
+  }
+
+  function handleEvidenceFileChange(file: File | null) {
+    setErrorMessage("");
+
+    if (!file) {
+      setEvidenceFile(null);
+      return true;
+    }
+
+    const isAllowedType = ALLOWED_EVIDENCE_FILE_TYPES.some((typePrefix) =>
+      file.type.startsWith(typePrefix)
+    );
+
+    if (!isAllowedType) {
+      setEvidenceFile(null);
+      setErrorMessage("Envie uma imagem ou vídeo como evidência.");
+      return false;
+    }
+
+    if (file.size > MAX_EVIDENCE_FILE_SIZE_BYTES) {
+      setEvidenceFile(null);
+      setErrorMessage(
+        `O arquivo deve ter no máximo ${MAX_EVIDENCE_FILE_SIZE_MB} MB.`
+      );
+      return false;
+    }
+
+    setEvidenceFile(file);
+    return true;
   }
 
   async function handleSubmitEvidence() {
@@ -252,10 +340,11 @@ export default function PlayerHomePage() {
       setSelectedPlay(null);
       setEvidenceText("");
       setEvidenceFile(null);
+      setEvidencePreviewUrl("");
       setIsEvidenceModalOpen(false);
-      setFeedbackMessage("Evidência enviada com sucesso.");
-    } catch {
-      setErrorMessage("Não foi possível enviar a evidência.");
+      setFeedbackMessage("Evidência enviada com sucesso. Aguarde a revisão.");
+    } catch (error) {
+      setErrorMessage(getEvidenceSubmissionError(error));
     } finally {
       setIsSubmittingEvidence(false);
     }
@@ -388,7 +477,13 @@ export default function PlayerHomePage() {
                                 {play.card_title}
                               </span>
                               <span>Pontos: {play.total_points}</span>
-                              <span>{getEvidenceStatusLabel(evidence?.status)}</span>
+                              <span
+                                className={`${styles.evidenceBadge} ${getEvidenceStatusClass(
+                                  evidence?.status
+                                )}`}
+                              >
+                                {getEvidenceStatusLabel(evidence?.status)}
+                              </span>
 
                               {!evidence && (
                                 <button
@@ -455,10 +550,16 @@ export default function PlayerHomePage() {
                           <span>Rodada: dia {play.round_day}</span>
                           <span>Pontos: {play.total_points}</span>
                           <span>Status da jogada: {play.status}</span>
-                          <span>
-                            Evidência:{" "}
-                            {evidence ? evidence.status : "Ainda não enviada"}
+                          <span
+                            className={`${styles.evidenceBadge} ${getEvidenceStatusClass(
+                              evidence?.status
+                            )}`}
+                          >
+                            Evidência: {getEvidenceStatusLabel(evidence?.status)}
                           </span>
+                          {evidence && (
+                            <span>Enviada em: {formatDateTime(evidence.created_at)}</span>
+                          )}
                         </div>
 
                         {!evidence && (
@@ -483,6 +584,40 @@ export default function PlayerHomePage() {
                       </article>
                     );
                   })}
+                </div>
+              )}
+            </section>
+
+            <section className={styles.playsSection}>
+              <h2>Histórico de evidências</h2>
+
+              {gameEvidences.length === 0 ? (
+                <div className={styles.message}>
+                  Nenhuma evidência enviada neste jogo.
+                </div>
+              ) : (
+                <div className={styles.evidenceHistory}>
+                  {gameEvidences.map((evidence) => (
+                    <article className={styles.evidenceHistoryItem} key={evidence.id}>
+                      <div>
+                        <strong>{evidence.card_title}</strong>
+                        <span>
+                          {evidence.card_suit_symbol} {evidence.card_value} • Dia{" "}
+                          {evidence.round_day}
+                        </span>
+                      </div>
+
+                      <span
+                        className={`${styles.evidenceBadge} ${getEvidenceStatusClass(
+                          evidence.status
+                        )}`}
+                      >
+                        {getEvidenceStatusLabel(evidence.status)}
+                      </span>
+
+                      <small>{formatDateTime(evidence.created_at)}</small>
+                    </article>
+                  ))}
                 </div>
               )}
             </section>
@@ -604,11 +739,31 @@ export default function PlayerHomePage() {
                 id="evidenceFile"
                 type="file"
                 accept="image/*,video/*"
-                onChange={(event) =>
-                  setEvidenceFile(event.target.files?.[0] ?? null)
-                }
+                onChange={(event) => {
+                  const file = event.target.files?.[0] ?? null;
+                  const isValidFile = handleEvidenceFileChange(file);
+
+                  if (!isValidFile) {
+                    event.currentTarget.value = "";
+                  }
+                }}
               />
+              <small>
+                Imagens ou vídeos de até {MAX_EVIDENCE_FILE_SIZE_MB} MB.
+              </small>
+              {evidenceFile && (
+                <span className={styles.selectedFile}>
+                  Arquivo selecionado: {evidenceFile.name}
+                </span>
+              )}
             </div>
+
+            {evidencePreviewUrl && (
+              <div className={styles.imagePreview}>
+                <span>Preview da imagem</span>
+                <img src={evidencePreviewUrl} alt="Preview da evidência" />
+              </div>
+            )}
 
             {errorMessage && <div className={styles.error}>{errorMessage}</div>}
 

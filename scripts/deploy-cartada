@@ -12,7 +12,7 @@ BRANCH="main"
 BACKEND_SERVICE="cartada-viva-backend"
 FRONTEND_SERVICE="cartada-viva-frontend"
 
-SERVER_IP="IP_DA_VPS"
+SERVER_IP="${SERVER_IP:-191.252.218.62}"
 DJANGO_SETTINGS_MODULE_VALUE="config.settings"
 
 BACKEND_HEALTH_URL="http://127.0.0.1:8000/django-admin/"
@@ -20,6 +20,7 @@ FRONTEND_HEALTH_URL="http://127.0.0.1:3000/login"
 PUBLIC_FRONTEND_URL="http://${SERVER_IP}/login"
 PUBLIC_ADMIN_URL="http://${SERVER_IP}/admin/dashboard"
 PUBLIC_DJANGO_ADMIN_URL="http://${SERVER_IP}/django-admin/"
+PUBLIC_API_URL="http://${SERVER_IP}/api/v1/"
 
 log() {
   echo "[DEPLOY] $1"
@@ -89,8 +90,7 @@ git clean -fd \
   -e backend/staticfiles \
   -e frontend/.env.production \
   -e frontend/.env.local \
-  -e frontend/node_modules \
-  -e frontend/.next
+  -e frontend/node_modules
 
 echo "=========================================="
 log "Validando backend"
@@ -171,6 +171,9 @@ else
   npm install
 fi
 
+log "Limpando build anterior do Next.js..."
+rm -rf .next
+
 log "Gerando build do Next.js..."
 npm run build
 
@@ -234,6 +237,11 @@ echo "=========================================="
 if [ "$SERVER_IP" != "IP_DA_VPS" ]; then
   if ! curl -fsI "$PUBLIC_FRONTEND_URL" > /dev/null; then
     fail "Frontend público não respondeu em $PUBLIC_FRONTEND_URL"
+  fi
+
+  if ! curl -fsI "$PUBLIC_API_URL" > /dev/null; then
+    echo "[AVISO] /api/v1/ não respondeu com HEAD."
+    echo "[AVISO] Isso pode ser normal se não existir endpoint raiz na API."
   fi
 else
   echo "[AVISO] SERVER_IP ainda está como IP_DA_VPS. Ajuste o script para testar URL pública."

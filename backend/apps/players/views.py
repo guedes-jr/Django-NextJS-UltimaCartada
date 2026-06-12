@@ -31,7 +31,22 @@ class PlayerProfileViewSet(ModelViewSet):
         )
 
     def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem criar jogadores.")
+
+        serializer.save()
+
+    def perform_update(self, serializer):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem editar jogadores.")
+
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if self.request.user.role != UserRole.ADMIN:
+            raise PermissionDenied("Apenas administradores podem excluir jogadores.")
+
+        instance.delete()
 
     @action(detail=True, methods=["post"], url_path="reset-password")
     def reset_password(self, request, pk=None):

@@ -12,6 +12,27 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Dados demo
+
+Após aplicar as migrations, crie ou atualize dados de demonstração com:
+
+```bash
+cd backend
+source .venv/bin/activate
+python manage.py seed_demo
+```
+
+Usuários criados/atualizados:
+
+```txt
+Admin:  admin.demo / Cartada@123
+Player: player.demo / Cartada@123
+```
+
+O comando também cria/atualiza naipes, cartas, horários de rodadas, um grupo demo,
+um jogo demo ativo e as rodadas correspondentes. Ele pode ser executado mais de
+uma vez sem duplicar os dados principais.
+
 ## Frontend
 
 ```bash

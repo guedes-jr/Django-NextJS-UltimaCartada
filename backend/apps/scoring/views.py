@@ -73,11 +73,18 @@ class PlayerPerformanceView(APIView):
             id=game_id,
         )
 
-        if request.user.role != UserRole.ADMIN and request.user.id != player_id:
-            return Response(
-                {"detail": "Você não tem acesso ao desempenho deste jogador."},
-                status=403,
-            )
+        if request.user.role != UserRole.ADMIN:
+            if request.user.id != player_id:
+                return Response(
+                    {"detail": "Você não tem acesso ao desempenho deste jogador."},
+                    status=403,
+                )
+
+            if not game.group.players.filter(user=request.user).exists():
+                return Response(
+                    {"detail": "Você não tem acesso a este jogo."},
+                    status=403,
+                )
 
         player = (
             get_object_or_404(User, id=player_id)

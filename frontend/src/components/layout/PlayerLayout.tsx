@@ -60,12 +60,17 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <button
           className={styles.menuButton}
           type="button"
+          aria-expanded={isMenuOpen}
+          aria-controls="player-navigation"
           onClick={() => setIsMenuOpen((current) => !current)}
         >
-          Menu
+          {isMenuOpen ? "Fechar menu" : "Menu"}
         </button>
 
-        <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
+        <nav
+          className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
+          id="player-navigation"
+        >
           {menuItems.map((item) => (
             <Link
               key={item.href}
