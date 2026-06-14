@@ -69,7 +69,7 @@ export default function AdminGamesPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   function openCreateModal() {
@@ -187,7 +187,7 @@ export default function AdminGamesPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <div>

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import api_view, permission_classes
+from apps.accounts.models import User
 from apps.accounts.models import UserRole
 from apps.accounts.serializers import (
     AdminPlayerCreateSerializer,
@@ -11,6 +12,7 @@ from apps.accounts.serializers import (
     UserSerializer,
     ChangePasswordSerializer,
     CurrentUserSerializer,
+    UserSummarySerializer,
 )
 
 
@@ -30,7 +32,7 @@ class AdminPlayerCreateView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             return Response(
                 {"detail": "Apenas administradores podem criar jogadores."},
                 status=status.HTTP_403_FORBIDDEN,
@@ -48,6 +50,25 @@ class AdminPlayerCreateView(APIView):
             UserSerializer(user).data,
             status=status.HTTP_201_CREATED,
         )
+
+
+class GameMediatorListView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        if not request.user.is_admin_user:
+            return Response(
+                {"detail": "Apenas administradores podem listar mediadores."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        queryset = User.objects.filter(
+            role=UserRole.GAME_MEDIATOR,
+            is_active=True,
+        ).order_by("first_name", "username")
+        serializer = UserSummarySerializer(queryset, many=True)
+
+        return Response(serializer.data)
 
 
 @api_view(["POST"])

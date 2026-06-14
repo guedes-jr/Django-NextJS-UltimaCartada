@@ -5,13 +5,16 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Modal } from "@/components/ui/Modal";
+import { getGameMediators } from "@/services/accountService";
 import {
   addPlayerToGroup,
   createGroup,
   getGroups,
   removePlayerFromGroup,
+  setGroupMediators,
 } from "@/services/groupService";
 import { getPlayers } from "@/services/playerService";
+import { UserSummary } from "@/types/accounts";
 import { CreateGroupPayload, PlayerGroup } from "@/types/groups";
 import { PlayerProfile } from "@/types/players";
 
@@ -21,6 +24,7 @@ const INITIAL_FORM: CreateGroupPayload = {
   name: "",
   description: "",
   player_ids: [],
+  mediator_ids: [],
   max_players: 10,
   is_active: true,
 };
@@ -30,22 +34,27 @@ type PlayerGroupWithPlayers = PlayerGroup & {
   player_ids?: number[];
   players_names?: string[];
   players_count?: number;
+  mediators?: UserSummary[];
 };
 
 export default function AdminGroupsPage() {
   const [groups, setGroups] = useState<PlayerGroup[]>([]);
   const [players, setPlayers] = useState<PlayerProfile[]>([]);
+  const [mediators, setMediators] = useState<UserSummary[]>([]);
   const [form, setForm] = useState<CreateGroupPayload>(INITIAL_FORM);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlayersModalOpen, setIsPlayersModalOpen] = useState(false);
+  const [isMediatorsModalOpen, setIsMediatorsModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUpdatingGroupPlayers, setIsUpdatingGroupPlayers] = useState(false);
+  const [isUpdatingGroupMediators, setIsUpdatingGroupMediators] = useState(false);
 
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | "">("");
+  const [selectedMediatorIds, setSelectedMediatorIds] = useState<number[]>([]);
 
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,13 +64,15 @@ export default function AdminGroupsPage() {
       setIsLoading(true);
       setErrorMessage("");
 
-      const [groupsData, playersData] = await Promise.all([
+      const [groupsData, playersData, mediatorsData] = await Promise.all([
         getGroups(),
         getPlayers(),
+        getGameMediators(),
       ]);
 
       setGroups(groupsData);
       setPlayers(playersData);
+      setMediators(mediatorsData);
     } catch {
       setErrorMessage("Não foi possível carregar os grupos.");
     } finally {
@@ -70,7 +81,7 @@ export default function AdminGroupsPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const selectedGroup = useMemo(() => {
@@ -124,6 +135,35 @@ export default function AdminGroupsPage() {
     );
   }
 
+  function getUserName(user: UserSummary) {
+    return (
+      user.full_name ||
+      `${user.first_name || ""} ${user.last_name || ""}`.trim() ||
+      user.username
+    );
+  }
+
+  function toggleMediator(mediatorId: number) {
+    setForm((current) => {
+      const alreadySelected = current.mediator_ids.includes(mediatorId);
+
+      return {
+        ...current,
+        mediator_ids: alreadySelected
+          ? current.mediator_ids.filter((id) => id !== mediatorId)
+          : [...current.mediator_ids, mediatorId],
+      };
+    });
+  }
+
+  function toggleSelectedMediator(mediatorId: number) {
+    setSelectedMediatorIds((current) =>
+      current.includes(mediatorId)
+        ? current.filter((id) => id !== mediatorId)
+        : [...current, mediatorId]
+    );
+  }
+
   function getGroupPlayersNames(group: PlayerGroup) {
     const normalizedGroup = group as PlayerGroupWithPlayers;
 
@@ -166,7 +206,10 @@ export default function AdminGroupsPage() {
     setErrorMessage("");
   }
 
-  function updateField(field: keyof CreateGroupPayload, value: string | number | boolean) {
+  function updateField(
+    field: keyof CreateGroupPayload,
+    value: string | number | boolean
+  ) {
     setForm((current) => ({
       ...current,
       [field]: value,
@@ -226,6 +269,53 @@ export default function AdminGroupsPage() {
     setSelectedPlayerId("");
     setErrorMessage("");
     setIsPlayersModalOpen(false);
+  }
+
+  function openMediatorsModal(groupId: number) {
+    const group = groups.find((item) => item.id === groupId);
+
+    setSelectedGroupId(groupId);
+    setSelectedMediatorIds(
+      group?.mediators?.map((mediator) => mediator.id) ?? []
+    );
+    setFeedbackMessage("");
+    setErrorMessage("");
+    setIsMediatorsModalOpen(true);
+  }
+
+  function closeMediatorsModal() {
+    if (isUpdatingGroupMediators) {
+      return;
+    }
+
+    setSelectedGroupId(null);
+    setSelectedMediatorIds([]);
+    setErrorMessage("");
+    setIsMediatorsModalOpen(false);
+  }
+
+  async function handleSaveMediators() {
+    if (!selectedGroupId) {
+      return;
+    }
+
+    try {
+      setIsUpdatingGroupMediators(true);
+      setFeedbackMessage("");
+      setErrorMessage("");
+
+      const response = await setGroupMediators(selectedGroupId, {
+        mediator_ids: selectedMediatorIds,
+      });
+
+      setFeedbackMessage(response.detail);
+      await loadData();
+      setIsMediatorsModalOpen(false);
+    } catch {
+      setErrorMessage("Não foi possível atualizar os mediadores do grupo.");
+    } finally {
+      setIsUpdatingGroupMediators(false);
+    }
   }
 
   async function handleAddPlayerToGroup() {
@@ -300,7 +390,10 @@ export default function AdminGroupsPage() {
           <div className={styles.success}>{feedbackMessage}</div>
         )}
 
-        {!isModalOpen && !isPlayersModalOpen && errorMessage && (
+        {!isModalOpen &&
+          !isPlayersModalOpen &&
+          !isMediatorsModalOpen &&
+          errorMessage && (
           <div className={styles.error}>{errorMessage}</div>
         )}
 
@@ -323,6 +416,7 @@ export default function AdminGroupsPage() {
                     <th>Grupo</th>
                     <th>Jogadores</th>
                     <th>Participantes</th>
+                    <th>Mediadores</th>
                     <th>Limite</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -361,6 +455,20 @@ export default function AdminGroupsPage() {
                           </div>
                         </td>
 
+                        <td>
+                          <div className={styles.groupPlayers}>
+                            {group.mediators?.length > 0 ? (
+                              group.mediators.map((mediator) => (
+                                <span key={mediator.id}>
+                                  {getUserName(mediator)}
+                                </span>
+                              ))
+                            ) : (
+                              <span>Nenhum mediador</span>
+                            )}
+                          </div>
+                        </td>
+
                         <td>{group.max_players}</td>
 
                         <td>
@@ -383,6 +491,14 @@ export default function AdminGroupsPage() {
                               onClick={() => openPlayersModal(group.id)}
                             >
                               Gerenciar jogadores
+                            </button>
+
+                            <button
+                              className={styles.secondaryButton}
+                              type="button"
+                              onClick={() => openMediatorsModal(group.id)}
+                            >
+                              Mediadores
                             </button>
                           </div>
                         </td>
@@ -452,6 +568,30 @@ export default function AdminGroupsPage() {
                       />
 
                       {getPlayerName(player)}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className={styles.field}>
+              <label>Mediadores do grupo</label>
+
+              {mediators.length === 0 ? (
+                <div className={styles.message}>
+                  Nenhum mediador cadastrado ainda.
+                </div>
+              ) : (
+                <div className={styles.playersBox}>
+                  {mediators.map((mediator) => (
+                    <label className={styles.checkboxItem} key={mediator.id}>
+                      <input
+                        type="checkbox"
+                        checked={form.mediator_ids.includes(mediator.id)}
+                        onChange={() => toggleMediator(mediator.id)}
+                      />
+
+                      {getUserName(mediator)}
                     </label>
                   ))}
                 </div>
@@ -546,6 +686,47 @@ export default function AdminGroupsPage() {
                 );
               })}
             </div>
+          </div>
+        </Modal>
+
+        <Modal
+          title="Mediadores do grupo"
+          isOpen={isMediatorsModalOpen}
+          onClose={closeMediatorsModal}
+        >
+          <div className={styles.form}>
+            {isMediatorsModalOpen && errorMessage && (
+              <div className={styles.error}>{errorMessage}</div>
+            )}
+
+            {mediators.length === 0 ? (
+              <div className={styles.message}>
+                Nenhum usuário mediador cadastrado.
+              </div>
+            ) : (
+              <div className={styles.playersBox}>
+                {mediators.map((mediator) => (
+                  <label className={styles.checkboxItem} key={mediator.id}>
+                    <input
+                      type="checkbox"
+                      checked={selectedMediatorIds.includes(mediator.id)}
+                      onChange={() => toggleSelectedMediator(mediator.id)}
+                    />
+
+                    {getUserName(mediator)}
+                  </label>
+                ))}
+              </div>
+            )}
+
+            <button
+              className={styles.button}
+              type="button"
+              onClick={handleSaveMediators}
+              disabled={isUpdatingGroupMediators}
+            >
+              {isUpdatingGroupMediators ? "Salvando..." : "Salvar mediadores"}
+            </button>
           </div>
         </Modal>
       </AdminLayout>

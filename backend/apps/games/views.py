@@ -16,36 +16,41 @@ class GameViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
-        queryset = Game.objects.select_related("group", "created_by").order_by(
-            "-start_date", "name"
+        queryset = (
+            Game.objects.select_related("group", "created_by")
+            .prefetch_related("group__mediators")
+            .order_by("-start_date", "name")
         )
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return queryset
+
+        if user.is_game_mediator:
+            return queryset.filter(group__mediators=user).distinct()
 
         return queryset.filter(group__players__user=user).distinct()
 
     def perform_create(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem criar jogos.")
 
         serializer.save(created_by=self.request.user)
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem editar jogos.")
 
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem excluir jogos.")
 
         instance.delete()
 
     @action(detail=True, methods=["post"], url_path="toggle-active")
     def toggle_active(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             raise PermissionDenied(
                 "Apenas administradores podem ativar ou desativar jogos."
             )

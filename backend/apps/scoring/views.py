@@ -22,7 +22,7 @@ class GameRankingView(APIView):
             id=game_id,
         )
 
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user and not request.user.is_game_mediator:
             if not game.group.players.filter(user=request.user).exists():
                 return Response(
                     {"detail": "Você não tem acesso a este jogo."},
@@ -35,6 +35,14 @@ class GameRankingView(APIView):
                     status=403,
                 )
 
+        if request.user.is_game_mediator and not game.group.mediators.filter(
+            id=request.user.id
+        ).exists():
+            return Response(
+                {"detail": "Você não tem acesso a este jogo."},
+                status=403,
+            )
+
         service = RankingService()
         ranking = service.get_game_ranking(game)
 
@@ -46,16 +54,35 @@ class GameSummaryView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, game_id: int):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
+            if request.user.is_game_mediator:
+                game = get_object_or_404(
+                    Game.objects.select_related("group"),
+                    id=game_id,
+                )
+
+                if not game.group.mediators.filter(id=request.user.id).exists():
+                    return Response(
+                        {"detail": "Você não tem acesso a este jogo."},
+                        status=403,
+                    )
+            else:
+                return Response(
+                    {"detail": "Apenas administradores podem ver o resumo do jogo."},
+                    status=403,
+                )
+
+        if request.user.is_admin_user:
+            game = get_object_or_404(
+                Game.objects.select_related("group"),
+                id=game_id,
+            )
+
+        if not request.user.is_admin_user and not request.user.is_game_mediator:
             return Response(
                 {"detail": "Apenas administradores podem ver o resumo do jogo."},
                 status=403,
             )
-
-        game = get_object_or_404(
-            Game.objects.select_related("group"),
-            id=game_id,
-        )
 
         service = GameSummaryService()
         summary = service.get_summary(game)
@@ -73,7 +100,20 @@ class PlayerPerformanceView(APIView):
             id=game_id,
         )
 
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
+            if request.user.is_game_mediator:
+                if not game.group.mediators.filter(id=request.user.id).exists():
+                    return Response(
+                        {"detail": "Você não tem acesso a este jogo."},
+                        status=403,
+                    )
+            elif request.user.id != player_id:
+                return Response(
+                    {"detail": "Você não tem acesso ao desempenho deste jogador."},
+                    status=403,
+                )
+
+        if request.user.role == UserRole.PLAYER:
             if request.user.id != player_id:
                 return Response(
                     {"detail": "Você não tem acesso ao desempenho deste jogador."},
@@ -88,7 +128,7 @@ class PlayerPerformanceView(APIView):
 
         player = (
             get_object_or_404(User, id=player_id)
-            if request.user.role == UserRole.ADMIN
+            if request.user.is_game_staff
             else request.user
         )
 

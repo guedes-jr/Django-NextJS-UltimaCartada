@@ -46,7 +46,7 @@ export default function AdminRoundsPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const filteredRounds = useMemo(() => {
@@ -102,7 +102,7 @@ export default function AdminRoundsPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <div>

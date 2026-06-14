@@ -41,7 +41,7 @@ export default function AdminEvidencesPage() {
   }
 
   useEffect(() => {
-    loadEvidences();
+    void Promise.resolve().then(loadEvidences);
   }, []);
 
   function openModal(evidence: Evidence) {
@@ -135,7 +135,7 @@ export default function AdminEvidencesPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <h1>Evidências</h1>

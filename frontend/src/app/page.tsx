@@ -275,13 +275,13 @@ export default function HomePage() {
         <div className={styles.aboutImageWrap}>
           <img
             className={styles.aboutImage}
-            src="/landing/magaly.jpg"
+            src="/landing/magaly-about.jpg"
             alt="Magaly Abreu"
           />
 
           <div className={styles.aboutQuote}>
             <span>”</span>
-            <p>"Cuidar de você é o investimento mais nobre."</p>
+            <p>&ldquo;Cuidar de você é o investimento mais nobre.&rdquo;</p>
           </div>
         </div>
 
@@ -417,6 +417,29 @@ export default function HomePage() {
             </article>
           ))}
         </div>
+
+        <div className={styles.benefitFeature}>
+          <img
+            src="/landing/magaly-hydration.jpg"
+            alt="Magaly Abreu segurando uma ampulheta"
+          />
+
+          <div>
+            <span>Rotina possível</span>
+            <h3>Bem-estar também é escolher o momento certo.</h3>
+            <p>
+              A consultoria une escuta, organização e produtos adequados para
+              transformar pequenas escolhas diárias em um cuidado mais
+              consistente.
+            </p>
+
+            <ul>
+              <li>Plano alinhado ao seu objetivo</li>
+              <li>Acompanhamento para manter constância</li>
+              <li>Produtos escolhidos com orientação</li>
+            </ul>
+          </div>
+        </div>
       </section>
 
       <section className={styles.steps}>
@@ -506,6 +529,13 @@ export default function HomePage() {
             Vamos conversar e montar o plano ideal para sua nova fase de
             bem-estar.
           </p>
+        </div>
+
+        <div className={styles.finalCtaMedia}>
+          <img
+            src="/landing/magaly-consultoria.jpg"
+            alt="Magaly Abreu em atendimento de consultoria"
+          />
         </div>
 
         <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">

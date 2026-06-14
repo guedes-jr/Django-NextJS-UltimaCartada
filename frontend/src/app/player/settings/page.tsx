@@ -17,7 +17,7 @@ export default function PlayerSettingsPage() {
 
         <section className={styles.card}>
           <h2>Alterar senha</h2>
-          <ChangePasswordForm />
+          <ChangePasswordForm redirectAfterSuccess="/player/home" />
         </section>
       </PlayerLayout>
     </ProtectedRoute>

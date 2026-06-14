@@ -3,6 +3,7 @@ import {
   ChangePasswordPayload,
   ChangePasswordResponse,
   CurrentUserResponse,
+  UserSummary,
 } from "@/types/accounts";
 
 export async function getCurrentUser(): Promise<CurrentUserResponse> {
@@ -18,6 +19,12 @@ export async function changePassword(
     "/accounts/change-password/",
     payload
   );
+
+  return response.data;
+}
+
+export async function getGameMediators(): Promise<UserSummary[]> {
+  const response = await api.get<UserSummary[]>("/accounts/admin/mediators/");
 
   return response.data;
 }

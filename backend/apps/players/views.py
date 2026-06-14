@@ -19,10 +19,18 @@ class PlayerProfileViewSet(ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return (
                 PlayerProfile.objects.select_related("user", "created_by")
                 .all()
+                .order_by("user__first_name", "user__username")
+            )
+
+        if user.is_game_mediator:
+            return (
+                PlayerProfile.objects.select_related("user", "created_by")
+                .filter(groups__mediators=user)
+                .distinct()
                 .order_by("user__first_name", "user__username")
             )
 
@@ -31,26 +39,26 @@ class PlayerProfileViewSet(ModelViewSet):
         )
 
     def perform_create(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem criar jogadores.")
 
         serializer.save()
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem editar jogadores.")
 
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem excluir jogadores.")
 
         instance.delete()
 
     @action(detail=True, methods=["post"], url_path="reset-password")
     def reset_password(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             raise PermissionDenied(
                 "Apenas administradores podem redefinir senha de jogadores."
             )
@@ -73,7 +81,7 @@ class PlayerProfileViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="toggle-active")
     def toggle_active(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             raise PermissionDenied(
                 "Apenas administradores podem ativar ou desativar jogadores."
             )

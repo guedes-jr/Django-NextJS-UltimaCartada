@@ -31,7 +31,7 @@ class CardViewSet(ModelViewSet):
 
         user = self.request.user
 
-        if user.role != UserRole.ADMIN:
+        if not user.is_admin_user:
             queryset = queryset.filter(is_active=True)
 
         suit_id = self.request.query_params.get("suit")
@@ -50,7 +50,7 @@ class CardViewSet(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             from rest_framework.exceptions import PermissionDenied
 
             raise PermissionDenied("Apenas administradores podem criar cartas.")
@@ -58,7 +58,7 @@ class CardViewSet(ModelViewSet):
         serializer.save()
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             from rest_framework.exceptions import PermissionDenied
 
             raise PermissionDenied("Apenas administradores podem editar cartas.")
@@ -66,7 +66,7 @@ class CardViewSet(ModelViewSet):
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             from rest_framework.exceptions import PermissionDenied
 
             raise PermissionDenied("Apenas administradores podem excluir cartas.")

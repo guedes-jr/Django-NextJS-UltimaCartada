@@ -1,7 +1,10 @@
 from rest_framework import serializers
 
+from apps.accounts.models import User
+from apps.accounts.models import UserRole
 from apps.groups.models import PlayerGroup
 from apps.players.serializers import PlayerProfileSerializer
+from apps.accounts.serializers import UserSerializer
 
 
 class PlayerGroupSerializer(serializers.ModelSerializer):
@@ -10,6 +13,14 @@ class PlayerGroupSerializer(serializers.ModelSerializer):
         many=True,
         queryset=PlayerGroup.players.rel.model.objects.all(),
         source="players",
+        write_only=True,
+        required=False,
+    )
+    mediators = UserSerializer(many=True, read_only=True)
+    mediator_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=User.objects.filter(role=UserRole.GAME_MEDIATOR),
+        source="mediators",
         write_only=True,
         required=False,
     )
@@ -23,6 +34,8 @@ class PlayerGroupSerializer(serializers.ModelSerializer):
             "description",
             "players",
             "player_ids",
+            "mediators",
+            "mediator_ids",
             "max_players",
             "total_players",
             "is_active",

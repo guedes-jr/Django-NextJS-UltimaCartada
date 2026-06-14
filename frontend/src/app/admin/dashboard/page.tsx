@@ -43,7 +43,7 @@ export default function AdminDashboardPage() {
   }
 
   useEffect(() => {
-    loadDashboard();
+    void Promise.resolve().then(loadDashboard);
   }, []);
 
   const totalPoints = useMemo(() => {
@@ -83,7 +83,7 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <h1>Dashboard</h1>

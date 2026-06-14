@@ -88,11 +88,11 @@ backend/staticfiles/
 media/
 staticfiles/
 
-uploads/
-reports/
-exports/
-tmp/
-temp/
+/uploads/
+/reports/
+/exports/
+/tmp/
+/temp/
 
 */migrations/__pycache__/
 

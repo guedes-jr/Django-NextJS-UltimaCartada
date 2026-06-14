@@ -1,4 +1,9 @@
-export type UserRole = "ADMIN" | "PLAYER";
+export type UserRole =
+  | "DEV"
+  | "GENERAL_ADMIN"
+  | "GAME_MEDIATOR"
+  | "ADMIN"
+  | "PLAYER";
 
 export type AuthUser = {
   id: number;
@@ -54,4 +59,12 @@ export function logout(): void {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("user");
+}
+
+export function isAdminRole(role?: UserRole): boolean {
+  return role === "DEV" || role === "GENERAL_ADMIN" || role === "ADMIN";
+}
+
+export function isGameStaffRole(role?: UserRole): boolean {
+  return isAdminRole(role) || role === "GAME_MEDIATOR";
 }

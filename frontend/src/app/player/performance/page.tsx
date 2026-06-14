@@ -37,7 +37,7 @@ export default function PlayerPerformancePage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const totalPoints = useMemo(() => {

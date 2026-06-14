@@ -38,8 +38,11 @@ class RoundViewSet(ReadOnlyModelViewSet):
             .order_by("date", "schedule__order")
         )
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return queryset
+
+        if user.is_game_mediator:
+            return queryset.filter(game__group__mediators=user).distinct()
 
         return (
             queryset
@@ -49,7 +52,7 @@ class RoundViewSet(ReadOnlyModelViewSet):
 
     @action(detail=True, methods=["post"])
     def score(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_game_staff:
             return Response(
                 {"detail": "Apenas administradores podem pontuar rodadas."},
                 status=403,

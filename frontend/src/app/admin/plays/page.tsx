@@ -48,7 +48,7 @@ export default function AdminPlaysPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const filteredPlays = useMemo(() => {
@@ -115,7 +115,7 @@ export default function AdminPlaysPage() {
   }
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <h1>Jogadas</h1>

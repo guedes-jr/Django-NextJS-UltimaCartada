@@ -3,7 +3,8 @@ import {
   AddPlayerToGroupPayload,
   CreateGroupPayload,
   PlayerGroup,
-  GroupActionResponse
+  GroupActionResponse,
+  SetGroupMediatorsPayload,
 } from "@/types/groups";
 
 export async function getGroups(): Promise<PlayerGroup[]> {
@@ -36,6 +37,18 @@ export async function removePlayerFromGroup(
 ): Promise<GroupActionResponse> {
   const response = await api.post<GroupActionResponse>(
     `/groups/groups/${groupId}/remove-player/`,
+    payload
+  );
+
+  return response.data;
+}
+
+export async function setGroupMediators(
+  groupId: number,
+  payload: SetGroupMediatorsPayload
+): Promise<GroupActionResponse> {
+  const response = await api.post<GroupActionResponse>(
+    `/groups/groups/${groupId}/set-mediators/`,
     payload
   );
 

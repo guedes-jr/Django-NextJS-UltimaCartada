@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
+import { isGameStaffRole, UserRole } from "@/lib/auth";
 import styles from "./LoginPage.module.css";
 
 type LoginResponse = {
@@ -15,7 +16,7 @@ type LoginResponse = {
     first_name: string;
     last_name: string;
     full_name: string;
-    role: "ADMIN" | "PLAYER";
+    role: UserRole;
   };
 };
 
@@ -43,7 +44,7 @@ export default function LoginPage() {
       localStorage.setItem("refreshToken", response.data.refresh);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      if (response.data.user.role === "ADMIN") {
+      if (isGameStaffRole(response.data.user.role)) {
         router.push("/admin/dashboard");
         return;
       }

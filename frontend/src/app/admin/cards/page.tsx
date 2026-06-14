@@ -57,7 +57,7 @@ export default function AdminCardsPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   function openCreateModal() {

@@ -1,3 +1,5 @@
+import { UserSummary } from "./accounts";
+
 export type GameStatus = "DRAFT" | "ACTIVE" | "FINISHED" | "CANCELED";
 
 export type Game = {
@@ -6,6 +8,7 @@ export type Game = {
   description: string;
   group: number;
   group_name: string;
+  mediators: UserSummary[];
   start_date: string;
   end_date: string;
   total_rounds: number;

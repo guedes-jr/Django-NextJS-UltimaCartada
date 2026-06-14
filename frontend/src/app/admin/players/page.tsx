@@ -65,7 +65,7 @@ export default function AdminPlayersPage() {
   }
 
   useEffect(() => {
-    loadPlayers();
+    void Promise.resolve().then(loadPlayers);
   }, []);
 
   function formatPhone(value: string): string {

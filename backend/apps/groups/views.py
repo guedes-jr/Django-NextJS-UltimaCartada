@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from apps.accounts.models import UserRole
+from apps.accounts.models import User
 from apps.groups.models import PlayerGroup
 from apps.groups.serializers import PlayerGroupSerializer
 from apps.players.models import PlayerProfile
@@ -18,37 +19,44 @@ class PlayerGroupViewSet(ModelViewSet):
         user = self.request.user
 
         queryset = (
-            PlayerGroup.objects.prefetch_related("players", "players__user")
+            PlayerGroup.objects.prefetch_related(
+                "players",
+                "players__user",
+                "mediators",
+            )
             .select_related("created_by")
             .order_by("name")
         )
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return queryset
+
+        if user.is_game_mediator:
+            return queryset.filter(mediators=user).distinct()
 
         return queryset.filter(players__user=user).distinct()
 
     def perform_create(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem criar grupos.")
 
         serializer.save(created_by=self.request.user)
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem editar grupos.")
 
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem excluir grupos.")
 
         instance.delete()
 
     @action(detail=True, methods=["post"], url_path="add-player")
     def add_player(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             raise PermissionDenied(
                 "Apenas administradores podem adicionar jogadores ao grupo."
             )
@@ -82,7 +90,7 @@ class PlayerGroupViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="remove-player")
     def remove_player(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_admin_user:
             raise PermissionDenied(
                 "Apenas administradores podem remover jogadores do grupo."
             )
@@ -113,3 +121,35 @@ class PlayerGroupViewSet(ModelViewSet):
         group.players.remove(player)
 
         return Response({"detail": "Jogador removido do grupo com sucesso."})
+
+    @action(detail=True, methods=["post"], url_path="set-mediators")
+    def set_mediators(self, request, pk=None):
+        if not request.user.is_admin_user:
+            raise PermissionDenied(
+                "Apenas administradores podem definir mediadores do grupo."
+            )
+
+        mediator_ids = request.data.get("mediator_ids", [])
+
+        if not isinstance(mediator_ids, list):
+            return Response(
+                {"detail": "Informe uma lista de mediadores."},
+                status=400,
+            )
+
+        mediators = User.objects.filter(
+            id__in=mediator_ids,
+            role=UserRole.GAME_MEDIATOR,
+            is_active=True,
+        )
+
+        if len(mediator_ids) != mediators.count():
+            return Response(
+                {"detail": "Um ou mais mediadores são inválidos."},
+                status=400,
+            )
+
+        group = self.get_object()
+        group.mediators.set(mediators)
+
+        return Response({"detail": "Mediadores atualizados com sucesso."})

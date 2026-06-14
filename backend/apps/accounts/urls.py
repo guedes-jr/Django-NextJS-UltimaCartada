@@ -4,6 +4,7 @@ from apps.accounts.views import (
     AdminPlayerCreateView,
     change_password,
     CustomTokenObtainPairView,
+    GameMediatorListView,
     MeView,
 )
 
@@ -16,6 +17,11 @@ urlpatterns = [
         "admin/players/create/",
         AdminPlayerCreateView.as_view(),
         name="admin_player_create",
+    ),
+    path(
+        "admin/mediators/",
+        GameMediatorListView.as_view(),
+        name="admin_mediator_list",
     ),
     path("change-password/", change_password, name="change-password"),
 ]

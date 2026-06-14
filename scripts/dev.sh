@@ -76,6 +76,14 @@ stream_with_prefix() {
   done
 }
 
+ensure_frontend_port_available() {
+  if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:3000 -sTCP:LISTEN >/dev/null 2>&1; then
+    echo -e "${RED}[ERROR] Port 3000 is already in use. Stop the running frontend before starting a new dev session.${RESET}"
+    echo -e "${YELLOW}[HINT] Run: lsof -ti:3000 | xargs kill -9${RESET}"
+    exit 1
+  fi
+}
+
 # ─── Start backend ────────────────────────────────────────────────────────────
 start_backend() {
   echo -e "${BACKEND_PREFIX} Starting Django dev server on http://localhost:8000 ..."
@@ -90,6 +98,7 @@ start_backend() {
 start_frontend() {
   echo -e "${FRONTEND_PREFIX} Starting Next.js dev server on http://localhost:3000 ..."
   cd "$FRONTEND_DIR"
+  ensure_frontend_port_available
   if [ -d ".next" ]; then
     echo -e "${FRONTEND_PREFIX} Clearing stale Next.js cache..."
     rm -rf .next
@@ -105,6 +114,7 @@ main() {
   echo -e "${SYSTEM_PREFIX} Press Ctrl+C to stop all services.\n"
 
   check_deps
+  ensure_frontend_port_available
   start_backend
   sleep 1
   start_frontend

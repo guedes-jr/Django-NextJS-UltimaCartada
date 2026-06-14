@@ -11,3 +11,13 @@ export type ChangePasswordResponse = {
 };
 
 export type CurrentUserResponse = AuthUser;
+
+export type UserSummary = {
+  id: number;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  role: string;
+};

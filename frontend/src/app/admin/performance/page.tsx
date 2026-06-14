@@ -63,7 +63,7 @@ export default function AdminPerformancePage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const filteredPlays = useMemo(() => {
@@ -182,7 +182,7 @@ export default function AdminPerformancePage() {
   ).length;
 
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <h1>Desempenho</h1>
@@ -341,4 +341,3 @@ export default function AdminPerformancePage() {
     </ProtectedRoute>
   );
 }
-

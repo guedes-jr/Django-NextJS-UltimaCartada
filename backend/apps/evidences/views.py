@@ -25,8 +25,11 @@ class EvidenceViewSet(ModelViewSet):
             "reviewed_by",
         ).order_by("-created_at")
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return queryset
+
+        if user.is_game_mediator:
+            return queryset.filter(play__group__mediators=user).distinct()
 
         return queryset.filter(play__player=user)
 
@@ -46,20 +49,20 @@ class EvidenceViewSet(ModelViewSet):
         serializer.save()
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_game_staff:
             raise PermissionDenied("Apenas administradores podem editar evidências.")
 
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem excluir evidências.")
 
         instance.delete()
 
     @action(detail=True, methods=["post"], url_path="approve")
     def approve(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_game_staff:
             raise PermissionDenied("Apenas administradores podem aprovar evidências.")
 
         evidence = self.get_object()
@@ -76,7 +79,7 @@ class EvidenceViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="reject")
     def reject(self, request, pk=None):
-        if request.user.role != UserRole.ADMIN:
+        if not request.user.is_game_staff:
             raise PermissionDenied("Apenas administradores podem rejeitar evidências.")
 
         evidence = self.get_object()

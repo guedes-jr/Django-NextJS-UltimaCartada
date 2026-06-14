@@ -1,12 +1,21 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { getCurrentUser, changePassword } from "@/services/accountService";
 import { saveAuthUser } from "@/lib/auth";
 import styles from "./ChangePasswordForm.module.css";
 
-export function ChangePasswordForm() {
+type ChangePasswordFormProps = {
+  redirectAfterSuccess?: string;
+};
+
+export function ChangePasswordForm({
+  redirectAfterSuccess,
+}: ChangePasswordFormProps) {
+  const router = useRouter();
+
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,6 +60,10 @@ export function ChangePasswordForm() {
       setNewPassword("");
       setConfirmPassword("");
       setSuccessMessage(response.detail);
+
+      if (redirectAfterSuccess) {
+        router.replace(redirectAfterSuccess);
+      }
     } catch {
       setErrorMessage("Não foi possível alterar a senha. Confira a senha atual.");
     } finally {

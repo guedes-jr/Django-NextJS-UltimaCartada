@@ -36,6 +36,14 @@ stream_with_prefix() {
   "$@" 2>&1 | while IFS= read -r line; do echo -e "${prefix} ${line}"; done
 }
 
+ensure_frontend_port_available() {
+  if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:3000 -sTCP:LISTEN >/dev/null 2>&1; then
+    echo -e "${YELLOW}[ERROR] Port 3000 is already in use. Stop the running frontend before starting debug mode.${RESET}"
+    echo -e "${YELLOW}[HINT] Run: lsof -ti:3000 | xargs kill -9${RESET}"
+    exit 1
+  fi
+}
+
 # ─── Backend: debugpy on port 5678 ────────────────────────────────────────────
 start_backend_debug() {
   echo -e "${BACKEND_PREFIX} Starting Django with debugpy on port 5678..."
@@ -55,6 +63,7 @@ start_frontend_debug() {
   echo -e "${FRONTEND_PREFIX} Starting Next.js with Node inspector on port 9229..."
   echo -e "${FRONTEND_PREFIX} Open Chrome → chrome://inspect (localhost:9229)"
   cd "$FRONTEND_DIR"
+  ensure_frontend_port_available
   if [ -d ".next" ]; then
     echo -e "${FRONTEND_PREFIX} Clearing stale Next.js cache..."
     rm -rf .next
@@ -69,6 +78,7 @@ echo -e "${SYSTEM_PREFIX} Backend debugpy → localhost:5678"
 echo -e "${SYSTEM_PREFIX} Frontend inspector → localhost:9229"
 echo -e "${SYSTEM_PREFIX} Press Ctrl+C to stop.\n"
 
+ensure_frontend_port_available
 start_backend_debug
 sleep 2
 start_frontend_debug

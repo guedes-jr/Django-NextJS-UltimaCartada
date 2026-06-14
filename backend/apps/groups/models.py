@@ -12,6 +12,11 @@ class PlayerGroup(models.Model):
         related_name="groups",
         blank=True,
     )
+    mediators = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="mediated_groups",
+        blank=True,
+    )
     max_players = models.PositiveSmallIntegerField(default=10)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey(

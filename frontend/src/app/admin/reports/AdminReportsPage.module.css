@@ -1,0 +1,298 @@
+.header {
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #302457;
+  font-size: 30px;
+}
+
+.header p {
+  max-width: 760px;
+  margin: 8px 0 0;
+  color: #777184;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.filters,
+.card,
+.summaryItem,
+.tableCard {
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.3fr) repeat(4, minmax(150px, 1fr)) auto;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border-radius: 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field label {
+  color: #302457;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #ded7f4;
+  border-radius: 12px;
+  background: #fbfaff;
+  color: #302457;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #5b3cc4;
+  box-shadow: 0 0 0 3px rgba(91, 60, 196, 0.12);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.summaryItem {
+  min-width: 0;
+  padding: 18px;
+  border-radius: 18px;
+}
+
+.summaryItem span {
+  display: block;
+  color: #777184;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.summaryItem strong {
+  display: block;
+  margin-top: 8px;
+  color: #302457;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.exportGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.card {
+  min-width: 0;
+  padding: 22px;
+  border-radius: 22px;
+}
+
+.card h2,
+.tableHeader h2 {
+  margin: 0;
+  color: #302457;
+  font-size: 20px;
+}
+
+.card p {
+  min-height: 64px;
+  margin: 10px 0 18px;
+  color: #777184;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.button,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.button {
+  width: 100%;
+  background: #5b3cc4;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  padding: 0 16px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+  white-space: nowrap;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.previewGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.tableCard {
+  min-width: 0;
+  padding: 24px;
+  border-radius: 24px;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.tableHeader span {
+  color: #777184;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: 12px;
+  border-bottom: 1px solid #ece6ff;
+  color: #777184;
+  font-size: 13px;
+  text-align: left;
+}
+
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f1edff;
+  color: #302457;
+  font-size: 14px;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
+.positionBadge,
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.positionBadge {
+  min-width: 34px;
+  height: 34px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.statusBadge {
+  min-height: 28px;
+  padding: 0 10px;
+  background: #f4f0ff;
+  color: #5b3cc4;
+}
+
+.message {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f4f0ff;
+  color: #302457;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.error {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #fff1f1;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 1180px) {
+  .filters,
+  .exportGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .secondaryButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .filters,
+  .summaryGrid,
+  .exportGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .card,
+  .tableCard {
+    padding: 18px;
+  }
+
+  .card p {
+    min-height: 0;
+  }
+
+  .tableHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}

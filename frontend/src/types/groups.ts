@@ -1,10 +1,12 @@
 import { PlayerProfile } from "./players";
+import { UserSummary } from "./accounts";
 
 export type PlayerGroup = {
   id: number;
   name: string;
   description: string;
   players: PlayerProfile[];
+  mediators: UserSummary[];
   max_players: number;
   total_players: number;
   is_active: boolean;
@@ -17,6 +19,7 @@ export type CreateGroupPayload = {
   name: string;
   description: string;
   player_ids: number[];
+  mediator_ids: number[];
   max_players: number;
   is_active: boolean;
 };
@@ -40,4 +43,8 @@ export type AddPlayerToGroupPayload = {
 
 export type GroupActionResponse = {
   detail: string;
+};
+
+export type SetGroupMediatorsPayload = {
+  mediator_ids: number[];
 };

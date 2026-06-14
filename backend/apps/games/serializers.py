@@ -9,6 +9,7 @@ class GameSerializer(serializers.ModelSerializer):
         read_only=True,
     )
     rounds_count = serializers.SerializerMethodField()
+    mediators = serializers.SerializerMethodField()
 
     class Meta:
         model = Game
@@ -18,6 +19,7 @@ class GameSerializer(serializers.ModelSerializer):
             "description",
             "group",
             "group_name",
+            "mediators",
             "start_date",
             "end_date",
             "duration_days",
@@ -44,3 +46,13 @@ class GameSerializer(serializers.ModelSerializer):
 
     def get_rounds_count(self, obj):
         return obj.rounds.count()
+
+    def get_mediators(self, obj):
+        return [
+            {
+                "id": mediator.id,
+                "username": mediator.username,
+                "full_name": mediator.get_full_name(),
+            }
+            for mediator in obj.group.mediators.all()
+        ]

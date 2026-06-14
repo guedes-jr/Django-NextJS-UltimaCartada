@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
-import { getAuthUser } from "@/lib/auth";
+import { getAuthUser, isAdminRole, UserRole } from "@/lib/auth";
 
 import styles from "./AdminLayout.module.css";
 
@@ -13,50 +13,61 @@ type AdminLayoutProps = {
   children: ReactNode;
 };
 
-const menuItems = [
+const menuItems: Array<{ label: string; href: string; roles: UserRole[] }> = [
   {
     label: "Dashboard",
     href: "/admin/dashboard",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Jogadores",
     href: "/admin/players",
+    roles: ["DEV", "GENERAL_ADMIN", "ADMIN"],
   },
   {
     label: "Grupos",
     href: "/admin/groups",
+    roles: ["DEV", "GENERAL_ADMIN", "ADMIN"],
   },
   {
     label: "Jogos",
     href: "/admin/games",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Rodadas",
     href: "/admin/rounds",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Cartas",
     href: "/admin/cards",
+    roles: ["DEV", "GENERAL_ADMIN", "ADMIN"],
   },
   {
     label: "Jogadas",
     href: "/admin/plays",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Evidências",
     href: "/admin/evidences",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Desempenho",
     href: "/admin/performance",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Relatórios",
     href: "/admin/reports",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
     label: "Configurações",
     href: "/admin/settings",
+    roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
 ];
 
@@ -73,6 +84,18 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     setIsMenuOpen(false);
   }
 
+  const visibleMenuItems = menuItems.filter((item) => {
+    if (!user?.role) {
+      return false;
+    }
+
+    if (item.roles.includes(user.role)) {
+      return true;
+    }
+
+    return item.roles.includes("ADMIN") && isAdminRole(user.role);
+  });
+
   return (
     <div className={styles.page}>
       <aside
@@ -87,7 +110,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         <nav className={styles.nav} id="admin-navigation">
-          {menuItems.map((item) => (
+          {visibleMenuItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}

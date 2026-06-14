@@ -15,6 +15,8 @@ from apps.rounds.services.round_generation_service import RoundGenerationService
 
 
 DEMO_ADMIN_USERNAME = "admin.demo"
+DEMO_DEV_USERNAME = "dev.demo"
+DEMO_MEDIATOR_USERNAME = "mediator.demo"
 DEMO_PLAYER_USERNAME = "player.demo"
 DEMO_PASSWORD = "Cartada@123"
 DEMO_GROUP_NAME = "Grupo Demo"
@@ -30,19 +32,42 @@ class Command(BaseCommand):
         call_command("seed_game_cards")
         call_command("seed_round_schedules")
 
+        self._seed_dev()
         admin = self._seed_admin()
+        mediator = self._seed_mediator(admin)
         player = self._seed_player(admin)
-        group = self._seed_group(admin, player)
+        group = self._seed_group(admin, player, mediator)
         game = self._seed_game(admin, group)
         rounds_count = RoundGenerationService().generate_for_game(game)
 
         self.stdout.write("")
         self.stdout.write(self.style.SUCCESS("[SEED] Dados demo prontos."))
+        self.stdout.write(f"Dev:    {DEMO_DEV_USERNAME} / {DEMO_PASSWORD}")
         self.stdout.write(f"Admin:  {DEMO_ADMIN_USERNAME} / {DEMO_PASSWORD}")
+        self.stdout.write(f"Mediador: {DEMO_MEDIATOR_USERNAME} / {DEMO_PASSWORD}")
         self.stdout.write(f"Player: {DEMO_PLAYER_USERNAME} / {DEMO_PASSWORD}")
         self.stdout.write(f"Grupo:  {group.name}")
         self.stdout.write(f"Jogo:   {game.name}")
         self.stdout.write(f"Rodadas novas geradas: {rounds_count}")
+
+    def _seed_dev(self):
+        dev, _ = User.objects.update_or_create(
+            username=DEMO_DEV_USERNAME,
+            defaults={
+                "email": "dev.demo@cartadaviva.local",
+                "first_name": "Dev",
+                "last_name": "Demo",
+                "role": UserRole.DEV,
+                "is_staff": True,
+                "is_superuser": True,
+                "is_active": True,
+                "must_change_password": False,
+            },
+        )
+        dev.set_password(DEMO_PASSWORD)
+        dev.save()
+
+        return dev
 
     def _seed_admin(self):
         admin, _ = User.objects.update_or_create(
@@ -51,9 +76,9 @@ class Command(BaseCommand):
                 "email": "admin.demo@cartadaviva.local",
                 "first_name": "Admin",
                 "last_name": "Demo",
-                "role": UserRole.ADMIN,
+                "role": UserRole.GENERAL_ADMIN,
                 "is_staff": True,
-                "is_superuser": True,
+                "is_superuser": False,
                 "is_active": True,
                 "must_change_password": False,
             },
@@ -62,6 +87,25 @@ class Command(BaseCommand):
         admin.save()
 
         return admin
+
+    def _seed_mediator(self, admin):
+        mediator, _ = User.objects.update_or_create(
+            username=DEMO_MEDIATOR_USERNAME,
+            defaults={
+                "email": "mediator.demo@cartadaviva.local",
+                "first_name": "Mediador",
+                "last_name": "Demo",
+                "role": UserRole.GAME_MEDIATOR,
+                "is_staff": True,
+                "is_superuser": False,
+                "is_active": True,
+                "must_change_password": False,
+            },
+        )
+        mediator.set_password(DEMO_PASSWORD)
+        mediator.save()
+
+        return mediator
 
     def _seed_player(self, admin):
         player, _ = User.objects.update_or_create(
@@ -93,7 +137,7 @@ class Command(BaseCommand):
 
         return player
 
-    def _seed_group(self, admin, player):
+    def _seed_group(self, admin, player, mediator):
         group, _ = PlayerGroup.objects.update_or_create(
             name=DEMO_GROUP_NAME,
             defaults={
@@ -104,6 +148,7 @@ class Command(BaseCommand):
             },
         )
         group.players.add(player.player_profile)
+        group.mediators.add(mediator)
 
         return group
 

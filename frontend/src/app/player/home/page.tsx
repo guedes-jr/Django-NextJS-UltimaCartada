@@ -1,7 +1,7 @@
 "use client";
 
 import { AxiosError } from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { PlayerLayout } from "@/components/layout/PlayerLayout";
@@ -44,6 +44,7 @@ export default function PlayerHomePage() {
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [evidencePreviewUrl, setEvidencePreviewUrl] = useState("");
   const [isSubmittingEvidence, setIsSubmittingEvidence] = useState(false);
+  const evidencePreviewUrlRef = useRef("");
 
   async function loadData() {
     try {
@@ -75,7 +76,7 @@ export default function PlayerHomePage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   const selectedGame = games.find((game) => game.id === selectedGameId);
@@ -103,16 +104,21 @@ export default function PlayerHomePage() {
   }, [evidences, gamePlays]);
 
   useEffect(() => {
-    if (!evidenceFile || !evidenceFile.type.startsWith("image/")) {
-      setEvidencePreviewUrl("");
-      return;
+    return () => {
+      if (evidencePreviewUrlRef.current) {
+        URL.revokeObjectURL(evidencePreviewUrlRef.current);
+      }
+    };
+  }, []);
+
+  function updateEvidencePreviewUrl(nextUrl: string) {
+    if (evidencePreviewUrlRef.current) {
+      URL.revokeObjectURL(evidencePreviewUrlRef.current);
     }
 
-    const previewUrl = URL.createObjectURL(evidenceFile);
-    setEvidencePreviewUrl(previewUrl);
-
-    return () => URL.revokeObjectURL(previewUrl);
-  }, [evidenceFile]);
+    evidencePreviewUrlRef.current = nextUrl;
+    setEvidencePreviewUrl(nextUrl);
+  }
 
   function getEvidenceByPlay(playId: number) {
     return evidences.find((evidence) => evidence.play === playId);
@@ -248,7 +254,7 @@ export default function PlayerHomePage() {
     setSelectedPlay(play);
     setEvidenceText("");
     setEvidenceFile(null);
-    setEvidencePreviewUrl("");
+    updateEvidencePreviewUrl("");
     setErrorMessage("");
     setFeedbackMessage("");
     setIsEvidenceModalOpen(true);
@@ -262,7 +268,7 @@ export default function PlayerHomePage() {
     setSelectedPlay(null);
     setEvidenceText("");
     setEvidenceFile(null);
-    setEvidencePreviewUrl("");
+    updateEvidencePreviewUrl("");
     setIsEvidenceModalOpen(false);
   }
 
@@ -289,6 +295,7 @@ export default function PlayerHomePage() {
 
     if (!file) {
       setEvidenceFile(null);
+      updateEvidencePreviewUrl("");
       return true;
     }
 
@@ -298,12 +305,14 @@ export default function PlayerHomePage() {
 
     if (!isAllowedType) {
       setEvidenceFile(null);
+      updateEvidencePreviewUrl("");
       setErrorMessage("Envie uma imagem ou vídeo como evidência.");
       return false;
     }
 
     if (file.size > MAX_EVIDENCE_FILE_SIZE_BYTES) {
       setEvidenceFile(null);
+      updateEvidencePreviewUrl("");
       setErrorMessage(
         `O arquivo deve ter no máximo ${MAX_EVIDENCE_FILE_SIZE_MB} MB.`
       );
@@ -311,6 +320,9 @@ export default function PlayerHomePage() {
     }
 
     setEvidenceFile(file);
+    updateEvidencePreviewUrl(
+      file.type.startsWith("image/") ? URL.createObjectURL(file) : ""
+    );
     return true;
   }
 
@@ -340,7 +352,7 @@ export default function PlayerHomePage() {
       setSelectedPlay(null);
       setEvidenceText("");
       setEvidenceFile(null);
-      setEvidencePreviewUrl("");
+      updateEvidencePreviewUrl("");
       setIsEvidenceModalOpen(false);
       setFeedbackMessage("Evidência enviada com sucesso. Aguarde a revisão.");
     } catch (error) {

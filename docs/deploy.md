@@ -267,7 +267,7 @@ gunicorn config.wsgi:application --bind 127.0.0.1:8000
 Em outro terminal:
 
 ```bash
-curl -I http://127.0.0.1:8000/admin/
+curl -I http://127.0.0.1:8000/django-admin/
 ```
 
 Se responder, pare o Gunicorn com:
@@ -450,8 +450,8 @@ server {
         alias /var/www/cartada-viva/backend/media/;
     }
 
-    location /admin/ {
-        proxy_pass http://127.0.0.1:8000/admin/;
+    location /django-admin/ {
+        proxy_pass http://127.0.0.1:8000/django-admin/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -517,7 +517,7 @@ Teste:
 [ ] Login abre em /login
 [ ] Admin Next abre em /admin/dashboard
 [ ] Área do jogador abre em /player/home
-[ ] Django Admin abre em /admin/
+[ ] Django Admin abre em /django-admin/
 [ ] API responde em /api/v1/
 [ ] Login JWT funciona
 [ ] Criação de jogadores funciona
@@ -570,7 +570,7 @@ sudo ss -tulpn | grep -E '8000|3000|80|443'
 ## Testar backend localmente
 
 ```bash
-curl -I http://127.0.0.1:8000/admin/
+curl -I http://127.0.0.1:8000/django-admin/
 curl -I http://127.0.0.1:8000/api/v1/accounts/me/
 ```
 
@@ -585,7 +585,8 @@ curl -I http://127.0.0.1:3000
 ```bash
 curl -I http://IP_DA_VPS/
 curl -I http://IP_DA_VPS/login
-curl -I http://IP_DA_VPS/admin/
+curl -I http://IP_DA_VPS/admin/dashboard
+curl -I http://IP_DA_VPS/django-admin/
 curl -I http://IP_DA_VPS/api/v1/
 ```
 
@@ -669,14 +670,14 @@ cartada-viva-frontend.service
 
 ## 2. Django Admin e rota Next `/admin`
 
-Existe uma possível confusão:
+Evite esta confusão:
 
 ```txt
-/admin/              -> Django Admin
+/django-admin/       -> Django Admin
 /admin/dashboard     -> Next.js Admin
 ```
 
-Com a configuração atual do Nginx:
+Esta configuração antiga do Nginx quebra o painel do Next:
 
 ```nginx
 location /admin/ {
@@ -690,17 +691,7 @@ Tudo que começar com `/admin/` vai para o Django, então **isso quebra o painel
 /admin/dashboard
 ```
 
-Para este projeto, recomendo uma destas opções:
-
-## Opção recomendada: mover Django Admin para `/django-admin/`
-
-No `backend/config/urls.py`, altere:
-
-```python
-path("admin/", admin.site.urls),
-```
-
-para:
+Neste projeto, o backend já deve usar:
 
 ```python
 path("django-admin/", admin.site.urls),

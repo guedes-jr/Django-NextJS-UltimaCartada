@@ -24,8 +24,11 @@ class PlayViewSet(ModelViewSet):
             "card__suit",
         ).order_by("-played_at", "-created_at")
 
-        if user.role == UserRole.ADMIN:
+        if user.is_admin_user:
             return queryset
+
+        if user.is_game_mediator:
+            return queryset.filter(group__mediators=user).distinct()
 
         return queryset.filter(player=user)
 
@@ -45,13 +48,13 @@ class PlayViewSet(ModelViewSet):
         serializer.instance = play
 
     def perform_update(self, serializer):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_game_staff:
             raise PermissionDenied("Apenas administradores podem editar jogadas.")
 
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.role != UserRole.ADMIN:
+        if not self.request.user.is_admin_user:
             raise PermissionDenied("Apenas administradores podem excluir jogadas.")
 
         instance.delete()

@@ -8,7 +8,7 @@ import styles from "./AdminSettingsPage.module.css";
 
 export default function AdminSettingsPage() {
   return (
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
+    <ProtectedRoute allowedRoles={["ADMIN", "GAME_MEDIATOR"]}>
       <AdminLayout>
         <div className={styles.header}>
           <h1>Configurações</h1>

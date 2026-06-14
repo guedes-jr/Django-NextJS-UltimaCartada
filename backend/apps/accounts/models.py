@@ -3,6 +3,9 @@ from django.db import models
 
 
 class UserRole(models.TextChoices):
+    DEV = "DEV", "Desenvolvedor"
+    GENERAL_ADMIN = "GENERAL_ADMIN", "Administrador geral"
+    GAME_MEDIATOR = "GAME_MEDIATOR", "Mediador de jogos"
     ADMIN = "ADMIN", "Administrador"
     PLAYER = "PLAYER", "Jogador"
 
@@ -38,15 +41,33 @@ class User(AbstractUser):
 
     @property
     def is_admin_user(self) -> bool:
-        return self.role == UserRole.ADMIN
+        return self.role in {
+            UserRole.DEV,
+            UserRole.GENERAL_ADMIN,
+            UserRole.ADMIN,
+        }
+
+    @property
+    def is_dev_user(self) -> bool:
+        return self.role == UserRole.DEV
+
+    @property
+    def is_game_mediator(self) -> bool:
+        return self.role == UserRole.GAME_MEDIATOR
+
+    @property
+    def is_game_staff(self) -> bool:
+        return self.is_admin_user or self.is_game_mediator
 
     @property
     def is_player(self) -> bool:
         return self.role == UserRole.PLAYER
 
     def save(self, *args, **kwargs):
-        if self.is_superuser or self.is_staff:
-            self.role = UserRole.ADMIN
+        if self.is_superuser:
+            self.role = UserRole.DEV
+        elif self.is_staff and self.role == UserRole.PLAYER:
+            self.role = UserRole.GENERAL_ADMIN
 
         super().save(*args, **kwargs)
 

@@ -3,7 +3,15 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/services/accountService";
-import { AuthUser, isAuthenticated, UserRole, saveAuthUser, logout } from "@/lib/auth";
+import {
+  AuthUser,
+  isAdminRole,
+  isAuthenticated,
+  isGameStaffRole,
+  UserRole,
+  saveAuthUser,
+  logout,
+} from "@/lib/auth";
 
 type ProtectedRouteProps = {
   children: ReactNode;
@@ -24,6 +32,14 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
     hasChecked.current = true;
 
+    function isAllowedRole(role: UserRole) {
+      if (allowedRoles.includes(role)) {
+        return true;
+      }
+
+      return allowedRoles.includes("ADMIN") && isAdminRole(role);
+    }
+
     async function checkAccess() {
       if (!isAuthenticated()) {
         router.replace("/login");
@@ -41,17 +57,20 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
         if (currentUser.must_change_password && !isSettingsPage) {
           const settingsPath =
-            currentUser.role === "ADMIN" ? "/admin/settings" : "/player/settings";
+            isGameStaffRole(currentUser.role)
+              ? "/admin/settings"
+              : "/player/settings";
 
           router.replace(settingsPath);
           return;
         }
 
-        if (!allowedRoles.includes(currentUser.role)) {
-          const fallbackPath =
-            currentUser.role === "ADMIN" ? "/admin/dashboard" : "/player/home";
-
-          router.replace(fallbackPath);
+        if (!isAllowedRole(currentUser.role)) {
+          router.replace(
+            isGameStaffRole(currentUser.role)
+              ? "/admin/dashboard"
+              : "/player/home"
+          );
           return;
         }
 
