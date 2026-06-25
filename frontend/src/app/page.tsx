@@ -1,568 +1,354 @@
+import {
+  CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  Camera,
+  Gift,
+  HeartPulse,
+  Leaf,
+  MessageCircle,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
 
+import VideoTestimonials from "@/components/landing/VideoTestimonials";
 import styles from "./page.module.css";
 
+export const metadata: Metadata = {
+  title: "Magaly Abreu | Mentoria A Última Cartada",
+  description:
+    "Mentoria para mulheres que querem construir uma nova relação com o corpo, a comida e a rotina.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
+};
+
 const WHATSAPP_URL =
-  "https://wa.me/5584994124712?text=Olá,%20Magaly!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20Herbalife.";
+  "https://wa.me/5584994124712?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20A%20Última%20Cartada.";
 
-const CATALOG_URL = "https://catalogoherbalife.com.br";
+const attempts = [
+  "Dietas",
+  "Jejum",
+  "Reeducação alimentar",
+  "Academia",
+  "Desafios",
+  "Aplicativos",
+  "Protocolos",
+  "Métodos milagrosos",
+];
 
-const categories = [
+const restartSignals = [
+  "Sabe o que deveria fazer, mas não consegue manter.",
+  "Começa motivada e perde o ritmo.",
+  "Desconta emoções na comida.",
+  "Sente culpa depois de comer.",
+  "Coloca todos em primeiro lugar e esquece de si.",
+  "Deseja emagrecer, mas principalmente deseja voltar a confiar em si.",
+];
+
+const pillars = [
   {
-    number: "01",
-    title: "Shakes & Refeições",
+    icon: HeartPulse,
+    title: "Mentalidade e emoções",
     description:
-      "Substitutas práticas, ricas em proteína e nutrientes essenciais.",
+      "Identificar crenças, padrões e gatilhos que sabotam seus resultados.",
   },
   {
-    number: "02",
-    title: "Chás & Hidratação",
+    icon: Leaf,
+    title: "Alimentação estratégica",
     description:
-      "Chá termogênico, aloe e bebidas para energia ao longo do dia.",
+      "Escolhas inteligentes para a vida real, sem radicalismo e sem terrorismo nutricional.",
   },
   {
-    number: "03",
-    title: "Suplementos",
+    icon: CalendarDays,
+    title: "Rotina e hábitos",
     description:
-      "Vitaminas, ômega e fórmulas para imunidade e performance.",
+      "Pequenas ações diárias que geram grandes transformações ao longo do tempo.",
   },
   {
-    number: "04",
-    title: "Esporte & Performance",
+    icon: Sparkles,
+    title: "Identidade e manutenção",
     description:
-      "Linha 24 para treinos, recuperação e ganho de massa.",
+      "O objetivo não é apenas emagrecer. É tornar-se a mulher que mantém os resultados.",
   },
 ];
 
-const products = [
+const videoTestimonials = [
   {
-    tag: "Mais vendido",
-    title: "Shake Fórmula 1",
-    description:
-      "Refeição completa com 21 vitaminas e minerais. Sabores chocolate, baunilha, morango e cookies.",
-    page: "pág. 15",
-    image: "/landing/products/shake-formula-1.webp",
+    name: "Emanuel",
+    label: "Depoimento de Emanuel",
+    src: "/testimonials/emanuel.m4v",
+    type: "video/x-m4v",
+    poster: "/landing/professional/acauamedia-131.jpg",
   },
   {
-    tag: "Energia",
-    title: "Chá Termogênico",
-    description:
-      "Acelera o metabolismo, dá energia e ajuda na hidratação ao longo do dia.",
-    page: "pág. 23",
-    image: "/landing/products/cha-termogenico.webp",
+    name: "Erica Meirelles",
+    label: "Depoimento de Erica Meirelles",
+    src: "/testimonials/erica.m4v",
+    type: "video/x-m4v",
+    poster: "/landing/professional/acauamedia-114.jpg",
   },
-  {
-    tag: "Bem-estar",
-    title: "Aloe Concentrado",
-    description:
-      "Bebida à base de babosa para conforto digestivo e hidratação.",
-    page: "pág. 27",
-    image: "/landing/products/aloe-concentrado.webp",
-  },
-  {
-    tag: "Performance",
-    title: "Proteína PDM",
-    description:
-      "Reforço proteico para ganho de massa e saciedade entre refeições.",
-    page: "pág. 19",
-    image: "/landing/products/proteina-pdm.webp",
-  },
-  {
-    tag: "Equilíbrio",
-    title: "Fibra Ativa",
-    description:
-      "Apoia o funcionamento intestinal com fibras solúveis e insolúveis.",
-    page: "pág. 31",
-    image: "/landing/products/fibra-ativa.webp",
-  },
-  {
-    tag: "Esporte",
-    title: "Herbalife 24",
-    description:
-      "Linha completa para atletas: pré-treino, recuperação e hidratação.",
-    page: "pág. 49",
-    image: "/landing/products/herbalife-24.jpg",
-  },
-];
-
-const benefits = [
-  {
-    number: "01",
-    title: "Nutrição balanceada",
-    description: "Refeições com proteínas, vitaminas e minerais essenciais.",
-  },
-  {
-    number: "02",
-    title: "Mais energia",
-    description: "Mais disposição para atravessar a rotina com constância.",
-  },
-  {
-    number: "03",
-    title: "Resultados reais",
-    description: "Plano personalizado de acordo com suas metas e sua rotina.",
-  },
-  {
-    number: "04",
-    title: "Acompanhamento",
-    description: "Orientação próxima em cada etapa da sua jornada.",
-  },
-];
-
-const steps = [
-  {
-    number: "01",
-    title: "Fale comigo",
-    description: "Me chame no WhatsApp e conte quais são seus objetivos.",
-  },
-  {
-    number: "02",
-    title: "Plano personalizado",
-    description: "Monto uma sugestão com os produtos mais adequados para você.",
-  },
-  {
-    number: "03",
-    title: "Comece sua jornada",
-    description: "Receba os produtos e siga com acompanhamento contínuo.",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Ana Carolina",
-    role: "Empresária, 38",
-    text: "Perdi 8kg em 3 meses com leveza. A Magaly faz toda a diferença no acompanhamento.",
-    image: "/landing/avatar-ana.jpg",
-  },
-  {
-    name: "Roberto Silva",
-    role: "Engenheiro, 45",
-    text: "Mais disposição no trabalho e nos treinos. Os produtos viraram parte da minha rotina.",
-    image: "/landing/avatar-roberto.jpg",
-  },
-  {
-    name: "Juliana Mendes",
-    role: "Médica, 41",
-    text: "Atendimento humano, técnico e atencioso. Recomendo para quem quer se cuidar melhor.",
-    image: "/landing/avatar-juliana.jpg",
-  },
-  {
-    name: "Camila Rocha",
-    role: "Professora, 34",
-    text: "Consegui melhorar minha rotina com um plano simples e possível de seguir.",
-    image: "/landing/avatar-camila.jpg",
-  },
-];
-
-const faqs = [
-  "Os produtos Herbalife são seguros?",
-  "Como funciona o Shake Fórmula 1?",
-  "Quanto tempo leva para ver resultados?",
-  "Preciso de prescrição médica para usar?",
-  "Como faço para comprar e receber os produtos?",
-  "Tem desconto para compra recorrente?",
 ];
 
 export default function HomePage() {
   return (
-    <main className={styles.page}>
+    <main className={styles.page} id="top">
       <header className={styles.header}>
-        <a className={styles.brand} href="#home" aria-label="Magaly Abreu">
-          <div className={styles.logo}>M</div>
-
-          <div>
-            <strong>Magaly Abreu</strong>
-            <span>Bem-estar Premium</span>
-          </div>
+        <a className={styles.brand} href="#top" aria-label="Magaly Abreu">
+          <strong>Magaly Abreu</strong>
+          <span>Mentoria</span>
         </a>
 
-        <nav className={styles.nav}>
-          <a href="#about">Sobre</a>
-          <a href="#products">Produtos</a>
-          <a href="#benefits">Benefícios</a>
-          <a href="#testimonials">Depoimentos</a>
-          <a href="#faq">FAQ</a>
+        <nav className={styles.nav} aria-label="Navegação principal">
+          <a href="#sobre">Sobre</a>
+          <a href="#mentoria">Mentoria</a>
+          <a href="#herbalife">Herbalife</a>
+          <a href="#depoimentos">Depoimentos</a>
+          <a href="#contato">Contato</a>
         </nav>
 
-        <div className={styles.headerActions}>
-          <a
-            className={styles.headerButton}
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Consultoria
-          </a>
-
-          <Link className={styles.loginLink} href="/login">
-            Entrar
-          </Link>
-        </div>
+        <Link className={styles.loginLink} href="/login">
+          Entrar
+        </Link>
       </header>
 
-      <section className={styles.hero} id="home">
-        <div className={styles.heroContent}>
-          <span className={styles.eyebrow}>
-            Consultora Independente Herbalife
-          </span>
+      <section className={styles.hero} id="sobre">
+        <div className={styles.heroCopy}>
+          <h1>
+            A mente <em>muda,</em>
+            <br />o corpo flui.
+          </h1>
 
-          <h1>Saúde é a sua maior riqueza.</h1>
+          <p className={styles.heroSubtitle}>Mentoria A Última Cartada</p>
 
-          <p>
-            Sou Magaly Abreu, psicóloga e consultora de bem-estar. Transformo
-            sua rotina com nutrição inteligente, acompanhamento próximo e
-            produtos selecionados para quem busca viver com plenitude.
-          </p>
+          <div className={styles.heroBenefits}>
+            <article>
+              <CalendarDays aria-hidden="true" />
+              <div>
+                <strong>6 meses</strong>
+                <span>de acompanhamento completo</span>
+              </div>
+            </article>
 
-          <div className={styles.actions}>
-            <a
-              className={styles.primaryButton}
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Iniciar minha jornada
-            </a>
+            <article>
+              <Gift aria-hidden="true" />
+              <div>
+                <strong>Bônus exclusivo</strong>
+                <span>Game Cartada Viva: 21 dias de práticas diárias</span>
+              </div>
+            </article>
 
-            <a className={styles.secondaryButton} href="#products">
-              Ver catálogo
-            </a>
+            <article>
+              <Users aria-hidden="true" />
+              <div>
+                <strong>Para mulheres</strong>
+                <span>
+                  Que já tentaram várias dietas, mas ainda se sentem presas à
+                  ansiedade, à culpa e ao ciclo de recomeçar sempre.
+                </span>
+              </div>
+            </article>
           </div>
 
-          <div className={styles.stats}>
-            <div>
-              <strong>1.000+</strong>
-              <span>Clientes</span>
-            </div>
-
-            <div>
-              <strong>4 anos</strong>
-              <span>Consultoria</span>
-            </div>
-
-            <div>
-              <strong>98%</strong>
-              <span>Satisfação</span>
-            </div>
-          </div>
+          <a className={styles.primaryButton} href="#mentoria">
+            Quero conhecer a mentoria
+            <ChevronRight aria-hidden="true" />
+          </a>
         </div>
 
         <div className={styles.heroVisual}>
-          <div className={styles.premiumCard}>
-            <span>Selecionado por</span>
-            <strong>Profissionais de saúde</strong>
-          </div>
-
-          <img
-            className={styles.heroImage}
-            src="/landing/hero-magaly.jpg"
-            alt="Magaly Abreu"
-          />
-
-          <div className={styles.profileCard}>
-            <img src="/landing/magaly.jpg" alt="Magaly Abreu" />
-
-            <div>
-              <strong>Magaly Abreu</strong>
-              <span>Psicóloga e consultora Herbalife</span>
-            </div>
-          </div>
-
-          <blockquote>“Cuidar de você é o investimento mais nobre.”</blockquote>
+          <img src="/landing/professional/acauamedia-131.jpg" alt="Magaly Abreu" />
+          <blockquote>
+            <span>“</span>
+            O dia da vida começa com decisões como a sua escolha.
+          </blockquote>
         </div>
       </section>
 
-      <section className={styles.about} id="about">
-        <div className={styles.aboutImageWrap}>
-          <img
-            className={styles.aboutImage}
-            src="/landing/magaly-about.jpg"
-            alt="Magaly Abreu"
-          />
-
-          <div className={styles.aboutQuote}>
-            <span>”</span>
-            <p>&ldquo;Cuidar de você é o investimento mais nobre.&rdquo;</p>
-          </div>
-        </div>
-
-        <div className={styles.aboutContent}>
-          <span className={styles.aboutLabel}>Sobre Magaly</span>
-
-          <h2>Psicóloga, mãe e curadora de uma vida com mais leveza.</h2>
-
-          <p>
-            Como psicóloga, acompanho diariamente o quanto saúde mental e física
-            caminham juntas. Por isso me tornei consultora Herbalife — para
-            entregar não apenas produtos selecionados, mas um plano de bem-estar
-            à altura de quem prioriza a própria saúde como ativo de vida.
-          </p>
-
-          <div className={styles.aboutHighlights}>
-            <div className={styles.aboutHighlight}>
-              <span>♡</span>
-              <strong>Acompanhamento exclusivo</strong>
-            </div>
-
-            <div className={styles.aboutHighlight}>
-              <span>❤</span>
-              <strong>Saúde integral</strong>
-            </div>
-
-            <div className={styles.aboutHighlight}>
-              <span>♙</span>
-              <strong>Curadoria premium</strong>
-            </div>
-
-            <div className={styles.aboutHighlight}>
-              <span>✦</span>
-              <strong>1.000+ clientes</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span>Categorias</span>
-          <h2>
-            Curadoria completa
-            <br />
-            para a sua rotina.
-          </h2>
-          <p>
-            Quatro pilares cuidadosamente selecionados para sustentar uma vida
-            com mais energia, foco e equilíbrio.
-          </p>
-        </div>
-
-        <div className={styles.categoryGrid}>
-          {categories.map((category) => (
-            <article className={styles.categoryCard} key={category.title}>
-              <span>{category.number}</span>
-              <h3>{category.title}</h3>
-              <p>{category.description}</p>
-              <a href="#products">Explorar</a>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.section} id="products">
-        <div className={styles.sectionHeader}>
-          <span>Produtos em destaque</span>
-          <h2>
-            Selecionados
-            <br />
-            para sua rotina.
-          </h2>
-          <p>
-            Produtos pensados para apoiar diferentes momentos do seu dia, sempre
-            com orientação personalizada.
-          </p>
-        </div>
-
-        <div className={styles.productsTop}>
-          <a
-            className={styles.catalogButton}
-            href={CATALOG_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Catálogo completo
-          </a>
-        </div>
-
-        <div className={styles.productGrid}>
-          {products.map((product) => (
-            <article className={styles.productCard} key={product.title}>
-              <span>{product.tag}</span>
-
-              <div className={styles.productImage}>
-                <img src={product.image} alt={product.title} />
-              </div>
-
-              <h3>{product.title}</h3>
-
-              <p>{product.description}</p>
-
-              <a href={CATALOG_URL} target="_blank" rel="noreferrer">
-                Ver no catálogo
-                <small>{product.page}</small>
-              </a>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.benefits} id="benefits">
-        <div className={styles.sectionHeader}>
-          <span>Benefícios</span>
-          <h2>
-            Por que escolher Herbalife
-            <br />
-            com Magaly?
-          </h2>
-          <p>
-            Mais do que produtos: uma consultoria pensada para escolhas mais
-            conscientes e duradouras.
-          </p>
-        </div>
-
-        <div className={styles.benefitGrid}>
-          {benefits.map((benefit) => (
-            <article className={styles.benefitCard} key={benefit.title}>
-              <span>{benefit.number}</span>
-              <h3>{benefit.title}</h3>
-              <p>{benefit.description}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className={styles.benefitFeature}>
-          <img
-            src="/landing/magaly-hydration.jpg"
-            alt="Magaly Abreu segurando uma ampulheta"
-          />
-
-          <div>
-            <span>Rotina possível</span>
-            <h3>Bem-estar também é escolher o momento certo.</h3>
-            <p>
-              A consultoria une escuta, organização e produtos adequados para
-              transformar pequenas escolhas diárias em um cuidado mais
-              consistente.
-            </p>
-
-            <ul>
-              <li>Plano alinhado ao seu objetivo</li>
-              <li>Acompanhamento para manter constância</li>
-              <li>Produtos escolhidos com orientação</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.steps}>
-        <div className={styles.sectionHeader}>
-          <span>Como funciona</span>
-          <h2>Três passos para uma vida mais plena.</h2>
-        </div>
-
-        <div className={styles.stepsGrid}>
-          {steps.map((step) => (
-            <article className={styles.stepCard} key={step.title}>
-              <span>{step.number}</span>
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.testimonials} id="testimonials">
-        <div className={styles.sectionHeader}>
-          <span>Depoimentos</span>
-          <h2>Quem já vive essa jornada.</h2>
-        </div>
-
-        <div className={styles.testimonialGrid}>
-          {testimonials.map((testimonial) => (
-            <article className={styles.testimonialCard} key={testimonial.name}>
-              <img src={testimonial.image} alt={testimonial.name} />
-
-              <strong>{testimonial.name}</strong>
-              <span>{testimonial.role}</span>
-              <p>“{testimonial.text}”</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.faq} id="faq">
-        <div className={styles.sectionHeader}>
-          <span>Perguntas Frequentes</span>
-          <h2>
-            Tire suas dúvidas
-            <br />
-            antes de começar.
-          </h2>
-          <p>
-            Reuni as perguntas mais comuns para que você se sinta seguro em dar
-            o primeiro passo.
-          </p>
-        </div>
-
-        <div className={styles.faqGrid}>
-          <div className={styles.faqCta}>
-            <strong>Ainda tem dúvidas?</strong>
-            <p>Fale comigo pelo WhatsApp e receba uma orientação inicial.</p>
-
-            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-              Conversar agora
-            </a>
-          </div>
-
-          <div className={styles.questions}>
-            {faqs.map((faq) => (
-              <details key={faq}>
-                <summary>{faq}</summary>
-                <p>
-                  A resposta depende do seu objetivo, rotina e histórico. Por
-                  isso, o ideal é conversar comigo para uma orientação
-                  personalizada.
-                </p>
-              </details>
+      <section className={styles.problem}>
+        <div className={styles.problemLeft}>
+          <h2>Você já tentou de tudo?</h2>
+          <div className={styles.attemptList}>
+            {attempts.map((attempt) => (
+              <span key={attempt}>{attempt}</span>
             ))}
           </div>
         </div>
-      </section>
 
-      <section className={styles.finalCta}>
-        <div>
-          <span>Vamos conversar</span>
+        <div className={styles.problemDivider}>x</div>
+
+        <div className={styles.problemRight}>
           <h2>
-            Pronta para investir
+            E mesmo assim continua
             <br />
-            na sua maior riqueza?
+            voltando para o mesmo lugar?
           </h2>
+          <h3>Não porque lhe falta informação.</h3>
           <p>
-            Vamos conversar e montar o plano ideal para sua nova fase de
-            bem-estar.
+            Mas porque ninguém ensinou você a lidar com a ansiedade, os
+            gatilhos emocionais, a autossabotagem e os padrões que fazem você
+            abandonar o processo.
           </p>
         </div>
+      </section>
 
-        <div className={styles.finalCtaMedia}>
-          <img
-            src="/landing/magaly-consultoria.jpg"
-            alt="Magaly Abreu em atendimento de consultoria"
-          />
+      <section className={styles.restart}>
+        <div>
+          <h2>Para a mulher que está cansada de recomeçar.</h2>
+
+          <ul>
+            {restartSignals.map((signal) => (
+              <li key={signal}>{signal}</li>
+            ))}
+          </ul>
+
+          <p>A Última Cartada foi criada para ela.</p>
         </div>
 
-        <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-          WhatsApp (84) 99412-4712
-        </a>
+        <img
+          src="/landing/professional/acauamedia-126.jpg"
+          alt="Magaly Abreu segurando uma ampulheta"
+        />
+      </section>
+
+      <section className={styles.pillars}>
+        <h2>Uma nova identidade exige uma nova estrutura.</h2>
+
+        <div className={styles.pillarGrid}>
+          {pillars.map((pillar) => {
+            const Icon = pillar.icon;
+
+            return (
+              <article key={pillar.title}>
+                <Icon aria-hidden="true" />
+                <h3>{pillar.title}</h3>
+                <p>{pillar.description}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className={styles.programs} id="mentoria">
+        <h2>Você recebe dois programas complementares.</h2>
+
+        <div className={styles.programGrid}>
+          <article>
+            <Sparkles aria-hidden="true" />
+            <h3>Mentoria A Última Cartada</h3>
+            <p>6 meses de acompanhamento</p>
+            <ul>
+              <li>Desenvolvimento emocional</li>
+              <li>Construção de hábitos</li>
+              <li>Organização da rotina</li>
+              <li>Clareza alimentar</li>
+              <li>Exercícios práticos</li>
+              <li>Comunidade de apoio</li>
+            </ul>
+          </article>
+
+          <article>
+            <Gift aria-hidden="true" />
+            <span>Bônus exclusivo</span>
+            <h3>Game Cartada Viva</h3>
+            <p>21 dias de prática diária</p>
+            <strong>
+              Uma jornada prática com desafios, reflexões e pequenas ações para
+              fortalecer consistência.
+            </strong>
+          </article>
+        </div>
+      </section>
+
+      <section className={styles.herbalife} id="herbalife">
+        <div>
+          <span>Nutrição e rotina</span>
+          <h2>Herbalife como apoio para escolhas mais consistentes.</h2>
+          <p>
+            Além da mentoria, Magaly também orienta o uso de produtos Herbalife
+            como parte de uma rotina de cuidado possível: shakes, chás,
+            hidratação e suplementação escolhidos de acordo com objetivos,
+            hábitos e contexto individual.
+          </p>
+          <Link className={styles.secondaryButton} href="/public/herbilife">
+            Conhecer a página Herbalife
+            <ChevronRight aria-hidden="true" />
+          </Link>
+        </div>
+
+        <img
+          src="/landing/professional/acauamedia-114.jpg"
+          alt="Magaly Abreu em consultoria sobre bem-estar"
+        />
+      </section>
+
+      <section className={styles.testimonials} id="depoimentos">
+        <h2>Mulheres que decidiram parar de recomeçar.</h2>
+
+        <VideoTestimonials items={videoTestimonials} />
+      </section>
+
+      <section className={styles.finalCta} id="contato">
+        <img
+          src="/landing/professional/acauamedia-135.jpg"
+          alt="Magaly Abreu em atendimento"
+        />
+
+        <div>
+          <h2>Você não precisa começar mais uma segunda-feira do mesmo jeito.</h2>
+          <p>
+            Imagine olhar para sua vida daqui a seis meses e perceber que
+            finalmente encontrou algo sustentável.
+          </p>
+
+          <div className={styles.microBenefits}>
+            <span>
+              <CheckCircle2 aria-hidden="true" /> Sem culpa.
+            </span>
+            <span>
+              <CheckCircle2 aria-hidden="true" /> Sem efeito sanfona.
+            </span>
+            <span>
+              <CheckCircle2 aria-hidden="true" /> Sem recomeços.
+            </span>
+          </div>
+
+          <a className={styles.primaryButton} href={WHATSAPP_URL}>
+            Quero dar minha última cartada
+            <ChevronRight aria-hidden="true" />
+          </a>
+        </div>
       </section>
 
       <footer className={styles.footer}>
-        <div>
+        <a className={styles.brand} href="#top" aria-label="Magaly Abreu">
           <strong>Magaly Abreu</strong>
-          <span>
-            Consultora Independente Herbalife. Psicóloga dedicada ao bem-estar
-            integral.
-          </span>
+          <span>Mentoria</span>
+        </a>
+
+        <nav aria-label="Links do rodapé">
+          <a href="#sobre">Sobre</a>
+          <a href="#mentoria">Mentoria</a>
+          <Link href="/public/herbilife">Herbalife</Link>
+          <a href="#contato">Contato</a>
+        </nav>
+
+        <div className={styles.socialLinks}>
+          <a href="https://instagram.com" aria-label="Instagram">
+            <Camera aria-hidden="true" />
+          </a>
+          <a href={WHATSAPP_URL} aria-label="WhatsApp">
+            <MessageCircle aria-hidden="true" />
+          </a>
         </div>
 
-        <div className={styles.footerLinks}>
-          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
-            (84) 99412-4712
-          </a>
-          <a href="mailto:magalyabreu@gmail.com">magalyabreu@gmail.com</a>
-          <a href={CATALOG_URL} target="_blank" rel="noreferrer">
-            Catálogo completo
-          </a>
-        </div>
-
-        <small>© 2026 Magaly Abreu — Todos os direitos reservados.</small>
+        <small>© 2026 Magaly Abreu. Todos os direitos reservados.</small>
       </footer>
     </main>
   );

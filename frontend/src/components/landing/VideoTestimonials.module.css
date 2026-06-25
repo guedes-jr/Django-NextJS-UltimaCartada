@@ -1,0 +1,174 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #dfd4c2;
+  border-radius: 12px;
+  background: #fffaf2;
+  box-shadow: 0 16px 38px rgba(50, 36, 18, 0.1);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #13231d;
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: brightness(0.82) saturate(0.96);
+  object-fit: cover;
+  object-position: center;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover .media img,
+.card:focus-visible .media img {
+  filter: brightness(0.72) saturate(1);
+  transform: scale(1.03);
+}
+
+.playBadge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.54);
+  border-radius: 50%;
+  background: rgba(185, 139, 46, 0.92);
+  color: #fffaf0;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.playBadge svg {
+  width: 28px;
+  height: 28px;
+  margin-left: 4px;
+  fill: currentColor;
+}
+
+.cardBody {
+  display: block;
+  padding: 18px 20px 20px;
+}
+
+.cardBody strong,
+.cardBody small {
+  display: block;
+}
+
+.cardBody strong {
+  color: #13231d;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cardBody small {
+  margin-top: 6px;
+  color: #5c6157;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(8, 14, 11, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.modal {
+  width: min(960px, 100%);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: #101b17;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 16px;
+}
+
+.modalHeader strong {
+  color: #fffaf0;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.modalHeader button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fffaf0;
+  cursor: pointer;
+}
+
+.modalHeader svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal video {
+  width: 100%;
+  max-height: min(72vh, 720px);
+  display: block;
+  background: #000;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalBackdrop {
+    padding: 14px;
+  }
+
+  .playBadge {
+    width: 58px;
+    height: 58px;
+  }
+
+  .playBadge svg {
+    width: 24px;
+    height: 24px;
+  }
+}
