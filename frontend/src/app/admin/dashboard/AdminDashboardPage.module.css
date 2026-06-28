@@ -4,13 +4,13 @@
 
 .header h1 {
   margin: 0;
-  color: #302457;
+  color: #13231d;
   font-size: 30px;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #777184;
+  color: #667064;
   font-size: 15px;
   line-height: 1.5;
 }
@@ -25,14 +25,15 @@
 .summaryCard {
   min-width: 0;
   padding: 20px;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+  border-radius: 8px;
+  background: #fffaf2;
+  border: 1px solid #ded8c9;
+  box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .summaryCard span {
   display: block;
-  color: #777184;
+  color: #667064;
   font-size: 14px;
   font-weight: 700;
 }
@@ -40,7 +41,7 @@
 .summaryCard strong {
   display: block;
   margin-top: 10px;
-  color: #302457;
+  color: #13231d;
   font-size: 28px;
   line-height: 1;
 }
@@ -51,23 +52,24 @@
   gap: 12px;
   margin-bottom: 24px;
   padding: 18px;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+  border-radius: 8px;
+  background: #fffaf2;
+  border: 1px solid #ded8c9;
+  box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .quickActions a {
   padding: 10px 14px;
-  border-radius: 12px;
-  background: #f4f0ff;
-  color: #5b3cc4;
+  border-radius: 6px;
+  background: #f7efe0;
+  color: #132820;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
 }
 
 .quickActions a:hover {
-  background: #ebe3ff;
+  background: #eadfce;
 }
 
 .grid {
@@ -80,9 +82,10 @@
 .card {
   min-width: 0;
   padding: 24px;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+  border-radius: 8px;
+  background: #fffaf2;
+  border: 1px solid #ded8c9;
+  box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .cardHeader {
@@ -95,12 +98,12 @@
 
 .cardHeader h2 {
   margin: 0;
-  color: #302457;
+  color: #13231d;
   font-size: 22px;
 }
 
 .cardHeader a {
-  color: #5b3cc4;
+  color: #132820;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -118,9 +121,9 @@
   justify-content: space-between;
   gap: 16px;
   padding: 14px;
-  border: 1px solid #eee8ff;
-  border-radius: 16px;
-  background: #fbfaff;
+  border: 1px solid #ded8c9;
+  border-radius: 8px;
+  background: #fffaf2;
 }
 
 .listItem div {
@@ -129,7 +132,7 @@
 
 .listItem strong {
   display: block;
-  color: #302457;
+  color: #13231d;
   font-size: 15px;
   line-height: 1.3;
 }
@@ -137,7 +140,7 @@
 .listItem span {
   display: block;
   margin-top: 4px;
-  color: #777184;
+  color: #667064;
   font-size: 13px;
   line-height: 1.4;
 }
@@ -145,7 +148,7 @@
 .listItem small {
   display: block;
   margin-top: 4px;
-  color: #9a94a8;
+  color: #8b8579;
   font-size: 12px;
 }
 
@@ -155,12 +158,12 @@
 }
 
 .points strong {
-  color: #302457;
+  color: #13231d;
   font-size: 24px;
 }
 
 .points span {
-  color: #777184;
+  color: #667064;
   font-size: 12px;
   font-weight: 800;
 }
@@ -187,14 +190,14 @@
 
 .statusGrid div {
   padding: 16px;
-  border-radius: 16px;
-  background: #fbfaff;
-  border: 1px solid #eee8ff;
+  border-radius: 8px;
+  background: #fffaf2;
+  border: 1px solid #ded8c9;
 }
 
 .statusGrid span {
   display: block;
-  color: #777184;
+  color: #667064;
   font-size: 13px;
   font-weight: 700;
 }
@@ -202,7 +205,7 @@
 .statusGrid strong {
   display: block;
   margin-top: 8px;
-  color: #302457;
+  color: #13231d;
   font-size: 26px;
 }
 
@@ -213,9 +216,9 @@
 
 .todoList span {
   padding: 12px;
-  border-radius: 14px;
-  background: #fbfaff;
-  color: #302457;
+  border-radius: 8px;
+  background: #fffaf2;
+  color: #13231d;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -223,9 +226,9 @@
 .empty,
 .message {
   padding: 14px;
-  border-radius: 14px;
-  background: #f4f0ff;
-  color: #302457;
+  border-radius: 8px;
+  background: #f7efe0;
+  color: #13231d;
   font-size: 14px;
   font-weight: 700;
 }
@@ -233,7 +236,7 @@
 .error {
   margin-bottom: 18px;
   padding: 14px;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #fff1f1;
   color: #b42318;
   font-size: 14px;

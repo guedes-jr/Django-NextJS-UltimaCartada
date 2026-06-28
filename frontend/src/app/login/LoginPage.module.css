@@ -4,16 +4,19 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: linear-gradient(135deg, #f4f0ff 0%, #eefaf5 100%);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.76), transparent 30rem),
+    linear-gradient(180deg, #fbf7ef 0%, #f7f3ea 100%);
 }
 
 .card {
   width: 100%;
   max-width: 430px;
   padding: 32px;
-  border-radius: 28px;
-  background: #ffffff;
-  box-shadow: 0 20px 60px rgba(72, 52, 130, 0.14);
+  border: 1px solid #ded8c9;
+  border-radius: 8px;
+  background: #fffaf2;
+  box-shadow: 0 20px 60px rgba(47, 38, 24, 0.14);
 }
 
 .brand {
@@ -30,16 +33,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
-  background: #5b3cc4;
-  color: #f5c542;
+  border-radius: 8px;
+  background: #132820;
+  color: #d8b45e;
   font-size: 34px;
   font-weight: 700;
 }
 
 .brand h1 {
   margin: 0;
-  color: #302457;
+  color: #13231d;
   font-size: 28px;
   line-height: 1.1;
   overflow-wrap: anywhere;
@@ -47,7 +50,7 @@
 
 .brand p {
   margin: 6px 0 0;
-  color: #3f9d7e;
+  color: #667064;
   font-size: 14px;
   font-weight: 600;
 }
@@ -65,7 +68,7 @@
 }
 
 .field label {
-  color: #302457;
+  color: #13231d;
   font-size: 14px;
   font-weight: 700;
 }
@@ -73,25 +76,25 @@
 .field input {
   height: 48px;
   padding: 0 14px;
-  border: 1px solid #ded7f4;
-  border-radius: 14px;
-  background: #fbfaff;
-  color: #302457;
+  border: 1px solid #ded8c9;
+  border-radius: 6px;
+  background: #fffaf2;
+  color: #13231d;
   font-size: 15px;
   outline: none;
 }
 
 .field input:focus {
-  border-color: #5b3cc4;
-  box-shadow: 0 0 0 3px rgba(91, 60, 196, 0.12);
+  border-color: #132820;
+  box-shadow: 0 0 0 3px rgba(19, 40, 32, 0.12);
 }
 
 .button {
   min-height: 50px;
   border: 0;
-  border-radius: 16px;
-  background: #5b3cc4;
-  color: #ffffff;
+  border-radius: 8px;
+  background: #132820;
+  color: #fff7e8;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -104,10 +107,10 @@
 
 .googleButton {
   min-height: 50px;
-  border: 1px solid #ded7f4;
-  border-radius: 16px;
-  background: #ffffff;
-  color: #302457;
+  border: 1px solid #ded8c9;
+  border-radius: 8px;
+  background: #fffaf2;
+  color: #13231d;
   font-size: 15px;
   font-weight: 700;
   cursor: not-allowed;
@@ -117,7 +120,7 @@
 .error {
   margin: 0;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff1f1;
   color: #b42318;
   font-size: 14px;
@@ -126,7 +129,7 @@
 
 .helper {
   margin: 0;
-  color: #777184;
+  color: #667064;
   font-size: 13px;
   text-align: center;
 }
@@ -139,7 +142,7 @@
 
   .card {
     padding: 24px 18px;
-    border-radius: 20px;
+    border-radius: 8px;
   }
 
   .brand {
@@ -151,7 +154,7 @@
   .logo {
     width: 48px;
     height: 48px;
-    border-radius: 14px;
+    border-radius: 8px;
     font-size: 28px;
   }
 

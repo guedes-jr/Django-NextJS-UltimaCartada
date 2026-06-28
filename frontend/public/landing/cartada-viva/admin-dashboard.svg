@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Dashboard administrativo do Cartada Viva</title>
+  <desc id="desc">Mockup do painel administrativo com jogos, jogadas, pontos e evidencias pendentes.</desc>
+  <rect width="1280" height="820" fill="#eef2ed"/>
+  <rect x="42" y="40" width="1196" height="740" rx="26" fill="#ffffff" stroke="#d7dfd3"/>
+  <rect x="42" y="40" width="1196" height="76" rx="26" fill="#132820"/>
+  <text x="82" y="88" fill="#fff7e8" font-family="Arial" font-size="24" font-weight="800">Cartada Viva Admin</text>
+  <text x="322" y="88" fill="#d8dcca" font-family="Arial" font-size="15" font-weight="700">Jogadores</text>
+  <text x="432" y="88" fill="#d8dcca" font-family="Arial" font-size="15" font-weight="700">Grupos</text>
+  <text x="526" y="88" fill="#d8dcca" font-family="Arial" font-size="15" font-weight="700">Rodadas</text>
+  <text x="632" y="88" fill="#d8dcca" font-family="Arial" font-size="15" font-weight="700">Evidencias</text>
+  <text x="82" y="176" fill="#13231d" font-family="Arial" font-size="34" font-weight="800">Dashboard</text>
+  <text x="82" y="208" fill="#667064" font-family="Arial" font-size="18">Acompanhe jogos, ranking, evidencias e proximas acoes.</text>
+  <g transform="translate(82 252)">
+    <rect width="240" height="118" rx="12" fill="#f7efe0" stroke="#ead8b5"/>
+    <text x="24" y="42" fill="#79581e" font-family="Arial" font-size="15" font-weight="800">JOGOS ATIVOS</text>
+    <text x="24" y="88" fill="#13231d" font-family="Arial" font-size="42" font-weight="800">4</text>
+  </g>
+  <g transform="translate(352 252)">
+    <rect width="240" height="118" rx="12" fill="#eef3e8" stroke="#d7dfd3"/>
+    <text x="24" y="42" fill="#426235" font-family="Arial" font-size="15" font-weight="800">JOGADAS</text>
+    <text x="24" y="88" fill="#13231d" font-family="Arial" font-size="42" font-weight="800">128</text>
+  </g>
+  <g transform="translate(622 252)">
+    <rect width="240" height="118" rx="12" fill="#f7e8e0" stroke="#e8cabd"/>
+    <text x="24" y="42" fill="#88462f" font-family="Arial" font-size="15" font-weight="800">PONTOS</text>
+    <text x="24" y="88" fill="#13231d" font-family="Arial" font-size="42" font-weight="800">2.840</text>
+  </g>
+  <g transform="translate(892 252)">
+    <rect width="240" height="118" rx="12" fill="#e7eff3" stroke="#cbdce4"/>
+    <text x="24" y="42" fill="#2c5368" font-family="Arial" font-size="15" font-weight="800">PENDENTES</text>
+    <text x="24" y="88" fill="#13231d" font-family="Arial" font-size="42" font-weight="800">16</text>
+  </g>
+  <rect x="82" y="422" width="512" height="260" rx="14" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="112" y="466" fill="#13231d" font-family="Arial" font-size="24" font-weight="800">Jogadas recentes</text>
+  <g fill="#596157" font-family="Arial" font-size="16">
+    <text x="112" y="520">Mariana jogou Pausa consciente</text>
+    <text x="112" y="572">Lucia enviou evidencia da rodada 7</text>
+    <text x="112" y="624">Ana completou Agua primeiro</text>
+  </g>
+  <g fill="#d8b45e">
+    <rect x="112" y="538" width="420" height="1"/>
+    <rect x="112" y="590" width="420" height="1"/>
+  </g>
+  <rect x="626" y="422" width="506" height="260" rx="14" fill="#ffffff" stroke="#dfe4dc"/>
+  <text x="656" y="466" fill="#13231d" font-family="Arial" font-size="24" font-weight="800">Ranking do grupo</text>
+  <rect x="656" y="504" width="372" height="22" rx="11" fill="#eef3e8"/>
+  <rect x="656" y="504" width="320" height="22" rx="11" fill="#648f37"/>
+  <text x="1042" y="522" fill="#13231d" font-family="Arial" font-size="16" font-weight="800">420 pts</text>
+  <rect x="656" y="560" width="372" height="22" rx="11" fill="#f7efe0"/>
+  <rect x="656" y="560" width="268" height="22" rx="11" fill="#d8b45e"/>
+  <text x="1042" y="578" fill="#13231d" font-family="Arial" font-size="16" font-weight="800">360 pts</text>
+  <rect x="656" y="616" width="372" height="22" rx="11" fill="#e7eff3"/>
+  <rect x="656" y="616" width="216" height="22" rx="11" fill="#385c73"/>
+  <text x="1042" y="634" fill="#13231d" font-family="Arial" font-size="16" font-weight="800">290 pts</text>
+</svg>

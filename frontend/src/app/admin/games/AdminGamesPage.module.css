@@ -8,27 +8,28 @@
 
 .header h1 {
   margin: 0;
-  color: #302457;
+  color: #13231d;
   font-size: 30px;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #777184;
+  color: #667064;
   font-size: 15px;
   line-height: 1.5;
 }
 
 .card {
   padding: 24px;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 12px 36px rgba(72, 52, 130, 0.08);
+  border-radius: 8px;
+  background: #fffaf2;
+  border: 1px solid #ded8c9;
+  box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .card h2 {
   margin: 0 0 18px;
-  color: #302457;
+  color: #13231d;
   font-size: 22px;
 }
 
@@ -51,7 +52,7 @@
 }
 
 .field label {
-  color: #302457;
+  color: #13231d;
   font-size: 13px;
   font-weight: 800;
 }
@@ -60,10 +61,10 @@
 .field textarea,
 .field select {
   width: 100%;
-  border: 1px solid #ded7f4;
-  border-radius: 12px;
-  background: #fbfaff;
-  color: #302457;
+  border: 1px solid #ded8c9;
+  border-radius: 6px;
+  background: #fffaf2;
+  color: #13231d;
   font-size: 14px;
   outline: none;
   box-sizing: border-box;
@@ -84,8 +85,8 @@
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-  border-color: #5b3cc4;
-  box-shadow: 0 0 0 3px rgba(91, 60, 196, 0.12);
+  border-color: #132820;
+  box-shadow: 0 0 0 3px rgba(19, 40, 32, 0.12);
 }
 
 .primaryButton,
@@ -95,7 +96,7 @@
   min-height: 40px;
   padding: 0 14px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -104,13 +105,13 @@
 
 .primaryButton,
 .button {
-  background: #5b3cc4;
-  color: #ffffff;
+  background: #132820;
+  color: #fff7e8;
 }
 
 .secondaryButton {
-  background: #f4f0ff;
-  color: #5b3cc4;
+  background: #f7efe0;
+  color: #132820;
 }
 
 .dangerButton {
@@ -134,9 +135,9 @@
 
 .message {
   padding: 14px;
-  border-radius: 14px;
-  background: #f4f0ff;
-  color: #302457;
+  border-radius: 8px;
+  background: #f7efe0;
+  color: #13231d;
   font-size: 14px;
   font-weight: 700;
 }
@@ -144,7 +145,7 @@
 .success {
   margin-bottom: 18px;
   padding: 14px;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #eefaf5;
   color: #24775c;
   font-size: 14px;
@@ -154,7 +155,7 @@
 .error {
   margin-bottom: 18px;
   padding: 14px;
-  border-radius: 14px;
+  border-radius: 8px;
   background: #fff1f1;
   color: #b42318;
   font-size: 14px;
@@ -175,8 +176,8 @@
 
 .table th {
   padding: 12px;
-  border-bottom: 1px solid #ece6ff;
-  color: #777184;
+  border-bottom: 1px solid #ded8c9;
+  color: #667064;
   font-size: 13px;
   text-align: left;
   white-space: nowrap;
@@ -185,7 +186,7 @@
 .table td {
   padding: 14px 12px;
   border-bottom: 1px solid #f1edff;
-  color: #302457;
+  color: #13231d;
   font-size: 14px;
   vertical-align: top;
 }
@@ -198,13 +199,13 @@
 }
 
 .gameName strong {
-  color: #302457;
+  color: #13231d;
   font-size: 15px;
 }
 
 .gameName span,
 .period span {
-  color: #777184;
+  color: #667064;
   font-size: 13px;
   line-height: 1.4;
 }
@@ -216,8 +217,8 @@
   min-height: 28px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: #f4f0ff;
-  color: #5b3cc4;
+  background: #f7efe0;
+  color: #132820;
   font-size: 12px;
   font-weight: 800;
   line-height: 1.2;

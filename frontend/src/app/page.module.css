@@ -544,6 +544,29 @@
   color: #d0a24b;
 }
 
+.programLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 0 16px;
+  border: 1px solid rgba(245, 235, 216, 0.28);
+  border-radius: 6px;
+  color: #fff8eb;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.programLink svg {
+  width: 16px;
+  height: 16px;
+}
+
 .herbalife {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);

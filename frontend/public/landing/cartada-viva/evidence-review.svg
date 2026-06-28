@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Revisao de evidencias no Cartada Viva</title>
+  <desc id="desc">Mockup da revisao de evidencias com imagem, texto do jogador e botoes de aprovacao.</desc>
+  <rect width="1280" height="820" fill="#f5efe6"/>
+  <rect x="58" y="48" width="1164" height="724" rx="26" fill="#ffffff" stroke="#ded8c9"/>
+  <text x="98" y="116" fill="#13231d" font-family="Arial" font-size="34" font-weight="800">Revisao de evidencias</text>
+  <text x="98" y="150" fill="#667064" font-family="Arial" font-size="18">Valide as praticas enviadas e transforme acao em pontuacao.</text>
+  <rect x="98" y="204" width="492" height="456" rx="16" fill="#132820"/>
+  <rect x="130" y="240" width="428" height="260" rx="12" fill="#f7efe0"/>
+  <circle cx="214" cy="326" r="44" fill="#d8b45e"/>
+  <path d="M166 452 C226 372 284 418 334 374 C392 324 448 382 522 304 L522 472 L166 472 Z" fill="#648f37" opacity="0.86"/>
+  <text x="130" y="548" fill="#fff7e8" font-family="Arial" font-size="24" font-weight="800">Evidencia: lanche planejado</text>
+  <text x="130" y="586" fill="#d8dcca" font-family="Arial" font-size="17">Foto enviada pela jogadora apos cumprir a carta.</text>
+  <rect x="638" y="204" width="484" height="456" rx="16" fill="#fbfaf6" stroke="#ded8c9"/>
+  <text x="678" y="260" fill="#9b6e1c" font-family="Arial" font-size="15" font-weight="800">RODADA 7</text>
+  <text x="678" y="302" fill="#13231d" font-family="Arial" font-size="30" font-weight="800">Mariana Costa</text>
+  <text x="678" y="342" fill="#596157" font-family="Arial" font-size="18">Carta jogada: Pausa consciente</text>
+  <text x="678" y="396" fill="#13231d" font-family="Arial" font-size="20" font-weight="800">Relato da jogadora</text>
+  <text x="678" y="432" fill="#596157" font-family="Arial" font-size="17">"Consegui parar antes da vontade automatica</text>
+  <text x="678" y="458" fill="#596157" font-family="Arial" font-size="17">e escolhi preparar algo alinhado com meu plano."</text>
+  <rect x="678" y="522" width="168" height="52" rx="8" fill="#648f37"/>
+  <text x="720" y="555" fill="#ffffff" font-family="Arial" font-size="17" font-weight="800">Aprovar</text>
+  <rect x="866" y="522" width="168" height="52" rx="8" fill="#f7e8e0" stroke="#e0bba9"/>
+  <text x="904" y="555" fill="#88462f" font-family="Arial" font-size="17" font-weight="800">Rejeitar</text>
+</svg>

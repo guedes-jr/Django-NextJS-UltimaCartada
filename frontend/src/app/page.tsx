@@ -107,8 +107,9 @@ export default function HomePage() {
 
         <nav className={styles.nav} aria-label="Navegação principal">
           <a href="#sobre">Sobre</a>
-          <a href="#mentoria">Mentoria</a>
-          <a href="#herbalife">Herbalife</a>
+          <Link href="/public/consultoria">Consultoria</Link>
+          <Link href="/public/cartada-viva">Cartada Viva</Link>
+          <Link href="/public/herbilife">Herbalife</Link>
           <a href="#depoimentos">Depoimentos</a>
           <a href="#contato">Contato</a>
         </nav>
@@ -251,6 +252,10 @@ export default function HomePage() {
               <li>Exercícios práticos</li>
               <li>Comunidade de apoio</li>
             </ul>
+            <Link className={styles.programLink} href="/public/consultoria">
+              Ver página da consultoria
+              <ChevronRight aria-hidden="true" />
+            </Link>
           </article>
 
           <article>
@@ -262,6 +267,10 @@ export default function HomePage() {
               Uma jornada prática com desafios, reflexões e pequenas ações para
               fortalecer consistência.
             </strong>
+            <Link className={styles.programLink} href="/public/cartada-viva">
+              Conhecer o Cartada Viva
+              <ChevronRight aria-hidden="true" />
+            </Link>
           </article>
         </div>
       </section>
@@ -334,7 +343,8 @@ export default function HomePage() {
 
         <nav aria-label="Links do rodapé">
           <a href="#sobre">Sobre</a>
-          <a href="#mentoria">Mentoria</a>
+          <Link href="/public/consultoria">Consultoria</Link>
+          <Link href="/public/cartada-viva">Cartada Viva</Link>
           <Link href="/public/herbilife">Herbalife</Link>
           <a href="#contato">Contato</a>
         </nav>

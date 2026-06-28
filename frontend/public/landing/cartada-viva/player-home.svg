@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Tela do jogador do Cartada Viva</title>
+  <desc id="desc">Mockup da área do jogador com rodada ativa, cartas disponíveis e envio de evidência.</desc>
+  <rect width="1280" height="820" fill="#f6f3ea"/>
+  <rect x="42" y="40" width="1196" height="740" rx="26" fill="#ffffff" stroke="#ded8c9"/>
+  <rect x="42" y="40" width="228" height="740" rx="26" fill="#132820"/>
+  <text x="82" y="104" fill="#fff7e8" font-family="Arial" font-size="28" font-weight="700">Cartada Viva</text>
+  <text x="82" y="138" fill="#d8b45e" font-family="Arial" font-size="14" font-weight="700">AREA DO JOGADOR</text>
+  <rect x="78" y="192" width="150" height="38" rx="8" fill="#d8b45e"/>
+  <text x="98" y="216" fill="#14231d" font-family="Arial" font-size="15" font-weight="700">Minha rodada</text>
+  <text x="82" y="282" fill="#c8d2c2" font-family="Arial" font-size="16" font-weight="700">Desempenho</text>
+  <text x="82" y="334" fill="#c8d2c2" font-family="Arial" font-size="16" font-weight="700">Ranking</text>
+  <text x="82" y="386" fill="#c8d2c2" font-family="Arial" font-size="16" font-weight="700">Configuracoes</text>
+  <text x="322" y="112" fill="#13231d" font-family="Arial" font-size="34" font-weight="800">Rodada 7 aberta</text>
+  <text x="322" y="146" fill="#667064" font-family="Arial" font-size="18">Escolha uma carta, execute a acao e envie sua evidencia.</text>
+  <rect x="322" y="192" width="826" height="132" rx="14" fill="#f7efe0" stroke="#ead8b5"/>
+  <text x="352" y="238" fill="#9b6e1c" font-family="Arial" font-size="15" font-weight="800">RODADA ATIVA</text>
+  <text x="352" y="274" fill="#13231d" font-family="Arial" font-size="28" font-weight="800">Naipe Coracao: cuidado com a rotina</text>
+  <text x="352" y="304" fill="#596157" font-family="Arial" font-size="17">Prazo de envio: hoje ate 22:00</text>
+  <rect x="962" y="232" width="146" height="48" rx="8" fill="#132820"/>
+  <text x="995" y="263" fill="#fff7e8" font-family="Arial" font-size="16" font-weight="800">Jogar carta</text>
+  <text x="322" y="386" fill="#13231d" font-family="Arial" font-size="24" font-weight="800">Cartas disponiveis</text>
+  <g transform="translate(322 424)">
+    <rect width="236" height="236" rx="14" fill="#ffffff" stroke="#ded8c9"/>
+    <circle cx="38" cy="38" r="18" fill="#d8b45e"/>
+    <text x="28" y="45" fill="#13231d" font-family="Arial" font-size="22" font-weight="800">7</text>
+    <text x="28" y="93" fill="#13231d" font-family="Arial" font-size="22" font-weight="800">Agua primeiro</text>
+    <text x="28" y="126" fill="#596157" font-family="Arial" font-size="15">Comece o dia com um</text>
+    <text x="28" y="148" fill="#596157" font-family="Arial" font-size="15">gesto simples de cuidado.</text>
+    <rect x="28" y="178" width="92" height="34" rx="8" fill="#eef3e8"/>
+    <text x="48" y="200" fill="#426235" font-family="Arial" font-size="14" font-weight="800">+10 pts</text>
+  </g>
+  <g transform="translate(588 424)">
+    <rect width="236" height="236" rx="14" fill="#ffffff" stroke="#ded8c9"/>
+    <circle cx="38" cy="38" r="18" fill="#bf6b4d"/>
+    <text x="28" y="45" fill="#fffaf0" font-family="Arial" font-size="22" font-weight="800">Q</text>
+    <text x="28" y="93" fill="#13231d" font-family="Arial" font-size="22" font-weight="800">Pausa consciente</text>
+    <text x="28" y="126" fill="#596157" font-family="Arial" font-size="15">Antes da proxima escolha,</text>
+    <text x="28" y="148" fill="#596157" font-family="Arial" font-size="15">respire por 2 minutos.</text>
+    <rect x="28" y="178" width="92" height="34" rx="8" fill="#f7e8e0"/>
+    <text x="48" y="200" fill="#88462f" font-family="Arial" font-size="14" font-weight="800">+15 pts</text>
+  </g>
+  <g transform="translate(854 424)">
+    <rect width="236" height="236" rx="14" fill="#ffffff" stroke="#ded8c9"/>
+    <circle cx="38" cy="38" r="18" fill="#385c73"/>
+    <text x="28" y="45" fill="#fffaf0" font-family="Arial" font-size="22" font-weight="800">A</text>
+    <text x="28" y="93" fill="#13231d" font-family="Arial" font-size="22" font-weight="800">Evidencia real</text>
+    <text x="28" y="126" fill="#596157" font-family="Arial" font-size="15">Registre uma foto, texto</text>
+    <text x="28" y="148" fill="#596157" font-family="Arial" font-size="15">ou video da sua acao.</text>
+    <rect x="28" y="178" width="92" height="34" rx="8" fill="#e7eff3"/>
+    <text x="48" y="200" fill="#2c5368" font-family="Arial" font-size="14" font-weight="800">+20 pts</text>
+  </g>
+</svg>
