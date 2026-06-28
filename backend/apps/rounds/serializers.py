@@ -32,6 +32,8 @@ class RoundSerializer(serializers.ModelSerializer):
         source="started_by.username",
         read_only=True,
     )
+    is_active = serializers.SerializerMethodField()
+    plays_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Round
@@ -51,6 +53,14 @@ class RoundSerializer(serializers.ModelSerializer):
             "started_by",
             "started_by_username",
             "status",
+            "is_active",
+            "plays_count",
             "created_at",
             "updated_at",
         )
+
+    def get_is_active(self, obj):
+        return obj.status == "OPEN"
+
+    def get_plays_count(self, obj):
+        return obj.plays.count()

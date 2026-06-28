@@ -105,18 +105,6 @@
   cursor: not-allowed;
 }
 
-.googleButton {
-  min-height: 50px;
-  border: 1px solid #ded8c9;
-  border-radius: 8px;
-  background: #fffaf2;
-  color: #13231d;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: not-allowed;
-  opacity: 0.65;
-}
-
 .error {
   margin: 0;
   padding: 12px;
@@ -125,13 +113,6 @@
   color: #b42318;
   font-size: 14px;
   font-weight: 600;
-}
-
-.helper {
-  margin: 0;
-  color: #667064;
-  font-size: 13px;
-  text-align: center;
 }
 
 @media (max-width: 480px) {

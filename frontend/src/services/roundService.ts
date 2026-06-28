@@ -8,7 +8,7 @@ export async function getRounds(): Promise<Round[]> {
 }
 
 export async function getGameRounds(): Promise<GameRound[]> {
-  const response = await api.get<GameRound[]>("/games/rounds/");
+  const response = await api.get<GameRound[]>("/rounds/rounds/");
 
   return response.data;
 }
@@ -17,7 +17,7 @@ export async function activateRound(
   roundId: number
 ): Promise<RoundActionResponse> {
   const response = await api.post<RoundActionResponse>(
-    `/games/rounds/${roundId}/activate/`
+    `/rounds/rounds/${roundId}/activate/`
   );
 
   return response.data;
@@ -27,7 +27,7 @@ export async function closeRound(
   roundId: number
 ): Promise<RoundActionResponse> {
   const response = await api.post<RoundActionResponse>(
-    `/games/rounds/${roundId}/close/`
+    `/rounds/rounds/${roundId}/close/`
   );
 
   return response.data;

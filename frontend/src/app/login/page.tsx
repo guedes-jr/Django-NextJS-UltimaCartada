@@ -125,14 +125,6 @@ export default function LoginPage() {
           <button className={styles.button} type="submit" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}
           </button>
-
-          <button className={styles.googleButton} type="button" disabled>
-            Entrar com Google
-          </button>
-
-          <p className={styles.helper}>
-            O login com Google será habilitado em uma próxima etapa.
-          </p>
         </form>
       </section>
     </main>
