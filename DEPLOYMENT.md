@@ -447,6 +447,12 @@ navegador:
 PUBLIC_ORIGIN=https://seudominio.com.br deploy-cartada
 ```
 
+Na VPS atual com certificado emitido para `magalyabreu.com.br`, use:
+
+```bash
+PUBLIC_ORIGIN=https://magalyabreu.com.br deploy-cartada
+```
+
 Rodar:
 
 ```bash

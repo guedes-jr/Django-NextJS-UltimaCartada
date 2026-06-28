@@ -13,7 +13,7 @@ BACKEND_SERVICE="cartada-viva-backend"
 FRONTEND_SERVICE="cartada-viva-frontend"
 
 SERVER_IP="${SERVER_IP:-2.25.183.3}"
-PUBLIC_ORIGIN="${PUBLIC_ORIGIN:-http://${SERVER_IP}}"
+PUBLIC_ORIGIN="${PUBLIC_ORIGIN:-https://magalyabreu.com.br}"
 PUBLIC_HOST=$(echo "$PUBLIC_ORIGIN" | sed -E 's#^https?://##; s#/.*$##; s#:.*$##')
 DJANGO_SETTINGS_MODULE_VALUE="config.settings"
 
@@ -63,6 +63,14 @@ assert_http_status() {
       "$url")
   else
     status=$(curl -sS -o /dev/null -w "%{http_code}" -X "$method" "$url")
+  fi
+
+  if echo "301 302 307 308" | grep -Fq "$status"; then
+    fail "$url redirecionou com HTTP $status. Use PUBLIC_ORIGIN com a URL final em HTTPS, por exemplo: PUBLIC_ORIGIN=https://magalyabreu.com.br deploy-cartada"
+  fi
+
+  if [ "$status" = "400" ]; then
+    fail "$url respondeu HTTP 400. Verifique se '$PUBLIC_HOST' está em ALLOWED_HOSTS no backend/.env."
   fi
 
   if [ "$status" != "$expected_status" ]; then
