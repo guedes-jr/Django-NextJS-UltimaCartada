@@ -8,6 +8,7 @@ class GameSerializer(serializers.ModelSerializer):
         source="group.name",
         read_only=True,
     )
+    total_rounds = serializers.SerializerMethodField()
     rounds_count = serializers.SerializerMethodField()
     mediators = serializers.SerializerMethodField()
 
@@ -46,6 +47,9 @@ class GameSerializer(serializers.ModelSerializer):
 
     def get_rounds_count(self, obj):
         return obj.rounds.count()
+
+    def get_total_rounds(self, obj):
+        return obj.duration_days
 
     def get_mediators(self, obj):
         return [
