@@ -1,5 +1,6 @@
 "use client";
 
+import { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
@@ -18,6 +19,10 @@ type LoginResponse = {
     full_name: string;
     role: UserRole;
   };
+};
+
+type LoginErrorResponse = {
+  detail?: string;
 };
 
 export default function LoginPage() {
@@ -50,8 +55,30 @@ export default function LoginPage() {
       }
 
       router.push("/player/home");
-    } catch {
-      setErrorMessage("Usuário ou senha inválidos.");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (!error.response) {
+          setErrorMessage(
+            "Não foi possível conectar à API. Verifique a configuração de produção."
+          );
+          return;
+        }
+
+        const data = error.response.data as LoginErrorResponse | undefined;
+
+        if (error.response.status === 401) {
+          setErrorMessage(data?.detail || "Usuário ou senha inválidos.");
+          return;
+        }
+
+        setErrorMessage(
+          data?.detail ||
+            `Erro ao entrar. A API respondeu com status ${error.response.status}.`
+        );
+        return;
+      }
+
+      setErrorMessage("Não foi possível entrar. Tente novamente.");
     } finally {
       setIsLoading(false);
     }
