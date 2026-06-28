@@ -12,23 +12,67 @@ BRANCH="main"
 BACKEND_SERVICE="cartada-viva-backend"
 FRONTEND_SERVICE="cartada-viva-frontend"
 
-SERVER_IP="191.252.218.62"
+SERVER_IP="2.25.183.3"
+PUBLIC_ORIGIN="${PUBLIC_ORIGIN:-http://${SERVER_IP}}"
+PUBLIC_HOST=$(echo "$PUBLIC_ORIGIN" | sed -E 's#^https?://##; s#/.*$##; s#:.*$##')
 
 DJANGO_SETTINGS_MODULE_VALUE="config.settings"
 
 BACKEND_HEALTH_URL="http://127.0.0.1:8000/django-admin/"
 FRONTEND_HEALTH_URL="http://127.0.0.1:3000/login"
-PUBLIC_FRONTEND_URL="http://${SERVER_IP}/login"
-PUBLIC_ADMIN_URL="http://${SERVER_IP}/admin/dashboard"
-PUBLIC_DJANGO_ADMIN_URL="http://${SERVER_IP}/django-admin/"
+PUBLIC_FRONTEND_URL="${PUBLIC_ORIGIN}/login"
+PUBLIC_ADMIN_URL="${PUBLIC_ORIGIN}/admin/dashboard"
+PUBLIC_DJANGO_ADMIN_URL="${PUBLIC_ORIGIN}/django-admin/"
+
+fail() {
+  echo "[ERRO] $1"
+  exit 1
+}
+
+read_env_value() {
+  local file="$1"
+  local key="$2"
+
+  grep -E "^${key}=" "$file" | tail -n 1 | cut -d '=' -f 2-
+}
+
+assert_csv_contains() {
+  local value="$1"
+  local expected="$2"
+  local description="$3"
+
+  if ! echo ",${value}," | grep -Fq ",${expected},"; then
+    fail "$description deve conter '$expected'. Valor atual: '$value'"
+  fi
+}
+
+assert_http_status() {
+  local method="$1"
+  local url="$2"
+  local expected_status="$3"
+  local data="${4:-}"
+  local status
+
+  if [ -n "$data" ]; then
+    status=$(curl -sS -o /dev/null -w "%{http_code}" -X "$method" \
+      -H "Content-Type: application/json" \
+      --data "$data" \
+      "$url")
+  else
+    status=$(curl -sS -o /dev/null -w "%{http_code}" -X "$method" "$url")
+  fi
+
+  if [ "$status" != "$expected_status" ]; then
+    fail "$url respondeu HTTP $status; esperado HTTP $expected_status."
+  fi
+}
 
 echo "=========================================="
 echo "[DEPLOY] Atualizando Cartada Viva"
 echo "=========================================="
 
 if [ ! -d "$PROJECT_DIR" ]; then
-  echo "[ERRO] Diretório do projeto não encontrado: $PROJECT_DIR"
-  exit 1
+  fail "Diretório do projeto não encontrado: $PROJECT_DIR"
 fi
 
 cd "$PROJECT_DIR"
@@ -74,8 +118,7 @@ echo "[DEPLOY] Validando backend"
 echo "=========================================="
 
 if [ ! -d "$BACKEND_DIR" ]; then
-  echo "[ERRO] Diretório backend não encontrado: $BACKEND_DIR"
-  exit 1
+  fail "Diretório backend não encontrado: $BACKEND_DIR"
 fi
 
 if [ ! -f "$BACKEND_DIR/.env" ]; then
@@ -83,6 +126,14 @@ if [ ! -f "$BACKEND_DIR/.env" ]; then
   echo "Crie o arquivo antes de continuar."
   exit 1
 fi
+
+BACKEND_ALLOWED_HOSTS=$(read_env_value "$BACKEND_DIR/.env" "ALLOWED_HOSTS")
+BACKEND_CORS_ORIGINS=$(read_env_value "$BACKEND_DIR/.env" "CORS_ALLOWED_ORIGINS")
+BACKEND_CSRF_ORIGINS=$(read_env_value "$BACKEND_DIR/.env" "CSRF_TRUSTED_ORIGINS")
+
+assert_csv_contains "$BACKEND_ALLOWED_HOSTS" "$PUBLIC_HOST" "backend/.env ALLOWED_HOSTS"
+assert_csv_contains "$BACKEND_CORS_ORIGINS" "$PUBLIC_ORIGIN" "backend/.env CORS_ALLOWED_ORIGINS"
+assert_csv_contains "$BACKEND_CSRF_ORIGINS" "$PUBLIC_ORIGIN" "backend/.env CSRF_TRUSTED_ORIGINS"
 
 cd "$BACKEND_DIR"
 
@@ -125,8 +176,7 @@ echo "[DEPLOY] Validando frontend"
 echo "=========================================="
 
 if [ ! -d "$FRONTEND_DIR" ]; then
-  echo "[ERRO] Diretório frontend não encontrado: $FRONTEND_DIR"
-  exit 1
+  fail "Diretório frontend não encontrado: $FRONTEND_DIR"
 fi
 
 cd "$FRONTEND_DIR"
@@ -145,9 +195,10 @@ if [ ! -f ".env.production" ]; then
   exit 1
 fi
 
-if ! grep -q "NEXT_PUBLIC_API_URL=/api/v1" ".env.production"; then
-  echo "[AVISO] Recomendo usar no frontend/.env.production:"
-  echo "NEXT_PUBLIC_API_URL=/api/v1"
+FRONTEND_API_URL=$(read_env_value ".env.production" "NEXT_PUBLIC_API_URL")
+
+if [ "$FRONTEND_API_URL" != "/api/v1" ]; then
+  fail "frontend/.env.production deve usar NEXT_PUBLIC_API_URL=/api/v1. Valor atual: '$FRONTEND_API_URL'"
 fi
 
 echo "[DEPLOY] Instalando dependências do frontend..."
@@ -238,10 +289,7 @@ if ! curl -fsI "$PUBLIC_FRONTEND_URL" > /dev/null; then
 fi
 
 echo "[DEPLOY] Testando API pública..."
-if ! curl -fsI "http://${SERVER_IP}/api/v1/" > /dev/null; then
-  echo "[AVISO] /api/v1/ não respondeu com HEAD."
-  echo "[AVISO] Isso pode ser normal se não existir endpoint raiz na API."
-fi
+assert_http_status "POST" "${PUBLIC_ORIGIN}/api/v1/auth/token/" "401" '{"username":"__deploy_check__","password":"__deploy_check__"}'
 
 echo "=========================================="
 echo "[DEPLOY] Atualização concluída com sucesso!"
@@ -251,7 +299,7 @@ echo "Commit anterior salvo em:"
 echo "$PROJECT_DIR/.last_deploy_commit"
 echo ""
 echo "Landing:"
-echo "http://${SERVER_IP}/"
+echo "$PUBLIC_ORIGIN/"
 echo ""
 echo "Login:"
 echo "$PUBLIC_FRONTEND_URL"

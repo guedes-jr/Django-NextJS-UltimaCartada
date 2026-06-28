@@ -279,6 +279,18 @@ Use `frontend/.env.example` como referência. Em produção, mantenha
 Django. Em desenvolvimento local, você pode omitir o arquivo `.env.local` para
 usar o fallback `http://127.0.0.1:8000/api/v1`.
 
+Se a produção usa domínio com HTTPS, mantenha o frontend com URL relativa e
+configure o backend com o domínio público:
+
+```env
+ALLOWED_HOSTS=seudominio.com.br,www.seudominio.com.br,localhost,127.0.0.1
+CORS_ALLOWED_ORIGINS=https://seudominio.com.br,https://www.seudominio.com.br
+CSRF_TRUSTED_ORIGINS=https://seudominio.com.br,https://www.seudominio.com.br
+```
+
+Um `400 Bad Request` em `/api/v1/auth/token/` com `DEBUG=False` normalmente
+indica que o domínio acessado não está em `ALLOWED_HOSTS`.
+
 Build:
 
 ```bash
@@ -426,6 +438,13 @@ arquivo:
 
 ```bash
 SERVER_IP=IP_DA_VPS deploy-cartada
+```
+
+Para produção com domínio/HTTPS, informe também a origem pública usada pelo
+navegador:
+
+```bash
+PUBLIC_ORIGIN=https://seudominio.com.br deploy-cartada
 ```
 
 Rodar:
