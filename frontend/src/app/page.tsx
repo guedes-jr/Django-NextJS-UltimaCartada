@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 const WHATSAPP_URL =
-  "https://wa.me/5584994124712?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20A%20Última%20Cartada.";
+  "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20A%20Última%20Cartada.";
 
 const attempts = [
   "Dietas",

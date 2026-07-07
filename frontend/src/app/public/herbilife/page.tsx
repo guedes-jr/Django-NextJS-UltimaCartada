@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const WHATSAPP_URL =
-  "https://wa.me/5584994124712?text=Olá,%20Magaly!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20Herbalife.";
+  "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20Herbalife.";
 
 const CATALOG_URL = "https://catalogoherbalife.com.br";
 
