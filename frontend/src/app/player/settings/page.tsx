@@ -19,6 +19,23 @@ export default function PlayerSettingsPage() {
           <h2>Alterar senha</h2>
           <ChangePasswordForm redirectAfterSuccess="/player/home" />
         </section>
+
+        <section className={styles.card}>
+          <h2>Tour da plataforma</h2>
+          <p className={styles.cardDescription}>
+            Reveja o passo a passo para jogar cartas, enviar evidências e
+            acompanhar sua evolução.
+          </p>
+          <button
+            className={styles.tourButton}
+            type="button"
+            onClick={() =>
+              window.dispatchEvent(new Event("player:onboarding:start"))
+            }
+          >
+            Ver tour novamente
+          </button>
+        </section>
       </PlayerLayout>
     </ProtectedRoute>
   );

@@ -23,6 +23,18 @@ export async function changePassword(
   return response.data;
 }
 
+export async function completeOnboarding(): Promise<{
+  detail: string;
+  first_access_completed: boolean;
+}> {
+  const response = await api.post<{
+    detail: string;
+    first_access_completed: boolean;
+  }>("/accounts/complete-onboarding/");
+
+  return response.data;
+}
+
 export async function getGameMediators(): Promise<UserSummary[]> {
   const response = await api.get<UserSummary[]>("/accounts/admin/mediators/");
 

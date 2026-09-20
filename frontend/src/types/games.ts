@@ -9,6 +9,9 @@ export type Game = {
   group: number;
   group_name: string;
   mediators: UserSummary[];
+  journey_id: number | null;
+  journey_name: string;
+  journey_stage: number | null;
   start_date: string;
   end_date: string;
   total_rounds: number;
@@ -16,6 +19,7 @@ export type Game = {
   duration_days: number;
   status: GameStatus;
   evidence_bonus_points: number;
+  evidence_deadline_time: string;
   lowest_card_points: number;
   middle_card_points: number;
   highest_card_points: number;
@@ -38,6 +42,7 @@ export type CreateGamePayload = {
   duration_days: number;
   status: GameStatus;
   evidence_bonus_points: number;
+  evidence_deadline_time?: string;
   lowest_card_points: number;
   middle_card_points: number;
   highest_card_points: number;

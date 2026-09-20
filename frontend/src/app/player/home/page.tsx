@@ -173,6 +173,14 @@ export default function PlayerHomePage() {
     return new Date(value).toLocaleString("pt-BR");
   }
 
+  function getEvidenceDeadlineLabel(play: Play) {
+    if (!play.evidence_due_at) {
+      return "Prazo indisponível";
+    }
+
+    return `Prazo: ${formatDateTime(play.evidence_due_at)}`;
+  }
+
   function getStatusLabel(status: string) {
     const labels: Record<string, string> = {
       SCHEDULED: "Agendada",
@@ -391,7 +399,10 @@ export default function PlayerHomePage() {
 
         {!isLoading && !errorMessage && games.length > 0 && (
           <>
-            <section className={styles.filters}>
+            <section
+              className={styles.filters}
+              data-tour="player-game-overview"
+            >
               <div className={styles.field}>
                 <label htmlFor="game">Jogo</label>
                 <select
@@ -438,7 +449,7 @@ export default function PlayerHomePage() {
               </article>
             </section>
 
-            <section className={styles.section}>
+            <section className={styles.section} data-tour="player-rounds">
               <h2>Rodadas do jogo</h2>
 
               {gameRounds.length === 0 ? (
@@ -490,6 +501,15 @@ export default function PlayerHomePage() {
                               </span>
                               <span>Pontos: {play.total_points}</span>
                               <span
+                                className={
+                                  play.is_evidence_deadline_expired
+                                    ? styles.deadlineExpired
+                                    : styles.deadlineAvailable
+                                }
+                              >
+                                {getEvidenceDeadlineLabel(play)}
+                              </span>
+                              <span
                                 className={`${styles.evidenceBadge} ${getEvidenceStatusClass(
                                   evidence?.status
                                 )}`}
@@ -497,7 +517,7 @@ export default function PlayerHomePage() {
                                 {getEvidenceStatusLabel(evidence?.status)}
                               </span>
 
-                              {!evidence && (
+                              {!evidence && play.can_submit_evidence && (
                                 <button
                                   className={styles.actionButton}
                                   type="button"
@@ -507,7 +527,8 @@ export default function PlayerHomePage() {
                                 </button>
                               )}
 
-                              {evidence?.status === "REJECTED" && (
+                              {evidence?.status === "REJECTED" &&
+                                play.can_submit_evidence && (
                                 <button
                                   className={styles.actionButton}
                                   type="button"
@@ -515,7 +536,14 @@ export default function PlayerHomePage() {
                                 >
                                   Reenviar evidência
                                 </button>
-                              )}
+                                )}
+
+                              {(!evidence || evidence.status === "REJECTED") &&
+                                !play.can_submit_evidence && (
+                                  <span className={styles.deadlineNotice}>
+                                    O prazo para envio desta evidência terminou.
+                                  </span>
+                                )}
                             </div>
                           );
                         }
@@ -537,7 +565,10 @@ export default function PlayerHomePage() {
               )}
             </section>
 
-            <section className={styles.playsSection}>
+            <section
+              className={styles.playsSection}
+              data-tour="player-plays"
+            >
               <h2>Minhas jogadas</h2>
 
               {gamePlays.length === 0 ? (
@@ -563,6 +594,15 @@ export default function PlayerHomePage() {
                           <span>Pontos: {play.total_points}</span>
                           <span>Status da jogada: {play.status}</span>
                           <span
+                            className={
+                              play.is_evidence_deadline_expired
+                                ? styles.deadlineExpired
+                                : styles.deadlineAvailable
+                            }
+                          >
+                            {getEvidenceDeadlineLabel(play)}
+                          </span>
+                          <span
                             className={`${styles.evidenceBadge} ${getEvidenceStatusClass(
                               evidence?.status
                             )}`}
@@ -574,7 +614,7 @@ export default function PlayerHomePage() {
                           )}
                         </div>
 
-                        {!evidence && (
+                        {!evidence && play.can_submit_evidence && (
                           <button
                             className={styles.actionButton}
                             type="button"
@@ -584,7 +624,9 @@ export default function PlayerHomePage() {
                           </button>
                         )}
 
-                        {evidence && evidence.status === "REJECTED" && (
+                        {evidence &&
+                          evidence.status === "REJECTED" &&
+                          play.can_submit_evidence && (
                           <button
                             className={styles.actionButton}
                             type="button"
@@ -592,7 +634,15 @@ export default function PlayerHomePage() {
                           >
                             Reenviar evidência
                           </button>
-                        )}
+                          )}
+
+                        {(!evidence || evidence.status === "REJECTED") &&
+                          !play.can_submit_evidence && (
+                            <div className={styles.deadlineNotice}>
+                              Prazo encerrado. Esta evidência não pode mais ser
+                              enviada.
+                            </div>
+                          )}
                       </article>
                     );
                   })}
@@ -732,6 +782,7 @@ export default function PlayerHomePage() {
                 </span>
                 <span>Rodada: dia {selectedPlay.round_day}</span>
                 <span>Pontos da jogada: {selectedPlay.total_points}</span>
+                <span>{getEvidenceDeadlineLabel(selectedPlay)}</span>
               </div>
             )}
 

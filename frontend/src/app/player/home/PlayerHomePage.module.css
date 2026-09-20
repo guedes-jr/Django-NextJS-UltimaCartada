@@ -639,3 +639,25 @@
   font-size: 13px;
   line-height: 1.4;
 }
+
+.deadlineAvailable {
+  color: #067647 !important;
+  font-weight: 800;
+}
+
+.deadlineExpired {
+  color: #b42318 !important;
+  font-weight: 800;
+}
+
+.deadlineNotice {
+  display: block;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #fff1f1;
+  color: #b42318 !important;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.45;
+}

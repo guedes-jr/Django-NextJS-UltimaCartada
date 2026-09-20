@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { PlayerOnboardingTour } from "@/components/onboarding/PlayerOnboardingTour";
 import { getAuthUser } from "@/lib/auth";
 
 import styles from "./PlayerLayout.module.css";
@@ -23,6 +24,10 @@ const menuItems = [
     href: "/player/performance",
   },
   {
+    label: "Comunidade",
+    href: "/player/community",
+  },
+  {
     label: "Ranking",
     href: "/player/ranking",
   },
@@ -36,6 +41,22 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
   const user = getAuthUser();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isTourOpen, setIsTourOpen] = useState(
+    () =>
+      pathname === "/player/home" &&
+      user?.first_access_completed === false &&
+      !user.must_change_password
+  );
+
+  useEffect(() => {
+    const openTour = () => setIsTourOpen(true);
+
+    window.addEventListener("player:onboarding:start", openTour);
+
+    return () => {
+      window.removeEventListener("player:onboarding:start", openTour);
+    };
+  }, []);
 
   function isActive(href: string) {
     return pathname === href || pathname.startsWith(`${href}/`);
@@ -70,6 +91,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <nav
           className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
           id="player-navigation"
+          data-tour="player-navigation"
         >
           {menuItems.map((item) => (
             <Link
@@ -96,6 +118,11 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
 
         {children}
       </main>
+
+      <PlayerOnboardingTour
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
+      />
     </div>
   );
 }

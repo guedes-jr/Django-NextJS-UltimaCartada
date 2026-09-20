@@ -15,6 +15,9 @@ export type Play = {
   card_suit_color: string;
   round_day: number;
   played_at: string;
+  evidence_due_at: string | null;
+  can_submit_evidence: boolean;
+  is_evidence_deadline_expired: boolean;
   is_within_time: boolean;
   is_round_starter: boolean;
   base_points: number;

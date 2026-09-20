@@ -11,6 +11,8 @@ export type Evidence = {
   card_value: number;
   round_day: number;
   game_name: string;
+  game: number;
+  group: number;
   text: string;
   file: string | null;
   status: EvidenceStatus;

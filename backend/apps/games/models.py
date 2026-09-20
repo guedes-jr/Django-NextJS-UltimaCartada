@@ -1,3 +1,5 @@
+from datetime import time
+
 from django.conf import settings
 from django.db import models
 
@@ -28,6 +30,7 @@ class Game(models.Model):
         default=GameStatus.DRAFT,
     )
     evidence_bonus_points = models.PositiveSmallIntegerField(default=3)
+    evidence_deadline_time = models.TimeField(default=time(22, 0))
     lowest_card_points = models.PositiveSmallIntegerField(default=1)
     middle_card_points = models.PositiveSmallIntegerField(default=2)
     highest_card_points = models.PositiveSmallIntegerField(default=3)

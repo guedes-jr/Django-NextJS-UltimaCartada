@@ -1,0 +1,147 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 32px;
+  background: rgba(10, 25, 19, 0.72);
+  backdrop-filter: blur(3px);
+}
+
+.tour {
+  width: min(100%, 680px);
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  background: #fffaf2;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.progress span {
+  height: 5px;
+  border-radius: 999px;
+  background: #ded8c9;
+}
+
+.progress .progressActive {
+  background: #d88b43;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #a55d21;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tour h2 {
+  margin: 0;
+  color: #13231d;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.15;
+}
+
+.tour p {
+  margin: 14px 0;
+  color: #59655f;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.counter {
+  color: #768079;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.error {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff1f1;
+  color: #b42318;
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.actions > div {
+  display: flex;
+  gap: 10px;
+}
+
+.skipButton,
+.backButton,
+.nextButton {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.skipButton {
+  padding-inline: 0;
+  background: transparent;
+  color: #667064;
+  text-decoration: underline;
+}
+
+.backButton {
+  background: #f1e8d9;
+  color: #132820;
+}
+
+.nextButton {
+  background: #132820;
+  color: #fffaf2;
+}
+
+.skipButton:disabled,
+.backButton:disabled,
+.nextButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: 0;
+  }
+
+  .tour {
+    padding: 22px 18px max(22px, env(safe-area-inset-bottom));
+    border-radius: 18px 18px 0 0;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .actions > div,
+  .actions button {
+    width: 100%;
+  }
+}

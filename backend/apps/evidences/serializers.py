@@ -3,6 +3,9 @@ from rest_framework import serializers
 from apps.evidences.models import Evidence
 from apps.evidences.models import EvidenceStatus
 from apps.plays.models import Play
+from apps.evidences.services.evidence_submission_service import (
+    EvidenceSubmissionService,
+)
 
 
 class EvidenceSerializer(serializers.ModelSerializer):
@@ -37,6 +40,8 @@ class EvidenceSerializer(serializers.ModelSerializer):
         source="play.game.name",
         read_only=True,
     )
+    game = serializers.IntegerField(source="play.game_id", read_only=True)
+    group = serializers.IntegerField(source="play.group_id", read_only=True)
 
     class Meta:
         model = Evidence
@@ -51,6 +56,8 @@ class EvidenceSerializer(serializers.ModelSerializer):
             "card_value",
             "round_day",
             "game_name",
+            "game",
+            "group",
             "text",
             "file",
             "status",
@@ -81,6 +88,9 @@ class EvidenceSerializer(serializers.ModelSerializer):
 
         if not play:
             return attrs
+
+        if self.instance is None:
+            EvidenceSubmissionService().validate_deadline(play)
 
         existing_evidences = Evidence.objects.filter(play=play)
 

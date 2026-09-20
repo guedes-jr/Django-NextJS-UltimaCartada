@@ -22,6 +22,7 @@ class PlayViewSet(ModelViewSet):
             "player",
             "card",
             "card__suit",
+            "evidence",
         ).order_by("-played_at", "-created_at")
 
         if user.is_admin_user:

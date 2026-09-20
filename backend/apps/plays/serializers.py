@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from apps.cards.models import Card
@@ -6,6 +7,8 @@ from apps.rounds.models import Round
 
 
 class PlaySerializer(serializers.ModelSerializer):
+    can_submit_evidence = serializers.SerializerMethodField()
+    is_evidence_deadline_expired = serializers.SerializerMethodField()
     player_username = serializers.CharField(
         source="player.username",
         read_only=True,
@@ -59,6 +62,9 @@ class PlaySerializer(serializers.ModelSerializer):
             "card_suit_color",
             "round_day",
             "played_at",
+            "evidence_due_at",
+            "can_submit_evidence",
+            "is_evidence_deadline_expired",
             "is_within_time",
             "is_round_starter",
             "base_points",
@@ -75,6 +81,9 @@ class PlaySerializer(serializers.ModelSerializer):
             "group",
             "player",
             "played_at",
+            "evidence_due_at",
+            "can_submit_evidence",
+            "is_evidence_deadline_expired",
             "is_within_time",
             "is_round_starter",
             "base_points",
@@ -86,3 +95,15 @@ class PlaySerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+    def get_can_submit_evidence(self, obj):
+        if self.get_is_evidence_deadline_expired(obj):
+            return False
+
+        if not hasattr(obj, "evidence"):
+            return True
+
+        return obj.evidence.status == "REJECTED"
+
+    def get_is_evidence_deadline_expired(self, obj):
+        return not obj.evidence_due_at or timezone.now() > obj.evidence_due_at

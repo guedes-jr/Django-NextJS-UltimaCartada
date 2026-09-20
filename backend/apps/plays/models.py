@@ -41,6 +41,7 @@ class Play(models.Model):
         related_name="plays",
     )
     played_at = models.DateTimeField(auto_now_add=True)
+    evidence_due_at = models.DateTimeField(blank=True, null=True)
     is_within_time = models.BooleanField(default=True)
     is_round_starter = models.BooleanField(default=False)
     base_points = models.PositiveSmallIntegerField(default=0)

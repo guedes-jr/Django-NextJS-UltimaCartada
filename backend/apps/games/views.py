@@ -17,7 +17,12 @@ class GameViewSet(ModelViewSet):
         user = self.request.user
 
         queryset = (
-            Game.objects.select_related("group", "created_by")
+            Game.objects.select_related(
+                "group",
+                "created_by",
+                "journey_game__enrollment__journey",
+                "journey_game__stage",
+            )
             .prefetch_related("group__mediators")
             .order_by("-start_date", "name")
         )

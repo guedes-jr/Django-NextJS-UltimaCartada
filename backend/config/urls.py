@@ -17,6 +17,9 @@ urlpatterns = [
     path("api/v1/scoring/", include("apps.scoring.urls")),
     path("api/v1/games/", include("apps.games.urls")),
     path("api/v1/accounts/", include("apps.accounts.urls")),
+    path("api/v1/journeys/", include("apps.journeys.urls")),
+    path("api/v1/community/", include("apps.community.urls")),
+    path("api/v1/reports/", include("apps.reports.urls")),
     path("api/v1/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 

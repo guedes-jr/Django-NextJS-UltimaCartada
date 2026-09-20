@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     "apps.evidences",
     "apps.scoring",
     "apps.dashboard",
+    "apps.journeys.apps.JourneysConfig",
+    "apps.community.apps.CommunityConfig",
+    "apps.reports.apps.ReportsConfig",
 ]
 
 MIDDLEWARE = [

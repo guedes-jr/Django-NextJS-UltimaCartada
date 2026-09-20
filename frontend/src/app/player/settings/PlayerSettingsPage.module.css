@@ -22,10 +22,34 @@
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
+.card + .card {
+  margin-top: 20px;
+}
+
 .card h2 {
   margin: 0 0 18px;
   color: #13231d;
   font-size: 22px;
+}
+
+.cardDescription {
+  margin: -6px 0 18px;
+  color: #667064;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.tourButton {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #132820;
+  color: #fffaf2;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
 }
 
 @media (max-width: 640px) {

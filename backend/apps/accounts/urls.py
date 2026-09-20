@@ -6,6 +6,7 @@ from apps.accounts.views import (
     CustomTokenObtainPairView,
     GameMediatorListView,
     MeView,
+    CompleteOnboardingView,
 )
 
 
@@ -13,6 +14,11 @@ urlpatterns = [
     path("token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("me/", MeView.as_view(), name="me"),
+    path(
+        "complete-onboarding/",
+        CompleteOnboardingView.as_view(),
+        name="complete-onboarding",
+    ),
     path(
         "admin/players/create/",
         AdminPlayerCreateView.as_view(),

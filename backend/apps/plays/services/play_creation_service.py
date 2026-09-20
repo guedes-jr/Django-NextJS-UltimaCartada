@@ -7,6 +7,7 @@ from apps.plays.models import Play
 from apps.plays.models import PlayStatus
 from apps.rounds.models import Round
 from apps.rounds.models import RoundStatus
+from apps.plays.services.evidence_deadline_service import EvidenceDeadlineService
 
 
 class PlayCreationService:
@@ -49,6 +50,10 @@ class PlayCreationService:
             round=round_instance,
             player=player,
             card=card,
+            evidence_due_at=EvidenceDeadlineService().get_due_at(
+                round_instance,
+                game.evidence_deadline_time,
+            ),
             is_within_time=is_within_time,
             is_round_starter=is_round_starter,
             status=PlayStatus.VALID,

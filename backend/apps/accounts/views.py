@@ -28,6 +28,30 @@ class MeView(APIView):
         return Response(serializer.data)
 
 
+class CompleteOnboardingView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        user = request.user
+
+        if user.role != UserRole.PLAYER:
+            return Response(
+                {"detail": "Apenas jogadores possuem este tour."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        if not user.first_access_completed:
+            user.first_access_completed = True
+            user.save(update_fields=["first_access_completed", "updated_at"])
+
+        return Response(
+            {
+                "detail": "Tour concluído com sucesso.",
+                "first_access_completed": True,
+            }
+        )
+
+
 class AdminPlayerCreateView(APIView):
     permission_classes = (IsAuthenticated,)
 

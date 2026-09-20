@@ -35,6 +35,11 @@ const menuItems: Array<{ label: string; href: string; roles: UserRole[] }> = [
     roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],
   },
   {
+    label: "Jornadas",
+    href: "/admin/journeys",
+    roles: ["DEV", "GENERAL_ADMIN", "ADMIN"],
+  },
+  {
     label: "Rodadas",
     href: "/admin/rounds",
     roles: ["DEV", "GENERAL_ADMIN", "GAME_MEDIATOR", "ADMIN"],

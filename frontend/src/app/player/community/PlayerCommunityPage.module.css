@@ -1,0 +1,80 @@
+.hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
+.hero h1 { max-width: 700px; margin: 5px 0 8px; color: #13231d; font-size: clamp(28px, 4vw, 42px); line-height: 1.08; letter-spacing: -.03em; }
+.hero p { margin: 0; color: #667064; line-height: 1.5; }
+.eyebrow { color: #a55d21; font-size: 12px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.filters { display: flex; flex: 0 0 auto; gap: 10px; padding: 12px; border: 1px solid #ded8c9; border-radius: 12px; background: #fffaf2; }
+.filters label { display: grid; gap: 5px; color: #667064; font-size: 10px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+.filters select { min-width: 160px; height: 38px; padding: 0 10px; border: 1px solid #ded8c9; border-radius: 7px; background: #fff; color: #13231d; font: inherit; font-size: 13px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; align-items: start; gap: 22px; }
+.feedColumn { display: grid; gap: 18px; min-width: 0; }
+.composer, .post, .ranking, .state, .emptyFeed { border: 1px solid #ded8c9; border-radius: 14px; background: #fffaf2; box-shadow: 0 12px 36px rgba(47, 38, 24, .1); }
+.composer { display: grid; gap: 14px; padding: 20px; }
+.composerTitle, .postHeader { display: flex; align-items: center; gap: 11px; }
+.composerTitle > div:nth-child(2), .author { display: grid; gap: 2px; min-width: 0; }
+.composerTitle strong, .author strong { color: #13231d; font-size: 14px; }
+.composerTitle span, .author span { color: #7a827c; font-size: 12px; }
+.avatar, .smallAvatar { display: grid; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #132820; color: #fffaf2; font-weight: 900; }
+.avatar { width: 44px; height: 44px; font-size: 11px; }
+.smallAvatar { width: 32px; height: 32px; font-size: 10px; }
+.composer textarea { min-height: 92px; padding: 13px; border: 1px solid #e1dacd; border-radius: 9px; background: #fff; color: #13231d; font: inherit; font-size: 15px; line-height: 1.5; resize: vertical; outline: none; }
+.composer textarea:focus, .commentForm input:focus { border-color: #132820; box-shadow: 0 0 0 3px rgba(19, 40, 32, .1); }
+.composerOptions { display: flex; align-items: center; gap: 10px; }
+.composerOptions select { min-width: 0; height: 40px; flex: 1; padding: 0 10px; border: 1px solid #ded8c9; border-radius: 8px; background: #fff; color: #4e5953; }
+.composerOptions > button, .commentForm button, .loadMore { min-height: 40px; padding: 0 17px; border: 0; border-radius: 8px; background: #132820; color: #fffaf2; font-weight: 900; cursor: pointer; }
+.composerOptions button:disabled, .commentForm button:disabled { cursor: not-allowed; opacity: .55; }
+.fileButton input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.fileButton span { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; background: #f1e8d9; color: #132820; font-size: 12px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+.selectedFile, .consent { color: #667064; font-size: 11px; line-height: 1.4; }
+.consent { padding: 9px 11px; border-radius: 6px; background: #eef7f2; color: #315e4e; }
+.post { overflow: hidden; }
+.postHeader { padding: 18px 20px 0; }
+.postHeader > img { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; }
+.author { flex: 1; }
+.groupBadge { max-width: 180px; overflow: hidden; padding: 6px 9px; border-radius: 999px; background: #f1e8d9; color: #725b3d; font-size: 10px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+.deleteButton { width: 30px; height: 30px; border: 0; border-radius: 50%; background: transparent; color: #887f72; font-size: 20px; cursor: pointer; }
+.postText { margin: 16px 20px; color: #263b32; font-size: 15px; line-height: 1.65; white-space: pre-wrap; }
+.evidenceCard { display: grid; gap: 5px; margin: 16px 20px; padding: 15px; border-left: 4px solid #d88b43; border-radius: 7px; background: #f8efe1; }
+.evidenceCard span { color: #a55d21; font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.evidenceCard strong { color: #13231d; }
+.evidenceCard p { margin: 3px 0 0; color: #59655f; font-size: 13px; line-height: 1.5; }
+.media { margin-top: 16px; background: #15231d; }
+.media img, .media video { display: block; width: 100%; max-height: 600px; object-fit: contain; }
+.engagementSummary { display: flex; justify-content: space-between; padding: 12px 20px; color: #7a827c; font-size: 12px; }
+.engagementSummary button { border: 0; background: none; color: inherit; cursor: pointer; }
+.reactions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 9px 14px; border-top: 1px solid #e9e1d3; }
+.reactions button { display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 38px; padding: 0 7px; border: 0; border-radius: 7px; background: transparent; color: #667064; font-size: 12px; font-weight: 800; cursor: pointer; }
+.reactions button:hover, .reactions .reactionActive { background: #f1e8d9; color: #a55d21; }
+.reactions small { padding: 1px 5px; border-radius: 999px; background: rgba(19, 40, 32, .08); }
+.comments { display: grid; gap: 12px; padding: 16px 20px 20px; border-top: 1px solid #e9e1d3; background: #fdf8ee; }
+.comment { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 9px; }
+.comment > div:nth-child(2) { padding: 9px 11px; border-radius: 10px; background: #fff; }
+.comment strong { color: #13231d; font-size: 12px; }
+.comment p { margin: 3px 0; color: #45534c; font-size: 13px; line-height: 1.45; }
+.comment span { color: #90968f; font-size: 10px; }
+.comment > button { border: 0; background: none; color: #9b5148; font-size: 10px; cursor: pointer; }
+.commentForm { display: flex; gap: 8px; }
+.commentForm input { min-width: 0; height: 40px; flex: 1; padding: 0 12px; border: 1px solid #ded8c9; border-radius: 8px; background: #fff; outline: none; }
+.ranking { position: sticky; top: 20px; overflow: hidden; }
+.rankingHeader { display: grid; gap: 4px; padding: 20px; background: #132820; color: #fffaf2; }
+.rankingHeader span { color: #e8c89b; font-size: 11px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.rankingHeader strong { font-size: 17px; }
+.rankingList { display: grid; }
+.rankingItem { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 13px 16px; border-bottom: 1px solid #ebe3d5; }
+.position { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: #f1e8d9; color: #725b3d; font-size: 12px; font-weight: 900; }
+.rankingItem:nth-child(-n+3) .position { background: #d88b43; color: #fff; }
+.rankingItem div { display: grid; gap: 2px; min-width: 0; }
+.rankingItem strong { overflow: hidden; color: #13231d; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.rankingItem small { color: #7a827c; font-size: 10px; }
+.rankingItem b { color: #13231d; font-size: 12px; white-space: nowrap; }
+.rankingEmpty { margin: 0; padding: 22px; color: #667064; font-size: 13px; line-height: 1.5; }
+.state, .emptyFeed { padding: 28px; color: #667064; text-align: center; }
+.emptyFeed { display: grid; gap: 7px; }
+.emptyFeed > span { color: #d88b43; font-size: 34px; }
+.emptyFeed strong { color: #13231d; font-size: 17px; }
+.emptyFeed p { margin: 0; font-size: 13px; }
+.success, .error { margin-bottom: 16px; padding: 13px 15px; border-radius: 8px; font-size: 13px; font-weight: 800; }
+.success { background: #ecfdf3; color: #067647; }
+.error { background: #fff1f1; color: #b42318; }
+.loadMore { justify-self: center; }
+@media (max-width: 980px) { .hero { align-items: stretch; flex-direction: column; } .layout { grid-template-columns: 1fr; } .ranking { position: static; grid-row: 1; } }
+@media (max-width: 680px) { .filters, .composerOptions { align-items: stretch; flex-direction: column; } .filters label, .filters select, .composerOptions > *, .fileButton span { width: 100%; box-sizing: border-box; } .reactions { grid-template-columns: repeat(2, 1fr); } .groupBadge { display: none; } .postHeader { padding: 15px 15px 0; } .postText, .evidenceCard { margin-inline: 15px; } .comments { padding-inline: 15px; } .commentForm { flex-direction: column; } .commentForm button { width: 100%; } }

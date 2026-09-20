@@ -12,6 +12,7 @@ class GameAdmin(admin.ModelAdmin):
         "start_date",
         "end_date",
         "duration_days",
+        "evidence_deadline_time",
         "status",
         "is_active",
         "created_by",

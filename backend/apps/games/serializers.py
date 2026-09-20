@@ -11,6 +11,9 @@ class GameSerializer(serializers.ModelSerializer):
     total_rounds = serializers.SerializerMethodField()
     rounds_count = serializers.SerializerMethodField()
     mediators = serializers.SerializerMethodField()
+    journey_id = serializers.SerializerMethodField()
+    journey_name = serializers.SerializerMethodField()
+    journey_stage = serializers.SerializerMethodField()
 
     class Meta:
         model = Game
@@ -21,6 +24,9 @@ class GameSerializer(serializers.ModelSerializer):
             "group",
             "group_name",
             "mediators",
+            "journey_id",
+            "journey_name",
+            "journey_stage",
             "start_date",
             "end_date",
             "duration_days",
@@ -28,6 +34,7 @@ class GameSerializer(serializers.ModelSerializer):
             "status",
             "rounds_count",
             "evidence_bonus_points",
+            "evidence_deadline_time",
             "lowest_card_points",
             "middle_card_points",
             "highest_card_points",
@@ -60,3 +67,18 @@ class GameSerializer(serializers.ModelSerializer):
             }
             for mediator in obj.group.mediators.all()
         ]
+
+    def get_journey_id(self, obj):
+        if not hasattr(obj, "journey_game"):
+            return None
+        return obj.journey_game.enrollment.journey_id
+
+    def get_journey_name(self, obj):
+        if not hasattr(obj, "journey_game"):
+            return ""
+        return obj.journey_game.enrollment.journey.name
+
+    def get_journey_stage(self, obj):
+        if not hasattr(obj, "journey_game"):
+            return None
+        return obj.journey_game.stage.order

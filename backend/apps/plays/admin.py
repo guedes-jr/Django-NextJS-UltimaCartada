@@ -18,6 +18,7 @@ class PlayAdmin(admin.ModelAdmin):
         "total_points",
         "status",
         "played_at",
+        "evidence_due_at",
     )
     list_filter = (
         "status",
