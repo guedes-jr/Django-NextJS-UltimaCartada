@@ -12,7 +12,7 @@
   padding: 0;
   border: 1px solid #dfd4c2;
   border-radius: 12px;
-  background: #fffaf2;
+  background: #fffaf3;
   box-shadow: 0 16px 38px rgba(50, 36, 18, 0.1);
   color: inherit;
   text-align: left;
@@ -24,7 +24,7 @@
   display: block;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: #13231d;
+  background: #1b1813;
 }
 
 .media img {
@@ -79,7 +79,7 @@
 }
 
 .cardBody strong {
-  color: #13231d;
+  color: #1b1813;
   font-size: 16px;
   font-weight: 900;
   letter-spacing: 0.06em;
@@ -109,7 +109,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
-  background: #101b17;
+  background: #1b1813;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
 }
 

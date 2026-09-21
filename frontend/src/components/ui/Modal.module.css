@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(19, 40, 32, 0.58);
+  background: rgba(27, 24, 19, 0.58);
 }
 
 .modal {
@@ -15,8 +15,8 @@
   max-height: 90vh;
   overflow: hidden;
   border-radius: 8px;
-  background: #fffaf2;
-  box-shadow: 0 24px 80px rgba(19, 40, 32, 0.28);
+  background: #fffaf3;
+  box-shadow: 0 24px 80px rgba(27, 24, 19, 0.28);
 }
 
 .header {
@@ -26,13 +26,13 @@
   justify-content: space-between;
   gap: 16px;
   padding: 0 24px;
-  border-bottom: 1px solid #ded8c9;
+  border-bottom: 1px solid #e4d8c4;
 }
 
 .header h2 {
   min-width: 0;
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 22px;
   line-height: 1.2;
   overflow-wrap: anywhere;
@@ -44,8 +44,8 @@
   height: 38px;
   border: 0;
   border-radius: 6px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;

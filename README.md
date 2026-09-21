@@ -1,4 +1,4 @@
-# A Última Cartada · Cartada Viva
+# Cartada Viva · A Última Cartada
 
 Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com cartas, rodadas, evidências, pontuação e acompanhamento. Reúne também comunidade, jornadas, desafios-relâmpago, mentoria e suporte em uma única experiência para participantes e equipe.
 
@@ -6,11 +6,11 @@ Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com car
 
 ## Visão do sistema
 
-As imagens abaixo foram capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
+As imagens abaixo foram atualizadas após a adoção da identidade Cartada Viva em preto, dourado e branco e capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
 
 | Apresentação | Prévia pública do jogo |
 | --- | --- |
-| [![Página inicial da Última Cartada](docs/screenshots/landing.png)](docs/screenshots/landing.png) | [![Prévia pública do Cartada Viva](docs/screenshots/cartada-viva.png)](docs/screenshots/cartada-viva.png) |
+| [![Página inicial da Cartada Viva](docs/screenshots/landing.png)](docs/screenshots/landing.png) | [![Prévia pública do Cartada Viva](docs/screenshots/cartada-viva.png)](docs/screenshots/cartada-viva.png) |
 
 | Tutorial de cadastro | Acesso à plataforma |
 | --- | --- |

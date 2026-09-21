@@ -8,13 +8,13 @@
 
 .header h1 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 30px;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #667064;
+  color: #70675b;
   font-size: 15px;
 }
 
@@ -23,8 +23,8 @@
   padding: 0 18px;
   border: 0;
   border-radius: 8px;
-  background: #132820;
-  color: #fff7e8;
+  background: #1b1813;
+  color: #fff9ee;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -34,14 +34,14 @@
 .cardBox {
   padding: 24px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .cardBox h2 {
   margin: 0 0 18px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 22px;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .field label {
-  color: #13231d;
+  color: #1b1813;
   font-size: 13px;
   font-weight: 800;
 }
@@ -73,10 +73,10 @@
 .field textarea,
 .field select {
   width: 100%;
-  border: 1px solid #ded8c9;
+  border: 1px solid #e4d8c4;
   border-radius: 6px;
-  background: #fffaf2;
-  color: #13231d;
+  background: #fffaf3;
+  color: #1b1813;
   font-size: 14px;
   outline: none;
   box-sizing: border-box;
@@ -100,15 +100,15 @@
   gap: 10px;
   padding: 14px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
 }
 
 .checkboxItem {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 14px;
   font-weight: 700;
 }
@@ -122,8 +122,8 @@
   height: 46px;
   border: 0;
   border-radius: 8px;
-  background: #132820;
-  color: #fff7e8;
+  background: #1b1813;
+  color: #fff9ee;
   font-size: 15px;
   font-weight: 800;
   cursor: pointer;
@@ -137,8 +137,8 @@
 .message {
   padding: 14px;
   border-radius: 8px;
-  background: #f7efe0;
-  color: #13231d;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 14px;
   font-weight: 700;
 }
@@ -147,8 +147,8 @@
   margin-bottom: 18px;
   padding: 14px;
   border-radius: 8px;
-  background: #eefaf5;
-  color: #24775c;
+  background: #f9f1e2;
+  color: #8b601f;
   font-size: 14px;
   font-weight: 700;
 }
@@ -176,8 +176,8 @@
 
 .table th {
   padding: 12px;
-  border-bottom: 1px solid #ded8c9;
-  color: #667064;
+  border-bottom: 1px solid #e4d8c4;
+  color: #70675b;
   font-size: 13px;
   text-align: left;
 }
@@ -185,7 +185,7 @@
 .table td {
   padding: 14px 12px;
   border-bottom: 1px solid #f1edff;
-  color: #13231d;
+  color: #1b1813;
   font-size: 14px;
 }
 
@@ -196,11 +196,11 @@
 }
 
 .cardName strong {
-  color: #13231d;
+  color: #1b1813;
 }
 
 .cardName span {
-  color: #667064;
+  color: #70675b;
   font-size: 13px;
 }
 
@@ -211,8 +211,8 @@
   height: 30px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 13px;
   font-weight: 800;
 }
@@ -223,8 +223,8 @@
   height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #eefaf5;
-  color: #24775c;
+  background: #f9f1e2;
+  color: #8b601f;
   font-size: 12px;
   font-weight: 800;
 }
@@ -263,8 +263,8 @@
   padding: 0 12px;
   border: 0;
   border-radius: 6px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
@@ -293,8 +293,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 30px;
   font-weight: 900;
   flex-shrink: 0;
@@ -308,12 +308,12 @@
 
 .previewTitle h3 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 24px;
 }
 
 .previewTitle span {
-  color: #667064;
+  color: #70675b;
   font-size: 14px;
   font-weight: 700;
 }
@@ -327,35 +327,35 @@
 .previewItem {
   padding: 14px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
 }
 
 .previewItem span {
   display: block;
   margin-bottom: 6px;
-  color: #667064;
+  color: #70675b;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .previewItem strong {
-  color: #13231d;
+  color: #1b1813;
   font-size: 15px;
 }
 
 .previewText {
   padding: 16px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
 }
 
 .previewText span {
   display: block;
   margin-bottom: 8px;
-  color: #667064;
+  color: #70675b;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -363,7 +363,7 @@
 
 .previewText p {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 15px;
   line-height: 1.6;
   white-space: pre-line;
@@ -374,8 +374,8 @@
   max-height: 380px;
   object-fit: contain;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
 }
 
 @media (max-width: 720px) {

@@ -3,7 +3,7 @@
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 30rem),
-    linear-gradient(180deg, #fbf7ef 0%, #f7f3ea 100%);
+    linear-gradient(180deg, #fbf7ef 0%, #f8f2e8 100%);
 }
 
 .sidebar {
@@ -13,8 +13,8 @@
   height: 100vh;
   overflow-y: auto;
   padding: 24px;
-  background: linear-gradient(180deg, #073f4d 0%, #0c554f 58%, #174f43 100%);
-  box-shadow: 12px 0 36px rgba(19, 40, 32, 0.18);
+  background: linear-gradient(180deg, #1b1813 0%, #30271b 58%, #3b2e1c 100%);
+  box-shadow: 12px 0 36px rgba(27, 24, 19, 0.18);
   box-sizing: border-box;
   z-index: 30;
 }
@@ -51,7 +51,7 @@
   min-height: 42px;
   padding: 12px 14px;
   border-radius: 8px;
-  color: #fff7e8;
+  color: #fff9ee;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -60,13 +60,13 @@
 }
 
 .nav a:hover {
-  background: rgba(164, 195, 167, 0.2);
+  background: rgba(188, 144, 70, 0.2);
   transform: translateX(2px);
 }
 
 .nav a.activeLink {
-  background: #d5ad58;
-  color: #073945;
+  background: #bc9046;
+  color: #1b1813;
   box-shadow: 0 8px 20px rgba(0, 24, 29, 0.18);
 }
 
@@ -86,7 +86,7 @@
   padding: 0 32px;
   background: rgba(251, 247, 239, 0.92);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid #ded8c9;
+  border-bottom: 1px solid #e4d8c4;
   box-sizing: border-box;
   z-index: 20;
 }
@@ -111,32 +111,32 @@
   border: 1px solid #ccd9d3;
   border-radius: 50%;
   background: #fffdf8;
-  color: #074b56;
+  color: #211b13;
   cursor: pointer;
 }
 
 .notificationButton svg { width: 20px; height: 20px; }
 .notificationButton > span { position:absolute; top:-5px; right:-4px; display:grid; min-width:20px; height:20px; padding:0 4px; place-items:center; border:2px solid #fbf7ef; border-radius:999px; background:#c44b39; color:#fff; font-size:10px; font-weight:900; }
-.notificationPanel { position:absolute; top:52px; right:0; width:min(380px,calc(100vw - 28px)); overflow:hidden; border:1px solid #d5ded7; border-radius:10px; background:#fffdf8; box-shadow:0 22px 54px rgba(6,48,56,.22); }
-.notificationPanel header { position:static; height:auto; display:flex; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e4e9e4; background:#edf4ef; }
-.notificationPanel header strong { color:#073f4d; }
-.notificationPanel header button { border:0; background:transparent; color:#9d742a; font-size:11px; font-weight:800; cursor:pointer; }
-.notificationPanel > p { margin:0; padding:28px 18px; color:#63716a; text-align:center; }
+.notificationPanel { position:absolute; top:52px; right:0; width:min(380px,calc(100vw - 28px)); overflow:hidden; border:1px solid #d5ded7; border-radius:10px; background:#fffdf8; box-shadow:0 22px 54px rgba(27,24,19,.22); }
+.notificationPanel header { position:static; height:auto; display:flex; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e4e9e4; background:#f8f0e1; }
+.notificationPanel header strong { color:#1b1813; }
+.notificationPanel header button { border:0; background:transparent; color:#8b601f; font-size:11px; font-weight:800; cursor:pointer; }
+.notificationPanel > p { margin:0; padding:28px 18px; color:#70675b; text-align:center; }
 .notificationList { max-height:390px; overflow:auto; }
-.notificationList a { display:grid; gap:5px; padding:14px 16px; border-bottom:1px solid #edf0ec; color:#244840; text-decoration:none; }
+.notificationList a { display:grid; gap:5px; padding:14px 16px; border-bottom:1px solid #edf0ec; color:#4d4438; text-decoration:none; }
 .notificationList a:hover { background:#f5f7f1; }
-.notificationList a.unreadNotification { border-left:4px solid #d5ad58; background:#f8f5e9; }
-.notificationList span { color:#52655d; font-size:13px; line-height:1.35; }
-.notificationList small { color:#7a8982; font-size:10px; }
+.notificationList a.unreadNotification { border-left:4px solid #bc9046; background:#f8f5e9; }
+.notificationList span { color:#70675b; font-size:13px; line-height:1.35; }
+.notificationList small { color:#70675b; font-size:10px; }
 
 .userInfo span {
-  color: #667064;
+  color: #70675b;
   font-size: 12px;
   font-weight: 700;
 }
 
 .userInfo strong {
-  color: #13231d;
+  color: #1b1813;
   font-size: 15px;
   text-align: right;
   overflow-wrap: anywhere;
@@ -160,8 +160,8 @@
   padding: 0 14px;
   border: 0;
   border-radius: 6px;
-  background: #074b56;
-  color: #fff7e8;
+  background: #211b13;
+  color: #fff9ee;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -204,7 +204,7 @@
     inset: 0;
     display: block;
     border: 0;
-    background: rgba(19, 40, 32, 0.45);
+    background: rgba(27, 24, 19, 0.45);
     z-index: 25;
     cursor: pointer;
   }

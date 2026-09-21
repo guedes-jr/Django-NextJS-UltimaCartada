@@ -83,8 +83,8 @@ export default function CartadaVivaPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <Link className={styles.brand} href="/">
-          <strong>Cartada Viva</strong>
-          <span>jogo terapêutico</span>
+          <Image src="/icon.png" alt="" width={46} height={46} />
+          <span className={styles.brandText}><strong>Cartada Viva</strong><small>jogo de hábitos</small></span>
         </Link>
 
         <nav className={styles.nav} aria-label="Navegação do Cartada Viva">

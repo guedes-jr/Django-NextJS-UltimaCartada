@@ -2,35 +2,43 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
+  --brand-ink: #1b1813;
+  --brand-ink-soft: #4d4438;
+  --brand-gold: #bc9046;
+  --brand-gold-dark: #8b601f;
+  --brand-gold-soft: #f3e9d5;
+  --brand-paper: #fffaf3;
+  --brand-border: #e4d8c4;
+
   --landing-bg-white: #ffffff;
-  --landing-bg-cream: #fbf8ef;
-  --landing-bg-green-soft: #f3f7ed;
-  --landing-bg-dark: #1f2b16;
+  --landing-bg-cream: #fbf6eb;
+  --landing-bg-green-soft: #f8f0e1;
+  --landing-bg-dark: var(--brand-ink);
 
-  --landing-primary: #648f37;
-  --landing-primary-dark: #4f6935;
-  --landing-primary-soft: rgba(100, 143, 55, 0.12);
+  --landing-primary: var(--brand-ink);
+  --landing-primary-dark: var(--brand-ink);
+  --landing-primary-soft: rgba(188, 144, 70, 0.14);
 
-  --landing-gold: #d6ad54;
-  --landing-gold-dark: #c98213;
-  --landing-gold-soft: rgba(214, 173, 84, 0.16);
+  --landing-gold: var(--brand-gold);
+  --landing-gold-dark: var(--brand-gold-dark);
+  --landing-gold-soft: rgba(188, 144, 70, 0.16);
 
-  --landing-text-main: #1f2b16;
-  --landing-text-title: #0e2414;
-  --landing-text-muted: #69664f;
-  --landing-text-soft: #7a765f;
-  --landing-text-green: #31583a;
+  --landing-text-main: var(--brand-ink);
+  --landing-text-title: var(--brand-ink);
+  --landing-text-muted: #62594d;
+  --landing-text-soft: #756b5d;
+  --landing-text-green: var(--brand-gold-dark);
 
-  --landing-border: rgba(100, 143, 55, 0.12);
-  --landing-border-soft: rgba(77, 105, 49, 0.12);
+  --landing-border: rgba(139, 96, 31, 0.18);
+  --landing-border-soft: rgba(139, 96, 31, 0.13);
 
   --landing-card-bg: #ffffff;
-  --landing-icon-bg: #e9f2df;
+  --landing-icon-bg: var(--brand-gold-soft);
 
-  --landing-shadow-sm: 0 16px 34px rgba(67, 78, 42, 0.05);
-  --landing-shadow-md: 0 22px 56px rgba(67, 78, 42, 0.08);
-  --landing-shadow-lg: 0 34px 90px rgba(67, 78, 42, 0.16);
-  --landing-shadow-green: 0 20px 44px rgba(100, 143, 55, 0.28);
+  --landing-shadow-sm: 0 16px 34px rgba(46, 33, 17, 0.06);
+  --landing-shadow-md: 0 22px 56px rgba(46, 33, 17, 0.09);
+  --landing-shadow-lg: 0 34px 90px rgba(46, 33, 17, 0.17);
+  --landing-shadow-green: 0 20px 44px rgba(77, 54, 23, 0.22);
 }
 
 * {
@@ -46,6 +54,8 @@ body {
 body {
   min-width: 320px;
   overflow-x: hidden;
+  background: var(--brand-paper);
+  color: var(--brand-ink);
 }
 
 button,

@@ -4,14 +4,14 @@
 
 .header h1 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 30px;
   line-height: 1.15;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #667064;
+  color: #70675b;
   font-size: 15px;
   line-height: 1.5;
 }
@@ -27,14 +27,14 @@
   min-width: 0;
   padding: 20px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .summaryCard span {
   display: block;
-  color: #667064;
+  color: #70675b;
   font-size: 14px;
   font-weight: 700;
 }
@@ -42,7 +42,7 @@
 .summaryCard strong {
   display: block;
   margin-top: 10px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 28px;
   line-height: 1;
 }
@@ -50,14 +50,14 @@
 .section {
   padding: 24px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .section h2 {
   margin: 0 0 18px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 22px;
 }
 
@@ -75,8 +75,8 @@
 
 .table th {
   padding: 12px;
-  border-bottom: 1px solid #ded8c9;
-  color: #667064;
+  border-bottom: 1px solid #e4d8c4;
+  color: #70675b;
   font-size: 13px;
   text-align: left;
   white-space: nowrap;
@@ -85,7 +85,7 @@
 .table td {
   padding: 14px 12px;
   border-bottom: 1px solid #f1edff;
-  color: #13231d;
+  color: #1b1813;
   font-size: 14px;
   vertical-align: top;
 }
@@ -97,11 +97,11 @@
 }
 
 .cardInfo strong {
-  color: #13231d;
+  color: #1b1813;
 }
 
 .cardInfo span {
-  color: #667064;
+  color: #70675b;
   font-size: 13px;
 }
 
@@ -112,8 +112,8 @@
   min-height: 28px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
@@ -126,8 +126,8 @@
 }
 
 .approved {
-  background: #eefaf5;
-  color: #24775c;
+  background: #f9f1e2;
+  color: #8b601f;
 }
 
 .rejected {
@@ -139,8 +139,8 @@
   margin-bottom: 18px;
   padding: 16px;
   border-radius: 8px;
-  background: #fffaf2;
-  color: #13231d;
+  background: #fffaf3;
+  color: #1b1813;
   font-weight: 700;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }

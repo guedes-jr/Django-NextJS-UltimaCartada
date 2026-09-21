@@ -100,14 +100,15 @@ export default function HomePage() {
   return (
     <main className={styles.page} id="top">
       <header className={styles.header}>
-        <a className={styles.brand} href="#top" aria-label="A Última Cartada">
+        <a className={styles.brand} href="#top" aria-label="Cartada Viva">
           <Image
-            src="/ultima-cartada-logo.png"
-            alt="A Última Cartada — jogo terapêutico e mentoria em grupo"
-            width={220}
-            height={220}
+            src="/icon.png"
+            alt=""
+            width={56}
+            height={56}
             priority
           />
+          <span className={styles.brandName}>Cartada Viva</span>
         </a>
 
         <nav className={styles.nav} aria-label="Navegação principal">
@@ -341,10 +342,10 @@ export default function HomePage() {
       </section>
 
       <footer className={styles.footer}>
-        <a className={styles.brand} href="#top" aria-label="A Última Cartada">
+        <a className={styles.brand} href="#top" aria-label="Cartada Viva">
           <Image
-            src="/ultima-cartada-logo.png"
-            alt="A Última Cartada"
+            src="/cartada-viva-logo.png"
+            alt="Cartada Viva"
             width={220}
             height={220}
           />

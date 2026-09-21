@@ -181,8 +181,8 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <div className={styles.brand}>
           <Image
             className={styles.brandLogo}
-            src="/ultima-cartada-logo.png"
-            alt="A Última Cartada"
+            src="/cartada-viva-logo.png"
+            alt="Cartada Viva"
             width={220}
             height={220}
             priority

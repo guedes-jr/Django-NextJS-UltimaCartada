@@ -15,7 +15,7 @@
   padding: 28px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 16px;
-  background: #fffaf2;
+  background: #fffaf3;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
 }
 
@@ -29,7 +29,7 @@
 .progress span {
   height: 5px;
   border-radius: 999px;
-  background: #ded8c9;
+  background: #e4d8c4;
 }
 
 .progress .progressActive {
@@ -48,7 +48,7 @@
 
 .tour h2 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: clamp(24px, 4vw, 34px);
   line-height: 1.15;
 }
@@ -104,18 +104,18 @@
 .skipButton {
   padding-inline: 0;
   background: transparent;
-  color: #667064;
+  color: #70675b;
   text-decoration: underline;
 }
 
 .backButton {
   background: #f1e8d9;
-  color: #132820;
+  color: #1b1813;
 }
 
 .nextButton {
-  background: #132820;
-  color: #fffaf2;
+  background: #1b1813;
+  color: #fffaf3;
 }
 
 .skipButton:disabled,

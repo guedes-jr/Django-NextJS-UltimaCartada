@@ -1,7 +1,7 @@
 .page {
   min-height: 100vh;
   background: #fbf7ef;
-  color: #14231d;
+  color: #1b1813;
 }
 
 .header {
@@ -23,7 +23,7 @@
   flex-direction: column;
   gap: 2px;
   margin-right: auto;
-  color: #14231d;
+  color: #1b1813;
   font-family: Georgia, "Times New Roman", serif;
   text-decoration: none;
 }
@@ -49,7 +49,7 @@
 }
 
 .nav a {
-  color: #14231d;
+  color: #1b1813;
   font-size: 12px;
   font-weight: 900;
   text-decoration: none;
@@ -81,7 +81,7 @@
 .gameCallout h2,
 .finalCta h2 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(36px, 5vw, 70px);
   font-weight: 800;
@@ -92,7 +92,7 @@
 .gameCallout p {
   max-width: 660px;
   margin: 22px 0 0;
-  color: #29352f;
+  color: #4d4438;
   font-size: 18px;
   font-weight: 700;
   line-height: 1.65;
@@ -121,15 +121,15 @@
 }
 
 .primaryButton {
-  background: #132820;
-  color: #fff7e8;
-  box-shadow: 0 16px 30px rgba(19, 40, 32, 0.18);
+  background: #1b1813;
+  color: #fff9ee;
+  box-shadow: 0 16px 30px rgba(27, 24, 19, 0.18);
 }
 
 .secondaryButton {
   border: 1px solid #d8cbb7;
-  background: #fffaf2;
-  color: #14231d;
+  background: #fffaf3;
+  color: #1b1813;
 }
 
 .primaryButton svg,
@@ -208,7 +208,7 @@
   padding: 22px;
   border: 1px solid #ded4c2;
   border-radius: 8px;
-  background: #fffaf2;
+  background: #fffaf3;
 }
 
 .supportList svg,
@@ -216,13 +216,13 @@
 .gameCallout svg {
   width: 30px;
   height: 30px;
-  color: #648f37;
+  color: #8b601f;
 }
 
 .supportList p,
 .stepGrid p {
   margin: 12px 0 0;
-  color: #29352f;
+  color: #4d4438;
   font-size: 16px;
   font-weight: 700;
   line-height: 1.45;
@@ -231,8 +231,8 @@
 .process {
   padding-top: 64px;
   padding-bottom: 70px;
-  background: #132820;
-  color: #fff7e8;
+  background: #1b1813;
+  color: #fff9ee;
 }
 
 .sectionHeader {
@@ -242,7 +242,7 @@
 
 .process h2,
 .process .eyebrow {
-  color: #fff7e8;
+  color: #fff9ee;
 }
 
 .stepGrid {
@@ -258,7 +258,7 @@
 
 .stepGrid h3 {
   margin: 18px 0 0;
-  color: #fff7e8;
+  color: #fff9ee;
   font-size: 20px;
 }
 

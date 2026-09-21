@@ -93,13 +93,13 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <div className={styles.brand}>
           <Image
             className={styles.brandLogo}
-            src="/ultima-cartada-logo.png"
-            alt="A Última Cartada"
-            width={220}
-            height={220}
+            src="/icon.png"
+            alt=""
+            width={58}
+            height={58}
             priority
           />
-          <span>Área do jogador</span>
+          <div className={styles.brandText}><strong>Cartada Viva</strong><span>Área do jogador</span></div>
         </div>
 
         <button

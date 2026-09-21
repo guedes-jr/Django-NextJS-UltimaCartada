@@ -8,13 +8,13 @@
 
 .header h1 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 30px;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #667064;
+  color: #70675b;
   font-size: 15px;
   line-height: 1.5;
 }
@@ -23,8 +23,8 @@
   margin-bottom: 24px;
   padding: 20px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .field label {
-  color: #13231d;
+  color: #1b1813;
   font-size: 14px;
   font-weight: 800;
 }
@@ -44,10 +44,10 @@
 .field select {
   height: 44px;
   padding: 0 12px;
-  border: 1px solid #ded8c9;
+  border: 1px solid #e4d8c4;
   border-radius: 6px;
-  background: #fffaf2;
-  color: #13231d;
+  background: #fffaf3;
+  color: #1b1813;
   font-size: 14px;
   outline: none;
 }
@@ -55,22 +55,22 @@
 .card {
   padding: 24px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .card h2 {
   margin: 0 0 18px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 22px;
 }
 
 .message {
   padding: 14px;
   border-radius: 8px;
-  background: #f7efe0;
-  color: #13231d;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 14px;
   font-weight: 700;
 }
@@ -79,8 +79,8 @@
   margin-bottom: 18px;
   padding: 14px;
   border-radius: 8px;
-  background: #eefaf5;
-  color: #24775c;
+  background: #f9f1e2;
+  color: #8b601f;
   font-size: 14px;
   font-weight: 800;
 }
@@ -109,8 +109,8 @@
 
 .table th {
   padding: 12px;
-  border-bottom: 1px solid #ded8c9;
-  color: #667064;
+  border-bottom: 1px solid #e4d8c4;
+  color: #70675b;
   font-size: 13px;
   text-align: left;
   white-space: nowrap;
@@ -119,7 +119,7 @@
 .table td {
   padding: 14px 12px;
   border-bottom: 1px solid #f1edff;
-  color: #13231d;
+  color: #1b1813;
   font-size: 14px;
   vertical-align: top;
 }
@@ -131,7 +131,7 @@
 }
 
 .period span {
-  color: #667064;
+  color: #70675b;
   font-size: 13px;
   line-height: 1.4;
 }
@@ -143,8 +143,8 @@
   min-height: 28px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
   font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
@@ -152,8 +152,8 @@
 }
 
 .badgeActive {
-  background: #eefaf5;
-  color: #24775c;
+  background: #f9f1e2;
+  color: #8b601f;
 }
 
 .badgeInactive {
@@ -180,8 +180,8 @@
 }
 
 .secondaryButton {
-  background: #f7efe0;
-  color: #132820;
+  background: #f3e9d5;
+  color: #1b1813;
 }
 
 .dangerButton {

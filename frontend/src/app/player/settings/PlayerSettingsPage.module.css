@@ -4,21 +4,21 @@
 
 .header h1 {
   margin: 0;
-  color: #13231d;
+  color: #1b1813;
   font-size: 30px;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #667064;
+  color: #70675b;
   font-size: 15px;
 }
 
 .card {
   padding: 24px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
@@ -28,13 +28,13 @@
 
 .card h2 {
   margin: 0 0 18px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 22px;
 }
 
 .cardDescription {
   margin: -6px 0 18px;
-  color: #667064;
+  color: #70675b;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -44,8 +44,8 @@
   padding: 0 18px;
   border: 0;
   border-radius: 8px;
-  background: #132820;
-  color: #fffaf2;
+  background: #1b1813;
+  color: #fffaf3;
   font: inherit;
   font-size: 14px;
   font-weight: 900;

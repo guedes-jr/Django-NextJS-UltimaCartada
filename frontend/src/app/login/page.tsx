@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { api } from "@/lib/api";
 import { hasProduct, isGameStaffRole, ProductCode, UserRole } from "@/lib/auth";
 import styles from "./LoginPage.module.css";
@@ -94,7 +95,7 @@ export default function LoginPage() {
     <main className={styles.page}>
       <section className={styles.card}>
         <div className={styles.brand}>
-          <div className={styles.logo}>♦</div>
+          <Image className={styles.logo} src="/icon.png" alt="" width={58} height={58} priority />
           <div>
             <h1>Cartada Viva</h1>
             <p>Jogo digital de hábitos saudáveis</p>

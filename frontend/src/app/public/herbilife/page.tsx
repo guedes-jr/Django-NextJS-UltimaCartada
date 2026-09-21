@@ -55,7 +55,7 @@ const faqs = [
 export default function HerbilifePage() {
   return <main className={styles.page}>
     <header className={styles.header}>
-      <Link className={styles.brand} href="/" aria-label="A Última Cartada — início"><Image src="/ultima-cartada-logo.png" width={90} height={90} alt="" /><span>A Última Cartada</span></Link>
+      <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-logo.png" width={90} height={90} alt="" /><span>Cartada Viva</span></Link>
       <nav aria-label="Navegação desta página"><a href="#passos">Passo a passo</a><a href="#duvidas">Dúvidas</a><Link href="/">Voltar ao site</Link></nav>
     </header>
 

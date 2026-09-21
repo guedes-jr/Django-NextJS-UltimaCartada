@@ -2,7 +2,7 @@
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(255, 255, 255, 0.72), transparent 30rem),
-    linear-gradient(180deg, #fbf7ef 0%, #f7f3ea 100%);
+    linear-gradient(180deg, #fbf7ef 0%, #f8f2e8 100%);
 }
 
 .header {
@@ -15,7 +15,7 @@
   padding: 0 32px;
   background: rgba(250, 250, 245, 0.96);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid #ded8c9;
+  border-bottom: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.08);
   box-sizing: border-box;
   z-index: 20;
@@ -30,14 +30,17 @@
 }
 
 .brandLogo {
-  width: 116px;
-  height: 74px;
+  width: 58px;
+  height: 58px;
   object-fit: contain;
   border-radius: 6px;
 }
 
+.brandText { display: flex; flex-direction: column; gap: 4px; }
+.brandText strong { color: #1b1813; font: 700 18px Georgia, serif; white-space: nowrap; }
+
 .brand span {
-  color: #356c5b;
+  color: #8b601f;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -55,7 +58,7 @@
   min-height: 40px;
   padding: 10px 12px;
   border-radius: 6px;
-  color: #074b56;
+  color: #211b13;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -64,13 +67,13 @@
 }
 
 .nav a:hover {
-  background: #e5eee7;
+  background: #f3e9d5;
 }
 
 .nav a.activeLink {
-  background: #074b56;
+  background: #211b13;
   color: #fffaf0;
-  box-shadow: inset 0 -3px 0 #d5ad58;
+  box-shadow: inset 0 -3px 0 #bc9046;
 }
 
 .logoutButton {
@@ -91,8 +94,8 @@
   padding: 0 14px;
   border: 0;
   border-radius: 6px;
-  background: #074b56;
-  color: #fff7e8;
+  background: #211b13;
+  color: #fff9ee;
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
@@ -111,14 +114,14 @@
   margin-bottom: 28px;
   padding: 22px;
   border-radius: 8px;
-  background: #fffaf2;
-  border: 1px solid #ded8c9;
+  background: #fffaf3;
+  border: 1px solid #e4d8c4;
   box-shadow: 0 12px 36px rgba(47, 38, 24, 0.12);
 }
 
 .welcome span {
   display: block;
-  color: #667064;
+  color: #70675b;
   font-size: 14px;
   font-weight: 700;
 }
@@ -126,7 +129,7 @@
 .welcome strong {
   display: block;
   margin-top: 6px;
-  color: #13231d;
+  color: #1b1813;
   font-size: 28px;
   line-height: 1.15;
 }
@@ -166,13 +169,13 @@
 
   .nav a {
     width: 100%;
-    background: #e5eee7;
+    background: #f3e9d5;
     box-sizing: border-box;
   }
 
   .nav a.activeLink {
-    background: #074b56;
-    color: #fff7e8;
+    background: #211b13;
+    color: #fff9ee;
   }
 
   .logoutButton {
