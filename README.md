@@ -1,640 +1,117 @@
-# Última Cartada
+# A Última Cartada · Cartada Viva
 
-Aplicação web para digitalização e gerenciamento do jogo **Última Cartada**, uma dinâmica gamificada voltada ao desenvolvimento de hábitos saudáveis, acompanhamento de jogadores e controle de desempenho individual e em grupo.
+Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com cartas, rodadas, evidências, pontuação e acompanhamento. Reúne também comunidade, jornadas, desafios-relâmpago, mentoria e suporte em uma única experiência para participantes e equipe.
 
-O projeto utiliza **Django REST Framework** no backend, **PostgreSQL** como banco de dados e **Next.js** no frontend.
+> O sistema organiza a participação e o acompanhamento; não substitui atendimento, diagnóstico ou tratamento por profissionais de saúde.
 
----
+## Visão do sistema
 
-## Objetivo
+As imagens abaixo foram capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
 
-O sistema foi pensado para apoiar a aplicação do jogo por uma administradora/psicóloga, permitindo:
+| Apresentação | Prévia pública do jogo |
+| --- | --- |
+| [![Página inicial da Última Cartada](docs/screenshots/landing.png)](docs/screenshots/landing.png) | [![Prévia pública do Cartada Viva](docs/screenshots/cartada-viva.png)](docs/screenshots/cartada-viva.png) |
 
-- Gerenciar jogadores.
-- Gerenciar cartas do jogo.
-- Criar grupos.
-- Criar desafios/jogos.
-- Controlar rodadas.
-- Registrar jogadas.
-- Receber evidências das tarefas realizadas.
-- Calcular pontuações.
-- Acompanhar desempenho individual.
-- Acompanhar desempenho do grupo.
-- Exibir rankings e relatórios.
+| Tutorial de cadastro | Acesso à plataforma |
+| --- | --- |
+| [![Guia de cadastro e compra Herbalife](docs/screenshots/herbalife.png)](docs/screenshots/herbalife.png) | [![Tela de login do Cartada Viva](docs/screenshots/login.png)](docs/screenshots/login.png) |
 
----
+## Funcionalidades
 
-## Stack utilizada
+- **Jogo e jornadas:** grupos, jogos, rodadas, cartas, jogadas, jornadas e desafios-relâmpago agendados.
+- **Evidências e pontuação:** envio com prazo, revisão administrativa, ranking e acompanhamento de desempenho.
+- **Comunidade:** timeline por grupo, reações, comentários e ranking na experiência do jogador.
+- **Mentoria:** acesso por produto contratado, programas, módulos e conteúdos em vídeo ou documento publicados pela equipe.
+- **Gestão:** relatórios, auditoria, notificações e chamados de suporte com histórico.
+- **Acesso e transparência:** autenticação JWT, papéis de usuário, tour de primeiro acesso, documentos legais versionados e PWA instalável.
 
-### Backend
+Os textos padrão de Termos de Uso e Privacidade são **minutas não publicadas**. Precisam ser completados e revisados antes da publicação em `/admin/legal`; consulte [LEGAL_CONTENT_REVIEW.md](LEGAL_CONTENT_REVIEW.md). O tutorial Herbalife também depende da validação do fluxo comercial real: [HERBALIFE_CONTENT_REVIEW.md](HERBALIFE_CONTENT_REVIEW.md).
 
-- Python
-- Django
-- Django REST Framework
-- PostgreSQL
-- Simple JWT
-- django-cors-headers
-- python-decouple
-- Pillow
-- django-cleanup
+## Stack e estrutura
 
-### Frontend
+| Camada | Tecnologia |
+| --- | --- |
+| Backend | Python, Django, Django REST Framework, Simple JWT |
+| Banco | PostgreSQL |
+| Frontend | Next.js App Router, React, TypeScript, CSS Modules, Axios |
+| Produção prevista | Gunicorn, Nginx, serviços systemd, HTTPS |
 
-- Next.js
-- React
-- TypeScript
-- CSS Modules
-- CSS Global
-- Axios
-- React Hook Form
-- Zod
-- Lucide React
-- Recharts
-
----
-
-## Estrutura do projeto
-
-```txt
-Django-NextJS-UltimaCartada/
-│
-├── backend/
-│   ├── apps/
-│   │   ├── accounts/
-│   │   ├── players/
-│   │   ├── groups/
-│   │   ├── cards/
-│   │   ├── games/
-│   │   ├── rounds/
-│   │   ├── plays/
-│   │   ├── evidences/
-│   │   ├── scoring/
-│   │   └── dashboard/
-│   │
-│   ├── config/
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── asgi.py
-│   │   └── wsgi.py
-│   │
-│   ├── manage.py
-│   ├── requirements.txt
-│   └── .env
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── .env.local
-│
-├── .gitignore
-└── README.md
+```text
+backend/
+  apps/              # domínio, APIs, serviços, permissões e testes
+  config/            # configuração e rotas Django
+  manage.py
+frontend/
+  src/app/           # rotas públicas, admin e jogador
+  src/components/    # layouts e componentes compartilhados
+  src/services/      # acesso à API
+  public/            # assets e service worker
+docs/                # guias e capturas de tela
 ```
 
----
+O frontend consome a API por `frontend/src/lib/api.ts`. O Django Admin usa `/django-admin/` para não conflitar com o painel Next.js em `/admin/...`.
 
-## Perfis de usuário
+## Executar localmente
 
-O sistema trabalha inicialmente com dois perfis:
+Requisitos: Python, Node.js 20 ou 22 e PostgreSQL. Os comandos abaixo partem da raiz do repositório.
 
-### ADMIN
-
-Responsável por gerenciar o jogo.
-
-Pode:
-
-- Gerenciar jogadores.
-- Gerenciar grupos.
-- Gerenciar cartas.
-- Criar jogos/desafios.
-- Acompanhar rodadas.
-- Validar evidências.
-- Ajustar pontuação.
-- Ver rankings e relatórios.
-
-### PLAYER
-
-Participante do jogo.
-
-Pode:
-
-- Acessar o jogo ativo.
-- Jogar cartas.
-- Enviar evidências.
-- Acompanhar sua pontuação.
-- Ver seu histórico de participação.
-
----
-
-## Regras principais do jogo
-
-O jogo é dividido em rodadas diárias.
-
-Regras previstas para implementação:
-
-- Cada dia possui rodadas com horários configuráveis.
-- A primeira pessoa que jogar em uma rodada define o naipe da rodada.
-- Os demais jogadores só podem jogar cartas do mesmo naipe.
-- Cada jogador pode jogar uma vez por rodada.
-- Cada jogador pode iniciar um número limitado de rodadas por dia.
-- O sistema deve impedir repetição de naipes no mesmo dia, conforme configuração.
-- A pontuação pode ser calculada de forma automática ao final da rodada.
-- Evidências aprovadas podem gerar pontos extras.
-
----
-
-## Pontuação base
-
-| Condição | Pontos |
-|---|---:|
-| Menor carta da rodada | 1 |
-| Carta intermediária | 2 |
-| Maior carta da rodada | 3 |
-| Não jogar | 0 |
-| Jogada inválida | 0 |
-| Evidência aprovada | +3 |
-
-Os valores devem ser configuráveis no painel administrativo em uma etapa futura.
-
----
-
-## Configuração do backend
-
-### 1. Acessar a pasta do backend
+1. Crie o banco PostgreSQL e um usuário com permissões para aplicar as migrações.
+2. Copie `backend/.env.example` para `backend/.env` e preencha `SECRET_KEY`, `DB_*`, hosts e origens locais. Não versione o arquivo.
+3. Prepare e inicie o backend:
 
 ```bash
 cd backend
-```
-
-### 2. Criar ambiente virtual
-
-```bash
-python3 -m venv venv
-```
-
-### 3. Ativar ambiente virtual
-
-macOS/Linux:
-
-```bash
-source venv/bin/activate
-```
-
-Windows:
-
-```bash
-venv\Scripts\activate
-```
-
-### 4. Instalar dependências
-
-```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-Caso ainda não exista `requirements.txt`, instale manualmente:
-
-```bash
-pip install django djangorestframework djangorestframework-simplejwt django-cors-headers psycopg2-binary python-decouple pillow django-cleanup
-pip freeze > requirements.txt
-```
-
----
-
-## Configuração do PostgreSQL
-
-### 1. Criar banco e usuário
-
-Acesse o PostgreSQL:
-
-```bash
-psql postgres
-```
-
-Execute:
-
-```sql
-CREATE USER ultima_cartada_user WITH PASSWORD 'sua_senha_forte_aqui';
-
-CREATE DATABASE ultima_cartada_db OWNER ultima_cartada_user;
-
-GRANT ALL PRIVILEGES ON DATABASE ultima_cartada_db TO ultima_cartada_user;
-
-\c ultima_cartada_db
-
-GRANT ALL ON SCHEMA public TO ultima_cartada_user;
-
-\q
-```
-
----
-
-## Variáveis de ambiente do backend
-
-Crie o arquivo:
-
-```bash
-backend/.env
-```
-
-Exemplo:
-
-```env
-SECRET_KEY=sua_secret_key_django_aqui
-DEBUG=True
-
-ALLOWED_HOSTS=127.0.0.1,localhost
-
-DB_NAME=ultima_cartada_db
-DB_USER=ultima_cartada_user
-DB_PASSWORD=sua_senha_forte_aqui
-DB_HOST=localhost
-DB_PORT=5432
-
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
-```
-
-Atenção: o arquivo `.env` não deve ser versionado.
-
----
-
-## Rodar migrations
-
-Dentro da pasta `backend`:
-
-```bash
-python manage.py makemigrations
 python manage.py migrate
-```
-
-Caso esteja criando o usuário customizado pela primeira vez, gere primeiro a migration do app `accounts`:
-
-```bash
-python manage.py makemigrations accounts
-python manage.py migrate
-```
-
----
-
-## Criar superusuário
-
-```bash
-python manage.py createsuperuser
-```
-
-Depois de criar o usuário, acesse o Django Admin e altere o campo `role` para:
-
-```txt
-ADMIN
-```
-
----
-
-## Rodar backend
-
-```bash
 python manage.py runserver
 ```
 
-Backend disponível em:
-
-```txt
-http://127.0.0.1:8000
-```
-
-Painel Django Admin:
-
-```txt
-http://127.0.0.1:8000/admin/
-```
-
----
-
-## Endpoints iniciais
-
-### Login JWT
-
-```txt
-POST /api/v1/auth/token/
-```
-
-Payload:
-
-```json
-{
-  "username": "admin",
-  "password": "sua_senha"
-}
-```
-
-Resposta esperada:
-
-```json
-{
-  "refresh": "refresh_token",
-  "access": "access_token"
-}
-```
-
-### Refresh token
-
-```txt
-POST /api/v1/auth/token/refresh/
-```
-
-Payload:
-
-```json
-{
-  "refresh": "refresh_token"
-}
-```
-
----
-
-## Configuração do frontend
-
-### 1. Acessar a pasta do frontend
+4. Em outro terminal, prepare e inicie o frontend:
 
 ```bash
 cd frontend
+npm ci
 ```
 
-### 2. Instalar dependências
-
-```bash
-npm install
-```
-
-Caso ainda precise instalar as dependências principais:
-
-```bash
-npm install axios react-hook-form zod @hookform/resolvers lucide-react recharts
-```
-
----
-
-## Variáveis de ambiente do frontend
-
-Crie o arquivo:
-
-```bash
-frontend/.env.local
-```
-
-Exemplo:
-
-```env
-NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/v1
-```
-
-Atenção: arquivos `.env.local` não devem ser versionados.
-
----
-
-## Rodar frontend
-
-Dentro da pasta `frontend`:
+Copie `frontend/.env.example` para `frontend/.env.local` e defina `NEXT_PUBLIC_API_URL=http://127.0.0.1:8000/api/v1` ao usar os servidores locais separadamente. Depois execute:
 
 ```bash
 npm run dev
 ```
 
-Frontend disponível em:
+Acesse `http://localhost:3000`; a API local fica em `http://127.0.0.1:8000/api/v1/`. Em produção, `NEXT_PUBLIC_API_URL=/api/v1` funciona com o proxy Nginx descrito em [DEPLOYMENT.md](DEPLOYMENT.md).
 
-```txt
-http://localhost:3000
-```
+### Dados de demonstração
 
----
+Em um **banco exclusivamente de desenvolvimento**, após as migrações, execute `python manage.py seed_demo` dentro de `backend/`. O comando cria/atualiza contas de exemplo, cartas, grupo, jogo e rodadas e imprime as credenciais no terminal. Não o execute em produção: ele usa uma senha de demonstração conhecida e altera registros existentes com os mesmos nomes.
 
-## Fluxo de desenvolvimento recomendado
+## Rotas principais
 
-### Terminal 1 — Backend
+| Área | Rotas |
+| --- | --- |
+| Públicas | `/`, `/public/cartada-viva`, `/public/consultoria`, `/public/herbilife`, `/terms`, `/privacy` |
+| Entrada | `/login`, `/dashboard` |
+| Jogador | `/player/home`, `/player/community`, `/player/performance`, `/player/ranking`, `/mentorship`, `/player/support` |
+| Administração | `/admin/dashboard`, `/admin/players`, `/admin/groups`, `/admin/games`, `/admin/journeys`, `/admin/challenges`, `/admin/mentorship`, `/admin/support`, `/admin/legal`, `/admin/audit`, `/admin/reports` |
+| API e Django Admin | `/api/v1/`, `/django-admin/` |
+
+O acesso às rotas protegidas depende do papel (`DEV`, `GENERAL_ADMIN`, `GAME_MEDIATOR` ou `PLAYER`) e dos produtos concedidos à conta. As APIs devem filtrar dados de participantes por usuário e grupo.
+
+## Validação e documentação
 
 ```bash
 cd backend
-source venv/bin/activate
-python manage.py runserver
+source .venv/bin/activate
+python manage.py check
+python manage.py test
+
+cd ../frontend
+npm run lint
+npm run build
 ```
 
-### Terminal 2 — Frontend
+O PWA deve ser conferido em HTTPS ou `localhost`; veja [PWA_TESTING.md](PWA_TESTING.md). Para ambiente local e deploy, consulte [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) e [DEPLOYMENT.md](DEPLOYMENT.md). O roteiro de evolução está em [PLANO_IMPLEMENTACAO_NOVOS_REQUISITOS.md](PLANO_IMPLEMENTACAO_NOVOS_REQUISITOS.md).
 
-```bash
-cd frontend
-npm run dev
-```
-
----
-
-## Autenticação
-
-A autenticação inicial será feita com:
-
-- Usuário e senha
-- JWT
-
-Também está prevista autenticação com Google/Gmail.
-
-Regra de segurança recomendada:
-
-- Usuário criado automaticamente via Google deve nascer como `PLAYER`.
-- Apenas um `ADMIN` pode transformar outro usuário em `ADMIN`.
-
----
-
-## Apps do backend
-
-### accounts
-
-Responsável por usuários, autenticação e perfis.
-
-### players
-
-Responsável pelos dados complementares dos jogadores.
-
-### groups
-
-Responsável pela organização dos jogadores em grupos.
-
-### cards
-
-Responsável pelo cadastro das cartas, naipes e tarefas.
-
-### games
-
-Responsável pelos desafios/jogos ativos.
-
-### rounds
-
-Responsável pelas rodadas de cada jogo.
-
-### plays
-
-Responsável pelo registro das jogadas.
-
-### evidences
-
-Responsável pelo envio e validação de evidências.
-
-### scoring
-
-Responsável pelos cálculos de pontuação.
-
-### dashboard
-
-Responsável por consultas e dados consolidados para painéis.
-
----
-
-## Próximas etapas de implementação
-
-- [ ] Finalizar usuário customizado.
-- [ ] Registrar usuário no Django Admin.
-- [ ] Criar API de autenticação customizada.
-- [ ] Criar models de jogadores.
-- [ ] Criar models de grupos.
-- [ ] Criar models de cartas e naipes.
-- [ ] Importar imagens das cartas.
-- [ ] Criar models de jogos.
-- [ ] Criar models de rodadas.
-- [ ] Criar registro de jogadas.
-- [ ] Criar cálculo de pontuação.
-- [ ] Criar envio de evidências.
-- [ ] Criar dashboard administrativo.
-- [ ] Criar frontend de login.
-- [ ] Criar frontend do painel ADMIN.
-- [ ] Criar frontend do painel PLAYER.
-- [ ] Criar rankings.
-- [ ] Criar relatórios.
-
----
-
-## Convenções do projeto
-
-### Backend
-
-- Código organizado por apps.
-- Regras de negócio devem ficar preferencialmente em services.
-- Serializers devem cuidar da entrada e saída da API.
-- Views/ViewSets devem ser simples.
-- Permissões devem separar claramente `ADMIN` e `PLAYER`.
-- Dados sensíveis não devem ser expostos na API.
-
-### Frontend
-
-- Não usar Tailwind CSS.
-- Usar CSS Modules e CSS global.
-- Criar componentes reutilizáveis.
-- Centralizar chamadas HTTP em `src/lib/api.ts`.
-- Separar telas de ADMIN e PLAYER.
-- Evitar duplicação de lógica.
-
----
-
-## Cuidados de segurança
-
-- Não versionar `.env`.
-- Não versionar banco SQLite.
-- Não expor senha do banco.
-- Não expor `SECRET_KEY`.
-- Usar HTTPS em produção.
-- Proteger uploads de evidências.
-- Paciente deve acessar apenas seus próprios dados.
-- Registrar alterações manuais de pontuação.
-
----
-
-## Deploy previsto
-
-Stack sugerida para produção:
-
-- Ubuntu Server
-- Nginx
-- Gunicorn
-- PostgreSQL
-- Django
-- Next.js
-- Certbot SSL
-
-Fluxo esperado:
-
-```txt
-Cliente
-↓
-Nginx
-↓
-Frontend Next.js
-↓
-API Django
-↓
-PostgreSQL
-```
-
----
-
-## Observação sobre dados clínicos
-
-Este sistema é uma ferramenta de apoio à organização e gamificação de hábitos saudáveis.
-
-Não é recomendado armazenar diagnósticos, prontuários ou informações clínicas sensíveis sem uma estrutura adequada de segurança, consentimento e conformidade legal.
-
----
-
-## Status atual
-
-Projeto em fase inicial de implementação.
-
-Primeira etapa:
-
-- Configuração do backend Django.
-- Configuração do PostgreSQL.
-- Criação de usuário customizado.
-- Preparação da autenticação.
-- Estruturação inicial dos apps.
-
-# Pacote de contexto para Codex — Cartada Viva / A Última Cartada
-
-Este ZIP contém arquivos de orientação para serem adicionados ao repositório `Django-NextJS-UltimaCartada`.
-
-## Arquivos principais
-
-- `AGENTS.md`: instruções principais para agentes de IA.
-- `PROJECT_CONTEXT.md`: contexto funcional do sistema.
-- `IMPLEMENTATION_PLAN.md`: plano completo de continuidade.
-- `DEPLOYMENT.md`: documentação de deploy em VPS.
-- `docs/CODEX_PROMPTS.md`: prompts prontos para usar no Codex.
-- `docs/LOCAL_DEVELOPMENT.md`: comandos de desenvolvimento local.
-- `docs/PRODUCTION_CHECKLIST.md`: checklist de produção.
-- `docs/GIT_WORKFLOW.md`: fluxo de trabalho com Git.
-- `scripts/deploy-cartada`: script base de atualização no servidor.
-- `backend/.env.example`: exemplo de variáveis do backend.
-- `frontend/.env.example`: exemplo de variáveis do frontend.
-
-## Como aplicar no projeto
-
-Copie os arquivos para a raiz do repositório, preservando a estrutura de pastas:
-
-```bash
-cp -R codex_context_cartada_viva/* /caminho/do/Django-NextJS-UltimaCartada/
-```
-
-Depois commite:
-
-```bash
-git add AGENTS.md PROJECT_CONTEXT.md IMPLEMENTATION_PLAN.md DEPLOYMENT.md docs scripts backend/.env.example frontend/.env.example
-git commit -m "docs: add project context for codex"
-git push origin main
-```
-
-## Como usar no Codex
-
-Prompt recomendado:
-
-```txt
-Leia AGENTS.md, PROJECT_CONTEXT.md e IMPLEMENTATION_PLAN.md.
-Execute apenas o Passo 46.
-Antes de alterar, inspecione os arquivos existentes relacionados.
-Mantenha os padrões atuais do projeto.
-Ao final, informe arquivos alterados, resumo das mudanças e comandos de teste.
-```
+Não versione `.env`, bancos locais, uploads, `.venv/`, `node_modules/` ou `.next/`. Evidências e dados de saúde ou participação devem ser tratados conforme as permissões e a política de privacidade efetivamente publicada.
