@@ -2,6 +2,7 @@
 
 import { AxiosError } from "axios";
 import Image from "next/image";
+import { Camera, CheckCircle2, MessageCircle, Send, Sparkles, Trophy, Users } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -93,6 +94,7 @@ export default function PlayerCommunityPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFeedLoading, setIsFeedLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [busyPostId, setBusyPostId] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -319,8 +321,9 @@ export default function PlayerCommunityPage() {
   }
 
   async function loadMore() {
-    if (!selectedGroupId || !nextPage) return;
+    if (!selectedGroupId || !nextPage || isLoadingMore) return;
     try {
+      setIsLoadingMore(true);
       const data = await getCommunityPosts({
         group: selectedGroupId,
         game: selectedGameId ?? undefined,
@@ -330,6 +333,8 @@ export default function PlayerCommunityPage() {
       setNextPage(data.next ? nextPage + 1 : null);
     } catch (error) {
       setErrorMessage(apiError(error));
+    } finally {
+      setIsLoadingMore(false);
     }
   }
 
@@ -338,9 +343,9 @@ export default function PlayerCommunityPage() {
       <PlayerLayout>
         <header className={styles.hero}>
           <div>
-            <span className={styles.eyebrow}>Comunidade</span>
-            <h1>Progresso fica mais leve quando é compartilhado.</h1>
-            <p>Comemore conquistas, apoie seu grupo e acompanhe o ranking.</p>
+            <span className={styles.eyebrow}><Users size={14} aria-hidden="true" /> Seu espaço de conexão</span>
+            <h1>Comunidade</h1>
+            <p>Um lugar para celebrar cada passo, trocar apoio e crescer junto.</p>
           </div>
           <div className={styles.filters}>
             <label>
@@ -371,13 +376,18 @@ export default function PlayerCommunityPage() {
           <div className={styles.state}>Você ainda não participa de nenhum grupo.</div>
         ) : (
           <div className={styles.layout}>
-            <main className={styles.feedColumn}>
+            <div className={styles.feedColumn}>
+              <div className={styles.feedHeading}>
+                <div><span className={styles.liveDot} aria-hidden="true" /> Timeline do grupo</div>
+                <small>{posts.length} {posts.length === 1 ? "publicação" : "publicações"}</small>
+              </div>
               <form className={styles.composer} onSubmit={submitPost}>
                 <div className={styles.composerTitle}>
                   <div className={styles.avatar}>Você</div>
-                  <div><strong>Compartilhe seu momento</strong><span>Inspire seu grupo com uma conquista de hoje.</span></div>
+                  <div><strong>Compartilhe seu momento</strong><span>Uma pequena vitória pode inspirar alguém hoje.</span></div>
                 </div>
                 <textarea
+                  aria-label="Texto da publicação"
                   value={postText}
                   onChange={(event) => setPostText(event.target.value)}
                   placeholder="O que você conquistou hoje?"
@@ -386,7 +396,7 @@ export default function PlayerCommunityPage() {
                 <div className={styles.composerOptions}>
                   <label className={styles.fileButton}>
                     <input type="file" accept="image/*,video/*" onChange={(event) => handleFile(event.target.files?.[0] ?? null)} />
-                    <span>＋ Foto ou vídeo</span>
+                    <span><Camera size={17} aria-hidden="true" /> Foto ou vídeo</span>
                   </label>
                   <select
                     aria-label="Compartilhar evidência aprovada"
@@ -398,7 +408,7 @@ export default function PlayerCommunityPage() {
                       <option key={evidence.id} value={evidence.id}>{evidence.card_title} • dia {evidence.round_day}</option>
                     ))}
                   </select>
-                  <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Publicando..." : "Publicar"}</button>
+                  <button type="submit" disabled={isSubmitting}><Send size={15} aria-hidden="true" /> {isSubmitting ? "Publicando..." : "Publicar"}</button>
                 </div>
                 {postFile && <small className={styles.selectedFile}>Mídia: {postFile.name}</small>}
                 {selectedEvidenceId && <small className={styles.consent}>Ao publicar, você escolhe compartilhar esta evidência com seu grupo.</small>}
@@ -414,10 +424,10 @@ export default function PlayerCommunityPage() {
                     <span className={styles.groupBadge}>{post.group_name}</span>
                     {post.is_own && <button className={styles.deleteButton} type="button" onClick={() => void removePost(post.id)} aria-label="Excluir publicação">×</button>}
                   </header>
-                  {post.text && <p className={styles.postText}>{post.text}</p>}
+                {post.text && <p className={styles.postText}>{post.text}</p>}
                   {post.origin === "EVIDENCE" && (
                     <div className={styles.evidenceCard}>
-                      <span>Evidência aprovada</span>
+                      <span><CheckCircle2 size={14} aria-hidden="true" /> Evidência aprovada</span>
                       <strong>{post.evidence_card_title}</strong>
                       {post.evidence_text && <p>{post.evidence_text}</p>}
                     </div>
@@ -432,8 +442,8 @@ export default function PlayerCommunityPage() {
                     </div>
                   )}
                   <div className={styles.engagementSummary}>
-                    <span>{post.reactions_count} reações</span>
-                    <button type="button" onClick={() => void toggleComments(post)}>{post.comments_count} comentários</button>
+                    <span><Sparkles size={15} aria-hidden="true" /> {post.reactions_count} {post.reactions_count === 1 ? "reação" : "reações"}</span>
+                    <button type="button" onClick={() => void toggleComments(post)}><MessageCircle size={15} aria-hidden="true" /> {post.comments_count} {post.comments_count === 1 ? "comentário" : "comentários"}</button>
                   </div>
                   <div className={styles.reactions}>
                     {reactions.map((reaction) => (
@@ -441,6 +451,7 @@ export default function PlayerCommunityPage() {
                         type="button"
                         className={post.user_reaction === reaction.type ? styles.reactionActive : ""}
                         disabled={busyPostId === post.id}
+                        aria-pressed={post.user_reaction === reaction.type}
                         onClick={() => void react(post.id, reaction.type)}
                         key={reaction.type}
                       >
@@ -448,10 +459,10 @@ export default function PlayerCommunityPage() {
                         {post.reaction_counts[reaction.type] > 0 && <small>{post.reaction_counts[reaction.type]}</small>}
                       </button>
                     ))}
-                    <button type="button" onClick={() => void toggleComments(post)}>◯ Comentar</button>
+                    <button type="button" aria-expanded={openComments.includes(post.id)} onClick={() => void toggleComments(post)}><MessageCircle size={16} aria-hidden="true" /> Comentar</button>
                   </div>
                   {openComments.includes(post.id) && (
-                    <section className={styles.comments}>
+                    <section className={styles.comments} id={`comments-${post.id}`} aria-label={`Comentários da publicação de ${post.author_name}`}>
                       {(comments[post.id] ?? []).map((comment) => (
                         <div className={styles.comment} key={comment.id}>
                           <div className={styles.smallAvatar}>{initials(comment.author_name)}</div>
@@ -461,6 +472,7 @@ export default function PlayerCommunityPage() {
                       ))}
                       <div className={styles.commentForm}>
                         <input
+                          aria-label="Escrever comentário"
                           value={commentDrafts[post.id] ?? ""}
                           onChange={(event) => setCommentDrafts((current) => ({ ...current, [post.id]: event.target.value }))}
                           onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void submitComment(post.id); } }}
@@ -473,11 +485,11 @@ export default function PlayerCommunityPage() {
                   )}
                 </article>
               ))}
-              {nextPage && <button className={styles.loadMore} type="button" onClick={() => void loadMore()}>Carregar mais publicações</button>}
-            </main>
+              {nextPage && <button className={styles.loadMore} type="button" disabled={isLoadingMore} onClick={() => void loadMore()}>{isLoadingMore ? "Carregando..." : "Carregar mais publicações"}</button>}
+            </div>
 
             <aside className={styles.ranking}>
-              <div className={styles.rankingHeader}><span>Ranking do grupo</span><strong>{selectedGameId ? "Jogo selecionado" : "Selecione um jogo"}</strong></div>
+              <div className={styles.rankingHeader}><span><Trophy size={16} aria-hidden="true" /> Ranking do grupo</span><strong>{selectedGameId ? "Destaques do jogo" : "Selecione um jogo"}</strong><p>Celebrando a constância de quem está nessa jornada.</p></div>
               {!selectedGameId ? <p className={styles.rankingEmpty}>Escolha um jogo para visualizar a classificação.</p> : ranking.length === 0 ? <p className={styles.rankingEmpty}>O ranking aparecerá após as primeiras pontuações.</p> : (
                 <div className={styles.rankingList}>
                   {ranking.slice(0, 10).map((player, index) => (
