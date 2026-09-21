@@ -5,8 +5,9 @@
   justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.76), transparent 30rem),
-    linear-gradient(180deg, #fbf7ef 0%, #f8f2e8 100%);
+    linear-gradient(110deg, rgba(27, 24, 19, 0.63), rgba(44, 32, 19, 0.36) 55%, rgba(27, 24, 19, 0.55)),
+    url("/login-sunset-picnic.png") center / cover no-repeat,
+    #30271b;
 }
 
 .card {
@@ -15,8 +16,8 @@
   padding: 32px;
   border: 1px solid #e4d8c4;
   border-radius: 8px;
-  background: #fffaf3;
-  box-shadow: 0 20px 60px rgba(47, 38, 24, 0.14);
+  background: rgba(255, 250, 243, 0.97);
+  box-shadow: 0 24px 80px rgba(12, 10, 7, 0.48);
 }
 
 .brand {
@@ -32,7 +33,6 @@
   height: 58px;
   border-radius: 8px;
   object-fit: contain;
-  background: #fff;
 }
 
 .brand h1 {
@@ -127,8 +127,9 @@
 
 @media (max-width: 480px) {
   .page {
-    align-items: flex-start;
+    align-items: center;
     padding: 16px;
+    background-position: center, 63% center;
   }
 
   .card {

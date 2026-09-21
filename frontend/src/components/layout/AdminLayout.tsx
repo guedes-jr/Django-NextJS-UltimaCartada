@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Bell } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { getAuthUser, isAdminRole, UserRole } from "@/lib/auth";
@@ -112,9 +112,43 @@ const menuItems: Array<{ label: string; href: string; roles: UserRole[] }> = [
 export function AdminLayout({ children }: AdminLayoutProps) {
   const user = getAuthUser();
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOpenAtPath, setMenuOpenAtPath] = useState<string | null>(null);
+  const isMenuOpen = menuOpenAtPath === pathname;
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    sidebarRef.current?.querySelector<HTMLElement>("a")?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpenAtPath(null);
+        window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+      }
+      if (event.key === "Tab") {
+        const links = sidebarRef.current?.querySelectorAll<HTMLElement>("a");
+        if (!links?.length) return;
+        const first = links[0];
+        const last = links[links.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isMenuOpen]);
 
   async function loadNotifications() {
     try {
@@ -157,8 +191,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
-  function closeMenu() {
-    setIsMenuOpen(false);
+  function closeMenu(restoreFocus = false) {
+    setMenuOpenAtPath(null);
+    if (restoreFocus) window.requestAnimationFrame(() => menuButtonRef.current?.focus());
   }
 
   const visibleMenuItems = menuItems.filter((item) => {
@@ -176,12 +211,13 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className={styles.page}>
       <aside
+        ref={sidebarRef}
         className={`${styles.sidebar} ${isMenuOpen ? styles.sidebarOpen : ""}`}
       >
         <div className={styles.brand}>
           <Image
             className={styles.brandLogo}
-            src="/cartada-viva-logo.png"
+            src="/cartada-viva-mark.png"
             alt="Cartada Viva"
             width={220}
             height={220}
@@ -196,7 +232,8 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               key={item.href}
               href={item.href}
               className={isActive(item.href) ? styles.activeLink : ""}
-              onClick={closeMenu}
+              onClick={() => closeMenu()}
+              aria-current={isActive(item.href) ? "page" : undefined}
             >
               {item.label}
             </Link>
@@ -209,18 +246,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           className={styles.overlay}
           type="button"
           aria-label="Fechar menu"
-          onClick={closeMenu}
+          onClick={() => closeMenu(true)}
         />
       )}
 
-      <main className={styles.main}>
+      <main className={styles.main} inert={isMenuOpen}>
         <header className={styles.header}>
           <button
+            ref={menuButtonRef}
             className={styles.menuButton}
             type="button"
             aria-expanded={isMenuOpen}
             aria-controls="admin-navigation"
-            onClick={() => setIsMenuOpen((current) => !current)}
+            onClick={() => setMenuOpenAtPath(isMenuOpen ? null : pathname)}
           >
             {isMenuOpen ? "Fechar menu" : "Menu"}
           </button>

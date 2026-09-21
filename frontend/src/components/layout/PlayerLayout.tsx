@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { PlayerOnboardingTour } from "@/components/onboarding/PlayerOnboardingTour";
@@ -61,7 +61,9 @@ const menuItems = [
 export function PlayerLayout({ children }: PlayerLayoutProps) {
   const user = getAuthUser();
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOpenAtPath, setMenuOpenAtPath] = useState<string | null>(null);
+  const isMenuOpen = menuOpenAtPath === pathname;
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [isTourOpen, setIsTourOpen] = useState(
     () =>
       pathname === "/player/home" &&
@@ -79,12 +81,24 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpenAtPath(null);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isMenuOpen]);
+
   function isActive(href: string) {
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
   function closeMenu() {
-    setIsMenuOpen(false);
+    setMenuOpenAtPath(null);
   }
 
   return (
@@ -93,7 +107,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <div className={styles.brand}>
           <Image
             className={styles.brandLogo}
-            src="/icon.png"
+            src="/cartada-viva-mark.png"
             alt=""
             width={58}
             height={58}
@@ -103,11 +117,12 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         </div>
 
         <button
+          ref={menuButtonRef}
           className={styles.menuButton}
           type="button"
           aria-expanded={isMenuOpen}
           aria-controls="player-navigation"
-          onClick={() => setIsMenuOpen((current) => !current)}
+          onClick={() => setMenuOpenAtPath(isMenuOpen ? null : pathname)}
         >
           {isMenuOpen ? "Fechar menu" : "Menu"}
         </button>
@@ -122,6 +137,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
               key={item.href}
               href={item.href}
               className={isActive(item.href) ? styles.activeLink : ""}
+              aria-current={isActive(item.href) ? "page" : undefined}
               onClick={closeMenu}
             >
               {item.label}

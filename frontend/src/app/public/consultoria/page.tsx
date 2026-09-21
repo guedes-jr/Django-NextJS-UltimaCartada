@@ -12,6 +12,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import styles from "./ConsultoriaPage.module.css";
+import PublicNavigation from "@/components/landing/PublicNavigation";
 
 export const metadata: Metadata = {
   title: "Consultoria Magaly Abreu | A Última Cartada",
@@ -59,14 +60,14 @@ export default function ConsultoriaPage() {
           <span>Consultoria</span>
         </Link>
 
-        <nav className={styles.nav} aria-label="Navegação da consultoria">
+        <PublicNavigation id="consultoria-navigation" label="Navegação da consultoria" className={styles.nav}>
           <a href="#processo">Processo</a>
           <a href="#para-quem">Para quem</a>
           <Link href="/public/cartada-viva">Cartada Viva</Link>
           <a href={WHATSAPP_URL} target="_blank" rel="noreferrer">
             WhatsApp
           </a>
-        </nav>
+        </PublicNavigation>
       </header>
 
       <section className={styles.hero}>

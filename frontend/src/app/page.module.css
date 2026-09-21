@@ -680,10 +680,9 @@
 }
 
 .footer .brand img {
-  width: 116px;
+  width: 64px;
   height: 76px;
-  padding: 2px;
-  background: #fafaf5;
+  object-fit: contain;
 }
 
 .footer nav {
@@ -715,19 +714,20 @@
 
 @media (max-width: 980px) {
   .header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 72px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .brand {
     margin-right: 0;
   }
 
-  .nav {
-    flex-wrap: wrap;
-    gap: 14px 22px;
-  }
+  .loginLink { min-height: 44px; }
 
   .hero,
   .restart,
@@ -777,6 +777,11 @@
 }
 
 @media (max-width: 620px) {
+  .header { gap: 8px; }
+  .brand { gap: 6px; }
+  .brand img { width: 42px; height: 42px; }
+  .brandName { display: none; }
+  .loginLink { padding: 0 10px; font-size: 11px; }
   .header,
   .hero,
   .problem,

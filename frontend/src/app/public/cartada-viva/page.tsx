@@ -13,6 +13,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import styles from "./CartadaVivaPage.module.css";
+import PublicNavigation from "@/components/landing/PublicNavigation";
 
 export const metadata: Metadata = {
   title: "Cartada Viva | Jogo terapêutico de hábitos",
@@ -83,16 +84,16 @@ export default function CartadaVivaPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <Link className={styles.brand} href="/">
-          <Image src="/icon.png" alt="" width={46} height={46} />
+          <Image src="/cartada-viva-mark.png" alt="" width={46} height={46} />
           <span className={styles.brandText}><strong>Cartada Viva</strong><small>jogo de hábitos</small></span>
         </Link>
 
-        <nav className={styles.nav} aria-label="Navegação do Cartada Viva">
+        <PublicNavigation id="cartada-navigation" label="Navegação do Cartada Viva" className={styles.nav}>
           <a href="#ideia">Ideia</a>
           <a href="#telas">Telas</a>
           <a href="#funciona">Como funciona</a>
           <Link href="/public/consultoria">Consultoria</Link>
-        </nav>
+        </PublicNavigation>
       </header>
 
       <section className={styles.hero}>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import PublicNavigation from "@/components/landing/PublicNavigation";
 import type { Metadata } from "next";
 
 import styles from "./HerbilifePage.module.css";
@@ -55,8 +56,8 @@ const faqs = [
 export default function HerbilifePage() {
   return <main className={styles.page}>
     <header className={styles.header}>
-      <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-logo.png" width={90} height={90} alt="" /><span>Cartada Viva</span></Link>
-      <nav aria-label="Navegação desta página"><a href="#passos">Passo a passo</a><a href="#duvidas">Dúvidas</a><Link href="/">Voltar ao site</Link></nav>
+      <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-mark.png" width={58} height={58} alt="" /><span>Cartada Viva</span></Link>
+      <PublicNavigation id="herbalife-navigation" label="Navegação desta página"><a href="#passos">Passo a passo</a><a href="#duvidas">Dúvidas</a><Link href="/">Voltar ao site</Link></PublicNavigation>
     </header>
 
     <section className={styles.hero} aria-labelledby="hero-title">

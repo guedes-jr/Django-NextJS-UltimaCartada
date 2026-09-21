@@ -95,7 +95,7 @@ export default function LoginPage() {
     <main className={styles.page}>
       <section className={styles.card}>
         <div className={styles.brand}>
-          <Image className={styles.logo} src="/icon.png" alt="" width={58} height={58} priority />
+          <Image className={styles.logo} src="/cartada-viva-mark.png" alt="" width={58} height={58} priority />
           <div>
             <h1>Cartada Viva</h1>
             <p>Jogo digital de hábitos saudáveis</p>

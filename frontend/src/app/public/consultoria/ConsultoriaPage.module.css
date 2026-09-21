@@ -301,12 +301,12 @@
 }
 
 @media (max-width: 920px) {
-  .header,
-  .nav,
   .finalCta {
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .header { min-height: 72px; gap: 12px; }
 
   .hero,
   .support,

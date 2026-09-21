@@ -76,5 +76,8 @@
 .success { background: #ecfdf3; color: #067647; }
 .error { background: #fff1f1; color: #b42318; }
 .loadMore { justify-self: center; }
-@media (max-width: 980px) { .hero { align-items: stretch; flex-direction: column; } .layout { grid-template-columns: 1fr; } .ranking { position: static; grid-row: 1; } }
+@media (max-width: 980px) { .hero { align-items: stretch; flex-direction: column; } .layout { grid-template-columns: minmax(0, 1fr); } .ranking { position: static; grid-row: 1; } }
 @media (max-width: 680px) { .filters, .composerOptions { align-items: stretch; flex-direction: column; } .filters label, .filters select, .composerOptions > *, .fileButton span { width: 100%; box-sizing: border-box; } .reactions { grid-template-columns: repeat(2, 1fr); } .groupBadge { display: none; } .postHeader { padding: 15px 15px 0; } .postText, .evidenceCard { margin-inline: 15px; } .comments { padding-inline: 15px; } .commentForm { flex-direction: column; } .commentForm button { width: 100%; } }
+.postText, .comment p, .evidenceCard, .composer { overflow-wrap: anywhere; min-width: 0; }
+.composer textarea, .commentForm input { max-width: 100%; }
+@media (max-width: 680px) { .rankingList { max-height: 210px; overflow-y: auto; } .reactions button, .commentForm button, .composerOptions > button, .fileButton span { min-height: 44px; } }

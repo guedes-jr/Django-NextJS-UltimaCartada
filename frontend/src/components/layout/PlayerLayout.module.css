@@ -136,13 +136,13 @@
 
 @media (max-width: 900px) {
   .header {
-    height: auto;
+    min-height: 72px;
     flex-wrap: wrap;
-    padding: 18px;
+    padding: 10px 18px;
   }
 
   .brand {
-    width: calc(100% - 138px);
+    width: auto;
     margin-right: 0;
   }
 
@@ -157,6 +157,7 @@
     display: none;
     width: 100%;
     max-height: calc(100vh - 190px);
+    max-height: calc(100dvh - 120px);
     overflow-y: auto;
     flex-direction: column;
     align-items: stretch;
@@ -169,6 +170,7 @@
 
   .nav a {
     width: 100%;
+    min-height: 44px;
     background: #f3e9d5;
     box-sizing: border-box;
   }
@@ -194,12 +196,17 @@
   }
 
   .brand {
-    width: 100%;
+    flex: 1;
+    width: auto;
   }
 
+  .brandLogo { width: 44px; height: 44px; flex: 0 0 auto; }
+  .brandText strong { font-size: 15px; }
+  .brand span { font-size: 10px; }
+
   .menuButton {
-    width: 100%;
-    margin-left: 0;
+    min-height: 44px;
+    margin-left: auto;
   }
 
   .main {

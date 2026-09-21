@@ -27,10 +27,11 @@
 }
 
 .brandLogo {
-  width: 100%;
-  height: auto;
+  width: 112px;
+  height: 112px;
+  justify-self: center;
+  object-fit: contain;
   border-radius: 10px;
-  background: #fafaf5;
 }
 
 .brand span {
@@ -191,6 +192,7 @@
     left: -280px;
     width: 260px;
     height: 100vh;
+    height: 100dvh;
     max-width: calc(100vw - 48px);
     transition: left 0.2s ease;
   }
@@ -218,6 +220,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 44px;
   }
 
   .userInfo {

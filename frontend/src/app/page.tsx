@@ -15,6 +15,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 import VideoTestimonials from "@/components/landing/VideoTestimonials";
+import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -102,7 +103,7 @@ export default function HomePage() {
       <header className={styles.header}>
         <a className={styles.brand} href="#top" aria-label="Cartada Viva">
           <Image
-            src="/icon.png"
+            src="/cartada-viva-mark.png"
             alt=""
             width={56}
             height={56}
@@ -111,14 +112,14 @@ export default function HomePage() {
           <span className={styles.brandName}>Cartada Viva</span>
         </a>
 
-        <nav className={styles.nav} aria-label="Navegação principal">
+        <PublicNavigation id="landing-navigation" label="Navegação principal" className={styles.nav}>
           <a href="#sobre">Sobre</a>
           <Link href="/public/consultoria">Consultoria</Link>
           <Link href="/public/cartada-viva">Cartada Viva</Link>
           <Link href="/public/herbilife">Herbalife</Link>
           <a href="#depoimentos">Depoimentos</a>
           <a href="#contato">Contato</a>
-        </nav>
+        </PublicNavigation>
 
         <Link className={styles.loginLink} href="/login">
           Entrar
@@ -344,7 +345,7 @@ export default function HomePage() {
       <footer className={styles.footer}>
         <a className={styles.brand} href="#top" aria-label="Cartada Viva">
           <Image
-            src="/cartada-viva-logo.png"
+            src="/cartada-viva-mark.png"
             alt="Cartada Viva"
             width={220}
             height={220}
