@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="#1b1813" stroke="#bc9046" stroke-width="2"/>
+  <path d="M45 8l1.8 5.2L52 15l-5.2 1.8L45 22l-1.8-5.2L38 15l5.2-1.8z" fill="#f5d287"/>
+  <text x="31" y="45" fill="#f5d287" font-family="Georgia, 'Times New Roman', serif" font-size="35" font-weight="700" text-anchor="middle" letter-spacing="-5">CV</text>
+</svg>

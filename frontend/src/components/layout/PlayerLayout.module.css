@@ -70,6 +70,11 @@
   background: #f3e9d5;
 }
 
+.nav a:focus-visible, .menuButton:focus-visible {
+  outline: 3px solid #bc9046;
+  outline-offset: 2px;
+}
+
 .nav a.activeLink {
   background: #211b13;
   color: #fffaf0;

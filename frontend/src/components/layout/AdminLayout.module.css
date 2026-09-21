@@ -12,12 +12,23 @@
   width: 260px;
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #a98248 #2c261e;
   padding: 24px;
   background: linear-gradient(180deg, #1b1813 0%, #30271b 58%, #3b2e1c 100%);
   box-shadow: 12px 0 36px rgba(27, 24, 19, 0.18);
   box-sizing: border-box;
   z-index: 30;
 }
+
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-track { background: #2c261e; }
+.sidebar::-webkit-scrollbar-thumb {
+  border: 2px solid #2c261e;
+  border-radius: 999px;
+  background: #a98248;
+}
+.sidebar::-webkit-scrollbar-thumb:hover { background: #d1a760; }
 
 .brand {
   display: grid;
@@ -63,6 +74,11 @@
 .nav a:hover {
   background: rgba(188, 144, 70, 0.2);
   transform: translateX(2px);
+}
+
+.nav a:focus-visible, .menuButton:focus-visible {
+  outline: 3px solid #e7c475;
+  outline-offset: 2px;
 }
 
 .nav a.activeLink {

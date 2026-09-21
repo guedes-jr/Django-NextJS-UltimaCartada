@@ -22,12 +22,6 @@ export const metadata: Metadata = {
   title: "Magaly Abreu | Mentoria A Última Cartada",
   description:
     "Mentoria para mulheres que querem construir uma nova relação com o corpo, a comida e a rotina.",
-  icons: {
-    icon: [
-      { url: "/icon.png", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-icon.png", type: "image/png" }],
-  },
 };
 
 const WHATSAPP_URL =

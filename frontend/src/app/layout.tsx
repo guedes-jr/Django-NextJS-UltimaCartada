@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     "Jogo terapêutico de hábitos e mentoria em grupo.",
   manifest: "/manifest.webmanifest",
+  icons: { icon: [{ url: "/cartada-viva-favicon.svg", type: "image/svg+xml" }] },
   appleWebApp: { capable: true, title: "Cartada Viva", statusBarStyle: "default" },
 };
 

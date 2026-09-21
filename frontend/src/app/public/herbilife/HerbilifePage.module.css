@@ -10,3 +10,5 @@
   .header nav a { font-size: 13px; }
   .brand span { font-size: 14px; }
 }
+
+.page section[id] { scroll-margin-top: 96px; }
