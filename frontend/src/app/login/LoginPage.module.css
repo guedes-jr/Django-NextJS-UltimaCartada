@@ -105,6 +105,21 @@
   cursor: not-allowed;
 }
 
+.supportLink {
+  color: #0b5d66;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.supportLink:hover {
+  text-decoration: underline;
+}
+
+.legalLinks{display:flex;justify-content:center;gap:16px;font-size:12px}
+.legalLinks a{color:#557169;text-decoration:none}
+
 .error {
   margin: 0;
   padding: 12px;

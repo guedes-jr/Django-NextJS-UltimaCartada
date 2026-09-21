@@ -71,6 +71,9 @@ class ReportExportView(ReportMixin, APIView):
                 "on_time_evidences": "Evidências no prazo",
                 "missing_evidences": "Evidências não enviadas no prazo",
                 "approval_rate": "Aprovação (%)",
+                "challenge_submissions": "Participações em desafios",
+                "approved_challenge_submissions": "Desafios aprovados",
+                "challenge_points": "Pontos de desafios",
             }
             for key, label in labels.items():
                 yield writer.writerow([label, summary["totals"][key]])

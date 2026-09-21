@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 import VideoTestimonials from "@/components/landing/VideoTestimonials";
@@ -22,7 +23,6 @@ export const metadata: Metadata = {
     "Mentoria para mulheres que querem construir uma nova relação com o corpo, a comida e a rotina.",
   icons: {
     icon: [
-      { url: "/favicon.ico" },
       { url: "/icon.png", type: "image/png" },
     ],
     apple: [{ url: "/apple-icon.png", type: "image/png" }],
@@ -100,9 +100,14 @@ export default function HomePage() {
   return (
     <main className={styles.page} id="top">
       <header className={styles.header}>
-        <a className={styles.brand} href="#top" aria-label="Magaly Abreu">
-          <strong>Magaly Abreu</strong>
-          <span>Mentoria</span>
+        <a className={styles.brand} href="#top" aria-label="A Última Cartada">
+          <Image
+            src="/ultima-cartada-logo.png"
+            alt="A Última Cartada — jogo terapêutico e mentoria em grupo"
+            width={220}
+            height={220}
+            priority
+          />
         </a>
 
         <nav className={styles.nav} aria-label="Navegação principal">
@@ -336,9 +341,13 @@ export default function HomePage() {
       </section>
 
       <footer className={styles.footer}>
-        <a className={styles.brand} href="#top" aria-label="Magaly Abreu">
-          <strong>Magaly Abreu</strong>
-          <span>Mentoria</span>
+        <a className={styles.brand} href="#top" aria-label="A Última Cartada">
+          <Image
+            src="/ultima-cartada-logo.png"
+            alt="A Última Cartada"
+            width={220}
+            height={220}
+          />
         </a>
 
         <nav aria-label="Links do rodapé">
@@ -346,6 +355,9 @@ export default function HomePage() {
           <Link href="/public/consultoria">Consultoria</Link>
           <Link href="/public/cartada-viva">Cartada Viva</Link>
           <Link href="/public/herbilife">Herbalife</Link>
+          <Link href="/player/support">Suporte</Link>
+          <Link href="/terms">Termos</Link>
+          <Link href="/privacy">Privacidade</Link>
           <a href="#contato">Contato</a>
         </nav>
 

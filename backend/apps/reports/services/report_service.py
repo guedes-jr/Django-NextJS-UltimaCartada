@@ -10,6 +10,7 @@ from apps.evidences.models import Evidence, EvidenceStatus
 from apps.games.models import Game
 from apps.groups.models import PlayerGroup
 from apps.plays.models import Play, PlayStatus
+from apps.challenges.models import FlashChallengeSubmission, SubmissionStatus
 
 
 MONTH_LABELS = (
@@ -58,12 +59,18 @@ class ReportService:
         )
         evidences = Evidence.objects.filter(play__in=plays)
         groups = PlayerGroup.objects.filter(games__in=games).distinct()
+        challenge_submissions = FlashChallengeSubmission.objects.filter(
+            group__in=groups,
+            submitted_at__gte=start_at,
+            submitted_at__lt=end_at,
+        )
 
         return {
             "games": games,
             "groups": groups,
             "plays": plays,
             "evidences": evidences,
+            "challenge_submissions": challenge_submissions,
             "start_at": start_at,
             "end_at": end_at,
             "months": months,
@@ -76,6 +83,13 @@ class ReportService:
         plays = context["plays"]
         evidences = context["evidences"]
         groups = context["groups"]
+        challenge_totals = context["challenge_submissions"].aggregate(
+            challenge_submissions=Count("id"),
+            approved_challenge_submissions=Count(
+                "id", filter=Q(status=SubmissionStatus.APPROVED)
+            ),
+            challenge_points=Coalesce(Sum("points_awarded"), 0),
+        )
 
         play_totals = plays.aggregate(
             total_plays=Count("id"),
@@ -139,6 +153,7 @@ class ReportService:
             "totals": {
                 **play_totals,
                 **evidence_totals,
+                **challenge_totals,
                 "missing_evidences": missing_evidences,
                 "eligible_players": eligible_players,
                 "participation_rate": participation_rate,

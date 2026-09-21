@@ -13,6 +13,7 @@ from apps.groups.models import PlayerGroup
 from apps.players.models import PlayerProfile
 from apps.plays.models import Play, PlayStatus
 from apps.rounds.models import Round, RoundSchedule
+from apps.challenges.models import FlashChallenge, FlashChallengeSubmission, SubmissionStatus
 
 
 class PeriodicReportTests(TestCase):
@@ -84,6 +85,26 @@ class PeriodicReportTests(TestCase):
         Evidence.objects.filter(id=evidence.id).update(
             created_at=self.aware(datetime(2026, 1, 15, 18))
         )
+        challenge = FlashChallenge.objects.create(
+            title="Desafio do relatório",
+            instruction="Concluir.",
+            starts_at=self.aware(datetime(2026, 1, 1, 8)),
+            ends_at=self.aware(datetime(2026, 1, 31, 22)),
+            status="PUBLISHED",
+            points=6,
+        )
+        challenge.groups.add(self.group)
+        submission = FlashChallengeSubmission.objects.create(
+            challenge=challenge,
+            player=self.player,
+            group=self.group,
+            text="Concluído",
+            status=SubmissionStatus.APPROVED,
+            points_awarded=6,
+        )
+        FlashChallengeSubmission.objects.filter(id=submission.id).update(
+            submitted_at=self.aware(datetime(2026, 1, 20, 18))
+        )
 
     def aware(self, value):
         return timezone.make_aware(value, timezone.get_current_timezone())
@@ -131,12 +152,14 @@ class PeriodicReportTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["period"]["start_date"], "2026-01-01")
-        self.assertEqual(response.data["period"]["end_date"], "2026-03-31")
+        self.assertEqual(response.data["period"]["start_date"], date(2026, 1, 1))
+        self.assertEqual(response.data["period"]["end_date"], date(2026, 3, 31))
         self.assertEqual(response.data["totals"]["total_plays"], 1)
         self.assertEqual(response.data["totals"]["total_points"], 30)
         self.assertEqual(response.data["totals"]["approved_evidences"], 1)
         self.assertEqual(response.data["totals"]["active_players"], 1)
+        self.assertEqual(response.data["totals"]["challenge_submissions"], 1)
+        self.assertEqual(response.data["totals"]["challenge_points"], 6)
 
     def test_annual_summary_includes_all_months(self):
         self.client.force_authenticate(user=self.admin)

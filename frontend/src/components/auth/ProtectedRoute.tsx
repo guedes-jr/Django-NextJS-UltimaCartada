@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/services/accountService";
+import { LegalAcceptanceGate } from "@/components/legal/LegalAcceptanceGate";
 import {
   AuthUser,
   isAdminRole,
@@ -11,14 +12,17 @@ import {
   UserRole,
   saveAuthUser,
   logout,
+  hasProduct,
+  ProductCode,
 } from "@/lib/auth";
 
 type ProtectedRouteProps = {
   children: ReactNode;
   allowedRoles: UserRole[];
+  requiredProduct?: ProductCode;
 };
 
-export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
+export function ProtectedRoute({ children, allowedRoles, requiredProduct }: ProtectedRouteProps) {
   const router = useRouter();
   const hasChecked = useRef(false);
 
@@ -74,6 +78,21 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
           return;
         }
 
+        if (requiredProduct && !hasProduct(currentUser, requiredProduct) && !isAdminRole(currentUser.role)) {
+          router.replace("/dashboard");
+          return;
+        }
+
+        if (
+          currentUser.role === "PLAYER" &&
+          window.location.pathname.startsWith("/player/") &&
+          !["/player/support", "/player/settings"].some((path) => window.location.pathname.startsWith(path)) &&
+          !hasProduct(currentUser, "GAME")
+        ) {
+          router.replace(hasProduct(currentUser, "MENTORSHIP") ? "/mentorship" : "/dashboard");
+          return;
+        }
+
         setUser(currentUser);
         setIsChecking(false);
       } catch {
@@ -83,7 +102,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     }
 
     checkAccess();
-  }, [allowedRoles, router]);
+  }, [allowedRoles, requiredProduct, router]);
 
   if (isChecking || !user) {
     return (
@@ -93,5 +112,5 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  return children;
+  return <LegalAcceptanceGate>{children}</LegalAcceptanceGate>;
 }

@@ -16,7 +16,14 @@ export type AuthUser = {
   must_change_password?: boolean;
   first_access_completed?: boolean;
   is_active_player?: boolean;
+  products?: ProductCode[];
 };
+
+export type ProductCode = "GAME" | "MENTORSHIP";
+
+export function hasProduct(user: AuthUser | null, product: ProductCode): boolean {
+  return Boolean(user?.products?.includes(product));
+}
 
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") return null;

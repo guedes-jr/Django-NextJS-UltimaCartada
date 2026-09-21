@@ -40,6 +40,13 @@ INSTALLED_APPS = [
     "apps.journeys.apps.JourneysConfig",
     "apps.community.apps.CommunityConfig",
     "apps.reports.apps.ReportsConfig",
+    "apps.audit.apps.AuditConfig",
+    "apps.notifications.apps.NotificationsConfig",
+    "apps.challenges.apps.ChallengesConfig",
+    "apps.entitlements.apps.EntitlementsConfig",
+    "apps.mentorship.apps.MentorshipConfig",
+    "apps.support.apps.SupportConfig",
+    "apps.legal.apps.LegalConfig",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +57,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.audit.middleware.AuditMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -125,6 +133,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+PRIVATE_MEDIA_ROOT = BASE_DIR / "private_media"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -133,6 +142,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
+    "DEFAULT_THROTTLE_RATES": {
+        "support_write": "20/hour",
+    },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Eventos mais antigos podem ser removidos pelo comando purge_audit_events.
+AUDIT_RETENTION_DAYS = config("AUDIT_RETENTION_DAYS", default=730, cast=int)

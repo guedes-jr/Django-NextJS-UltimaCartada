@@ -12,6 +12,7 @@ class ScoreLogAction(models.TextChoices):
     EVIDENCE_APPROVED = "EVIDENCE_APPROVED", "Evidência aprovada"
     MANUAL_ADJUSTMENT = "MANUAL_ADJUSTMENT", "Ajuste manual"
     SCORE_RECALCULATED = "SCORE_RECALCULATED", "Pontuação recalculada"
+    FLASH_CHALLENGE_APPROVED = "FLASH_CHALLENGE_APPROVED", "Desafio-relâmpago aprovado"
 
 
 class ScoreLog(models.Model):
@@ -24,6 +25,8 @@ class ScoreLog(models.Model):
         Game,
         on_delete=models.CASCADE,
         related_name="score_logs",
+        blank=True,
+        null=True,
     )
     group = models.ForeignKey(
         PlayerGroup,
@@ -52,6 +55,7 @@ class ScoreLog(models.Model):
     new_points = models.IntegerField(default=0)
     points_delta = models.IntegerField(default=0)
     reason = models.TextField(blank=True)
+    source_reference = models.CharField(max_length=120, blank=True, db_index=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -65,6 +69,13 @@ class ScoreLog(models.Model):
         verbose_name = "Log de Pontuação"
         verbose_name_plural = "Logs de Pontuação"
         ordering = ("-created_at",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=("action", "source_reference"),
+                condition=~models.Q(source_reference=""),
+                name="unique_score_action_source_reference",
+            )
+        ]
 
     def __str__(self) -> str:
         return f"{self.player} - {self.action} - {self.points_delta}"

@@ -14,34 +14,25 @@
   display: flex;
   align-items: center;
   gap: 28px;
-  min-height: 76px;
+  min-height: 96px;
   padding: 12px max(24px, calc((100vw - 1120px) / 2 + 24px));
-  background: rgba(251, 247, 239, 0.92);
-  border-bottom: 1px solid #dfd4c2;
+  background: rgba(250, 250, 245, 0.95);
+  border-bottom: 1px solid #d9dfd4;
   backdrop-filter: blur(12px);
 }
 
 .brand {
   display: inline-flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
   margin-right: auto;
-  color: #13231d;
-  font-family: Georgia, "Times New Roman", serif;
-  line-height: 1;
   text-decoration: none;
 }
 
-.brand strong {
-  font-size: 20px;
-}
-
-.brand span {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
+.brand img {
+  width: 126px;
+  height: 78px;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .nav {
@@ -52,7 +43,7 @@
 
 .nav a,
 .footer nav a {
-  color: #13231d;
+  color: #074b56;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -63,7 +54,7 @@
 .nav a:hover,
 .footer nav a:hover,
 .socialLinks a:hover {
-  color: #b98b2e;
+  color: #9d742a;
 }
 
 .loginLink {
@@ -72,9 +63,10 @@
   justify-content: center;
   min-height: 40px;
   padding: 0 16px;
-  border: 1px solid #dfd4c2;
+  border: 1px solid #0b5a61;
   border-radius: 6px;
-  color: #13231d;
+  background: #074b56;
+  color: #fffaf0;
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -682,6 +674,13 @@
 .footer nav :global(a),
 .socialLinks a {
   color: #fff7e8;
+}
+
+.footer .brand img {
+  width: 116px;
+  height: 76px;
+  padding: 2px;
+  background: #fafaf5;
 }
 
 .footer nav {

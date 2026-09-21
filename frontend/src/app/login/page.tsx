@@ -3,8 +3,9 @@
 import { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { api } from "@/lib/api";
-import { isGameStaffRole, UserRole } from "@/lib/auth";
+import { hasProduct, isGameStaffRole, ProductCode, UserRole } from "@/lib/auth";
 import styles from "./LoginPage.module.css";
 
 type LoginResponse = {
@@ -18,6 +19,7 @@ type LoginResponse = {
     last_name: string;
     full_name: string;
     role: UserRole;
+    products: ProductCode[];
   };
 };
 
@@ -54,7 +56,11 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/player/home");
+      const hasGame = hasProduct(response.data.user, "GAME");
+      const hasMentorship = hasProduct(response.data.user, "MENTORSHIP");
+      if (hasGame && hasMentorship) router.push("/dashboard");
+      else if (hasMentorship) router.push("/mentorship");
+      else router.push("/player/home");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (!error.response) {
@@ -125,6 +131,10 @@ export default function LoginPage() {
           <button className={styles.button} type="submit" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}
           </button>
+          <Link className={styles.supportLink} href="/player/support">
+            Precisa de ajuda? Acesse o suporte
+          </Link>
+          <div className={styles.legalLinks}><Link href="/terms">Termos de Uso</Link><Link href="/privacy">Privacidade</Link></div>
         </form>
       </section>
     </main>

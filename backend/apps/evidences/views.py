@@ -1,13 +1,15 @@
+from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from apps.accounts.models import UserRole
+from apps.accounts.models import User, UserRole
 from apps.evidences.models import Evidence
 from apps.evidences.serializers import EvidenceSerializer
 from apps.evidences.services.evidence_review_service import EvidenceReviewService
+from apps.notifications.services import NotificationService
 
 
 class EvidenceViewSet(ModelViewSet):
@@ -46,7 +48,19 @@ class EvidenceViewSet(ModelViewSet):
                 "Você só pode enviar evidência da sua própria jogada."
             )
 
-        serializer.save()
+        evidence = serializer.save()
+        recipients = User.objects.filter(is_active=True).filter(
+            Q(role__in=(UserRole.DEV, UserRole.GENERAL_ADMIN, UserRole.ADMIN))
+            | Q(mediated_groups=evidence.play.group)
+        ).distinct()
+        NotificationService.notify_many(
+            recipients=recipients,
+            idempotency_key=f"evidence-created-{evidence.id}",
+            title="Nova evidência recebida",
+            message=f"{user} enviou uma evidência para {evidence.play.card.title}.",
+            category="EVIDENCE",
+            link="/admin/evidences",
+        )
 
     def perform_update(self, serializer):
         if not self.request.user.is_game_staff:

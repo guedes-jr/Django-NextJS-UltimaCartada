@@ -84,6 +84,7 @@ backend/db.sqlite3
 *.db
 
 backend/media/
+backend/private_media/
 backend/staticfiles/
 media/
 staticfiles/

@@ -5,10 +5,13 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from apps.accounts.models import User, UserRole
 from apps.players.models import PlayerProfile
+from apps.entitlements.models import ProductCode, ProductEntitlement
+from apps.entitlements.services import active_entitlements
 
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
+    products = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -26,10 +29,16 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active_player",
             "auth_provider",
             "must_change_password",
+            "products",
         )
 
     def get_full_name(self, obj: User) -> str:
         return obj.get_full_name()
+
+    def get_products(self, obj):
+        if obj.is_admin_user:
+            return [ProductCode.GAME, ProductCode.MENTORSHIP]
+        return list(active_entitlements(obj).values_list("product", flat=True))
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -83,6 +92,12 @@ class AdminPlayerCreateSerializer(serializers.Serializer):
             notes=notes,
             created_by=self.context["request"].user,
         )
+        ProductEntitlement.objects.create(
+            user=user,
+            product=ProductCode.GAME,
+            granted_by=self.context["request"].user,
+            notes="Acesso concedido no cadastro do jogador.",
+        )
 
         return user
 
@@ -119,6 +134,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
+    products = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -131,12 +147,18 @@ class CurrentUserSerializer(serializers.ModelSerializer):
             "full_name",
             "role",
             "must_change_password",
+            "products",
         )
 
     def get_full_name(self, obj):
         full_name = f"{obj.first_name or ''} {obj.last_name or ''}".strip()
 
         return full_name or obj.username
+
+    def get_products(self, obj):
+        if obj.is_admin_user:
+            return [ProductCode.GAME, ProductCode.MENTORSHIP]
+        return list(active_entitlements(obj).values_list("product", flat=True))
 
 
 class UserSummarySerializer(serializers.ModelSerializer):

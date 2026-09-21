@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { PlayerFlashChallenges } from "@/components/challenges/PlayerFlashChallenges";
 import { PlayerLayout } from "@/components/layout/PlayerLayout";
 import { Modal } from "@/components/ui/Modal";
 import { getCards } from "@/services/cardService";
@@ -383,6 +384,8 @@ export default function PlayerHomePage() {
         {feedbackMessage && (
           <div className={styles.message}>{feedbackMessage}</div>
         )}
+
+        <PlayerFlashChallenges />
 
         {isLoading && <div className={styles.message}>Carregando jogos...</div>}
 

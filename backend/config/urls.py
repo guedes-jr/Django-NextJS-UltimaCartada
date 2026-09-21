@@ -20,6 +20,13 @@ urlpatterns = [
     path("api/v1/journeys/", include("apps.journeys.urls")),
     path("api/v1/community/", include("apps.community.urls")),
     path("api/v1/reports/", include("apps.reports.urls")),
+    path("api/v1/audit/", include("apps.audit.urls")),
+    path("api/v1/notifications/", include("apps.notifications.urls")),
+    path("api/v1/challenges/", include("apps.challenges.urls")),
+    path("api/v1/entitlements/", include("apps.entitlements.urls")),
+    path("api/v1/mentorship/", include("apps.mentorship.urls")),
+    path("api/v1/support/", include("apps.support.urls")),
+    path("api/v1/legal/", include("apps.legal.urls")),
     path("api/v1/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 

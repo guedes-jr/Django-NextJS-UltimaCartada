@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { PwaInstall } from "@/components/pwa/PwaInstall";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Magaly Abreu | Bem-estar Premium",
+  title: "A Última Cartada | Jogo e mentoria",
   description:
-    "Consultoria Herbalife com acompanhamento personalizado para uma rotina com mais energia, equilíbrio e bem-estar.",
+    "Jogo terapêutico de hábitos e mentoria em grupo.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, title: "A Última Cartada", statusBarStyle: "default" },
 };
 
 export default function RootLayout({
@@ -14,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>{children}<PwaInstall /></body>
     </html>
   );
 }
