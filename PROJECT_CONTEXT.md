@@ -4,7 +4,7 @@ Atualizado em 12/10/2026 por inspeção estática. As validações técnicas ant
 
 ## Produto e acesso
 
-A apresentação pública prioriza o Método Última Cartada, de Magaly Abreu: hábitos, autoconhecimento e autonomia nos pilares corpo, nutrição, mentalidade e comunidade. Cartada Viva é sua aplicação educacional e gamificada para a prática cotidiana em grupo. Contexto editorial: `docs/LANDING_POSITIONING.md`.
+A página dedicada `/public/cartada-viva` apresenta o Método Última Cartada, de Magaly Abreu: hábitos, autoconhecimento e autonomia nos pilares corpo, nutrição, mentalidade e comunidade. Cartada Viva é sua aplicação educacional e gamificada para a prática cotidiana em grupo. A landing principal mantém sua apresentação anterior. Contexto editorial: `docs/LANDING_POSITIONING.md`.
 
 Plataforma para conduzir jogos de hábitos com grupos, rodadas, cartas, jogadas, evidências e pontuação. Há também jornadas, comunidade por grupo, desafios-relâmpago, mentoria, suporte, documentos legais, auditoria e notificações internas.
 

@@ -3,9 +3,9 @@ import { PwaInstall } from "@/components/pwa/PwaInstall";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Última Cartada | Método e prática cotidiana",
+  title: "Cartada Viva | Jogo e mentoria",
   description:
-    "Método Última Cartada, de Magaly Abreu, e sua aplicação prática Cartada Viva: hábitos, autoconhecimento e escolhas do cotidiano.",
+    "Jogo terapêutico de hábitos e mentoria em grupo.",
   manifest: "/manifest.webmanifest",
   icons: { icon: [{ url: "/cartada-viva-favicon.svg", type: "image/svg+xml" }] },
   appleWebApp: { capable: true, title: "Cartada Viva", statusBarStyle: "default" },

@@ -6,7 +6,7 @@ Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com car
 
 ## Visão do sistema
 
-A landing pública foi reformulada para apresentar o **Método Última Cartada** como foco e a **Cartada Viva** como aplicação prática. As capturas abaixo registram a interface anterior a essa reformulação; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
+Somente a página dedicada `/public/cartada-viva` foi reformulada para apresentar sua relação com o **Método Última Cartada**. A landing principal mantém a apresentação anterior. A captura da página dedicada abaixo é anterior à reformulação; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
 
 As imagens abaixo foram atualizadas após a adoção da identidade Cartada Viva em preto, dourado e branco e capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
 

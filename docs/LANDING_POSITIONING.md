@@ -18,24 +18,24 @@ Quatro pilares sustentam a prática: corpo/atividade física (Paus — Eu ajo), 
 
 O material do piloto contém versões com duração de 10/21 dias e mecânicas antigas de rodadas/competição. Não foi usado como oferta vigente de turma ou calendário. O pacote técnico mais recente estrutura cada trimestre em três jogos de 21 dias. Conteúdo final e demais trimestres ainda dependem de revisão/aprovação.
 
-## Alterações na apresentação pública
+## Escopo corrigido
 
-- Landing `/`: identidade textual Última Cartada; hero centrado em escolhas cotidianas; apresentação da metodologia; quatro pilares; tradução acessível da prática; Cartada Viva como aplicação; autora, experiências existentes e contato.
-- “Perceber, escolher, praticar” é uma explicação editorial da proposta, apresentada como tal. Não é anunciada como divisão oficial/certificada do método.
-- `/public/cartada-viva`: relação com o método, pilares e prática cotidiana substituem o destaque técnico a telas/rodadas/ranking. A URL e o acesso à plataforma foram preservados.
-- Metadados públicos alinhados à metodologia e à aplicação educacional, sem caracterizar o game como tratamento clínico.
-- Identidade preto/dourado/branco, fotos e depoimentos já utilizados no repositório, CSS Modules e navegação pública existentes reutilizados.
-- Oferta de seis meses, bônus exclusivo, promessas de emagrecimento, citação sem fonte e divulgação Herbalife deixam o destaque da landing. As páginas de consultoria/Herbalife continuam existentes; a separação comercial completa permanece no escopo de PROD-07.
+O responsável esclareceu que a reformulação se aplica somente a `/public/cartada-viva`. A alteração anterior da landing principal foi um erro de interpretação e foi desfeita.
 
-## Arquivos deste recorte
+- `/public/cartada-viva`: apresenta a metodologia Última Cartada e a Cartada Viva como sua aplicação prática nos quatro pilares; conteúdo, estilos e metadados próprios permanecem reformulados.
+- Landing `/`: página, estilos e metadados restaurados à versão anterior à reformulação (`aee6721^`).
+- `frontend/src/app/layout.tsx`: metadados globais também restaurados; a página dedicada conserva seus metadados específicos.
+- Páginas comerciais, plataforma e alterações anteriores do PROD-01 foram preservadas.
 
-- `frontend/src/app/page.tsx` e `page.module.css`.
-- `frontend/src/app/public/cartada-viva/page.tsx` e `CartadaVivaPage.module.css`.
-- `frontend/src/app/layout.tsx` (metadados).
-- `PROJECT_CONTEXT.md`, `README.md` e este documento.
+## Arquivos da correção
+
+- `frontend/src/app/page.tsx`, `page.module.css` e `layout.tsx`: restauração da apresentação anterior.
+- `PROJECT_CONTEXT.md`, `README.md` e este documento: correção do escopo descrito.
 
 ## Validação
 
 Executados: `npm run lint` (zero erros, quatro avisos anteriores em outras telas), `npx tsc --noEmit` e `npm run build`, todos aprovados. `git diff --check` passou. Script de inspeção confirmou classes CSS, caminhos de imagens/vídeos e âncoras das duas páginas. Uma classe sem declaração foi identificada e corrigida nessa conferência.
 
-O Browser foi tentado, mas a sessão falhou antes de permitir navegação. Não foi feita validação visual em navegador nesta revisão; as capturas anteriores do README não representam a nova landing. Os ZIPs e a extração temporária não foram adicionados ao repositório.
+O Browser foi tentado, mas a sessão falhou antes de permitir navegação. Não foi feita validação visual em navegador nesta revisão; a captura anterior da página dedicada no README não representa sua reformulação. Os ZIPs e a extração temporária não foram adicionados ao repositório.
+
+Validação da correção: `npm run build` e `git diff --check` passaram; comparação byte a byte confirmou a restauração dos três arquivos públicos gerais e a preservação da página dedicada.
