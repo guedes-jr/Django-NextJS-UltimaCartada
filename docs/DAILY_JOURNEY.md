@@ -79,3 +79,10 @@ python manage.py test
 ```
 
 Frontend: `npm run lint`, `npx tsc --noEmit`, `npm run build` dentro de `frontend/`. A homologação visual do editor/home ainda precisa ser registrada: a conexão com o navegador desta sessão falhou antes de permitir interação.
+
+
+## Apresentação do jogador — 12/10/2026
+
+A home recebeu cabeçalho preto/dourado, atalhos para progresso/comunidade/suporte e cards com acabamento atualizado. A jornada diária apresenta pontos de Jornada, barra de dias com participação, etapas com destaque da atual e indicadores de intenção/evidência derivados dos registros existentes. Não acrescenta níveis, sequências, recompensas ou alterações de pontuação. O layout compartilhado recebeu ajustes no menu e saudação. Estilos responsivos e foco por teclado permanecem em CSS Modules.
+
+Validação: `npm run build` (inclui TypeScript), `npm run lint` (zero erros; oito avisos preexistentes de imagens) e `git diff --check`. A conferência visual com sessão autenticada e diferentes estados da jornada permanece necessária; o navegador integrado estava indisponível nesta sessão.

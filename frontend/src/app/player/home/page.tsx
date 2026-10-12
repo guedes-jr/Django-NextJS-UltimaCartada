@@ -1,6 +1,8 @@
 "use client";
 
 import { AxiosError } from "axios";
+import Link from "next/link";
+import { ArrowUpRight, Gamepad2, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -376,16 +378,15 @@ export default function PlayerHomePage() {
     <ProtectedRoute allowedRoles={["PLAYER"]}>
       <PlayerLayout>
         <div className={styles.header}>
-          <h1>Área do Jogador</h1>
-          <p>
-            Acompanhe sua jornada diária e as jogadas dos seus jogos.
-          </p>
+          <div><span className={styles.eyebrow}><Gamepad2 size={18} aria-hidden="true" /> Cartada Viva • Seu espaço de jogo</span><h1>Cada cartada é um novo passo.</h1><p>Escolha sua ação, viva a experiência e acompanhe o caminho que você está construindo.</p></div>
+          <div className={styles.heroEmblem} aria-hidden="true"><Sparkles /><span>♠</span><small>Uma escolha de cada vez</small></div>
         </div>
 
         {feedbackMessage && (
           <div className={styles.message}>{feedbackMessage}</div>
         )}
 
+        <nav className={styles.quickLinks} aria-label="Atalhos do jogador"><Link href="/player/performance">Meu progresso <ArrowUpRight size={16} aria-hidden="true" /></Link><Link href="/player/community">Minha comunidade <ArrowUpRight size={16} aria-hidden="true" /></Link><Link href="/player/support">Preciso de ajuda <ArrowUpRight size={16} aria-hidden="true" /></Link></nav>
         <PlayerDailyJourney />
         <PlayerFlashChallenges />
 

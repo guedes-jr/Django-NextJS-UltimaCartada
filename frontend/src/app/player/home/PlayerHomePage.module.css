@@ -661,3 +661,24 @@
   font-weight: 800;
   line-height: 1.45;
 }
+
+.header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 32px; border: 1px solid #7d6239; border-radius: 24px; background: radial-gradient(ellipse at top right, #65502d 0%, transparent 65%), var(--brand-ink); box-shadow: 0 16px 36px #211b1312; }
+.header h1 { color: #fffaf3; font-size: clamp(28px, 3.5vw, 40px); letter-spacing: -.04em; max-width: 620px; }
+.header p { color: #e0d5c2; max-width: 560px; line-height: 1.7; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #e1bb7a; text-transform: uppercase; font-size: 11px; letter-spacing: .08em; font-weight: 700; margin-bottom: 16px; }
+.heroEmblem { flex-shrink: 0; display: grid; justify-items: center; gap: 8px; padding: 18px; border: 1px solid #bc904655; border-radius: 18px; color: #e1bb7a; transform: rotate(4deg); }
+.heroEmblem span { font-size: 52px; line-height: 1; }
+.heroEmblem small { font-size: 10px; }
+.quickLinks { display: flex; flex-wrap: wrap; gap: 12px; margin: -8px 0 28px; }
+.quickLinks a { display: inline-flex; gap: 16px; align-items: center; min-height: 44px; padding: 10px 16px; border: 1px solid var(--brand-border); border-radius: 99px; background: white; color: var(--brand-ink); text-decoration: none; font-size: 13px; font-weight: 600; }
+.quickLinks a:hover { background: var(--brand-gold-soft); }
+.filters, .card, .section, .playCard { border-radius: 18px; box-shadow: 0 8px 28px #211b1306; }
+.filters { background: white; }
+.card { border-top: 3px solid var(--brand-gold-dark); background: white; }
+.card strong { font-size: 34px; font-variant-numeric: tabular-nums; }
+.roundCard { border-radius: 16px; background: white; }
+.cardOption { border-radius: 16px; }
+.cardOptionSelected { box-shadow: 0 0 0 2px var(--brand-gold-dark), 0 8px 24px #211b1310; }
+.quickLinks a:focus-visible, .actionButton:focus-visible, .cardOption:focus-visible { outline: 3px solid var(--brand-gold-dark); outline-offset: 4px; }
+@media (max-width: 600px) { .header { padding: 24px; } .heroEmblem { display: none; } .quickLinks { gap: 8px; } .quickLinks a { flex: 1 1 auto; justify-content: space-between; } .field { min-width: 0; width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .actionButton, .cardOption { transition: none; } .actionButton:hover:not(:disabled) { transform: none; } }

@@ -154,3 +154,6 @@
     font-size: 24px;
   }
 }
+
+.passwordToggle { align-self: flex-start; background: transparent; border: 0; color: var(--brand-gold-dark); cursor: pointer; min-height: 44px; padding: 0 4px; margin-top: -12px; font-size: 13px; }
+.passwordToggle:focus-visible, .error:focus-visible { outline: 3px solid var(--brand-gold-dark); outline-offset: 3px; }

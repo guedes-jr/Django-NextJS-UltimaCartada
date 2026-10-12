@@ -1,7 +1,7 @@
 "use client";
 
 import { AxiosError } from "axios";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,13 +24,12 @@ type LoginResponse = {
   };
 };
 
-type LoginErrorResponse = {
-  detail?: string;
-};
-
 export default function LoginPage() {
   const router = useRouter();
 
+  const submitting = useRef(false);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,12 +38,18 @@ export default function LoginPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (submitting.current) return;
+    if (!username.trim() || !password) {
+      setErrorMessage("Informe seu usuário e sua senha para entrar.");
+      return;
+    }
+    submitting.current = true;
     try {
       setIsLoading(true);
       setErrorMessage("");
 
       const response = await api.post<LoginResponse>("/auth/token/", {
-        username,
+        username: username.trim(),
         password,
       });
 
@@ -66,28 +71,34 @@ export default function LoginPage() {
       if (error instanceof AxiosError) {
         if (!error.response) {
           setErrorMessage(
-            "Não foi possível conectar à API. Verifique a configuração de produção."
+            "Não foi possível conectar. Confira sua conexão e tente novamente em instantes."
           );
           return;
         }
 
-        const data = error.response.data as LoginErrorResponse | undefined;
 
         if (error.response.status === 401) {
-          setErrorMessage(data?.detail || "Usuário ou senha inválidos.");
+          setErrorMessage("Usuário ou senha incorretos, ou conta desativada. Confira os dados e tente novamente.");
           return;
         }
 
-        setErrorMessage(
-          data?.detail ||
-            `Erro ao entrar. A API respondeu com status ${error.response.status}.`
-        );
+        if (error.response.status === 429) {
+          setErrorMessage("Muitas tentativas de acesso. Aguarde alguns minutos antes de tentar novamente.");
+        } else if (error.response.status === 400) {
+          setErrorMessage("Confira o usuário e a senha informados e tente novamente.");
+        } else if (error.response.status === 403) {
+          setErrorMessage("O acesso não foi autorizado. Entre em contato com a responsável pela sua conta.");
+        } else {
+          setErrorMessage("O serviço de acesso está indisponível no momento. Tente novamente em instantes.");
+        }
         return;
       }
 
       setErrorMessage("Não foi possível entrar. Tente novamente.");
     } finally {
+      submitting.current = false;
       setIsLoading(false);
+      requestAnimationFrame(() => errorRef.current?.focus());
     }
   }
 
@@ -102,11 +113,16 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit} noValidate aria-busy={isLoading}>
           <div className={styles.field}>
             <label htmlFor="username">Usuário</label>
             <input
               id="username"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck={false}
+              disabled={isLoading}
+              aria-describedby={errorMessage ? "login-error" : undefined}
               type="text"
               placeholder="Digite seu usuário"
               value={username}
@@ -119,7 +135,10 @@ export default function LoginPage() {
             <label htmlFor="password">Senha</label>
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              disabled={isLoading}
+              aria-describedby={errorMessage ? "login-error" : undefined}
               placeholder="Digite sua senha"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -127,7 +146,8 @@ export default function LoginPage() {
             />
           </div>
 
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+          <button className={styles.passwordToggle} type="button" aria-pressed={showPassword} disabled={isLoading} onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Ocultar senha" : "Mostrar senha"}</button>
+          {errorMessage && <p id="login-error" ref={errorRef} role="alert" tabIndex={-1} className={styles.error}>{errorMessage}</p>}
 
           <button className={styles.button} type="submit" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}

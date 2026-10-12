@@ -49,7 +49,22 @@ const refreshApi = axios.create({
   baseURL,
 });
 
+function isTokenRequest(url?: string): boolean {
+  const path = (url ?? "").split(/[?#]/)[0].replace(/\/$/, "");
+  return /\/(?:auth\/)?token(?:\/refresh)?$/.test(path);
+}
+
+function redirectToLogin() {
+  if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
+}
+
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  if (isTokenRequest(config.url)) {
+    config.headers.delete("Authorization");
+    return config;
+  }
   const token = getAccessToken();
 
   if (token) {
@@ -64,16 +79,14 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as RetriableRequestConfig | undefined;
 
-    if (!originalRequest || error.response?.status !== 401) {
+    if (!originalRequest || isTokenRequest(originalRequest.url) || error.response?.status !== 401) {
       return Promise.reject(error);
     }
 
     if (originalRequest._retry) {
       logout();
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
+      redirectToLogin();
 
       return Promise.reject(error);
     }
@@ -83,9 +96,7 @@ api.interceptors.response.use(
     if (!refreshToken) {
       logout();
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
+      redirectToLogin();
 
       return Promise.reject(error);
     }
@@ -136,9 +147,7 @@ api.interceptors.response.use(
       processQueue(refreshError, null);
       logout();
 
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
+      redirectToLogin();
 
       return Promise.reject(refreshError);
     } finally {

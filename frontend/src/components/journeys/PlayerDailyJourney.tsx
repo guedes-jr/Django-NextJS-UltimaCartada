@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Flag, Sparkles, Trophy, CheckCircle2, Circle, Target } from "lucide-react";
 import { AxiosError } from "axios";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { downloadDailyEvidence, getDailyJourneys, recordDailyIntention, submitDailyEvidence } from "@/services/journeyService";
@@ -114,19 +115,20 @@ export function PlayerDailyJourney() {
   return (
     <section className={styles.panel} aria-label="Jornada diária">
       <div className={styles.heading}>
-        <div><span>Minha jornada</span><h2>{current.journey_name}</h2><p>{current.group_name}</p></div>
-        <div><strong>{current.played_days}/{current.total_days}</strong><span> dias com participação</span><p>{current.points} pontos de Jornada</p></div>
+        <div><span className={styles.eyebrow}><Flag size={16} aria-hidden="true" /> Minha jornada</span><h2>{current.journey_name}</h2><p>{current.group_name}</p></div>
+        <div className={styles.score}><Trophy size={24} aria-hidden="true" /><div><strong>{current.points}</strong><span> pontos de Jornada</span></div></div>
       </div>
+      <div className={styles.journeyProgress}><div><span>Seu caminho até aqui</span><strong>{current.played_days}/{current.total_days} dias com participação</strong></div><progress value={current.played_days} max={Math.max(current.total_days, 1)} aria-label="Dias com participação na jornada" /></div>
       {journeys.length > 1 && <label className={styles.field}>Jornada e grupo<select disabled={busy} value={current.enrollment} onChange={(event) => changeJourney(event.target.value)}>{journeys.map((item) => <option key={item.enrollment} value={item.enrollment}>{item.journey_name} — {item.group_name}</option>)}</select></label>}
       {error && <p role="alert" className={styles.error}>{error}</p>}
       {feedback && <p role="status" className={styles.feedback}>{feedback}</p>}
       <div className={styles.stages}>
-        {current.stages.map((stage) => <article key={stage.order}><strong>{stage.name}</strong><span>{stage.status === "FINISHED" ? "Etapa encerrada" : stage.status === "ACTIVE" ? "Etapa atual" : stage.status === "CANCELED" ? "Cancelada" : "Aguardando início"}</span><small>{stage.played_days}/21 dias com participação • {stage.points} pontos</small></article>)}
+        {current.stages.map((stage) => <article key={stage.order} className={stage.status === "ACTIVE" ? styles.activeStage : ""}><span className={styles.stageNumber} aria-hidden="true">{stage.status === "FINISHED" ? <CheckCircle2 size={20} /> : stage.order}</span><strong>{stage.name}</strong><span>{stage.status === "FINISHED" ? "Etapa encerrada" : stage.status === "ACTIVE" ? "Etapa atual" : stage.status === "CANCELED" ? "Cancelada" : "Aguardando início"}</span><small>{stage.played_days}/21 dias com participação • {stage.points} pontos</small></article>)}
       </div>
       {lastFinished && current.status !== "COMPLETED" && <aside className={styles.feedback} role="status"><h3>{lastFinished.name} encerrado</h3><p>Esta etapa chegou ao fim. Seu histórico e seus pontos continuam com você na próxima etapa.</p></aside>}
       {current.status === "COMPLETED" ? <div className={styles.feedback}><h3>Jornada encerrada</h3><p>Os três jogos chegaram ao fim. Seu histórico e seus pontos permanecem disponíveis.</p></div> : !day ? <p className={styles.empty}>{current.current_stage ? "A cartada de hoje ainda não está disponível. Ela aparecerá após publicação e horário de liberação." : current.next_stage_start ? `Próxima etapa em ${new Date(`${current.next_stage_start}T00:00:00`).toLocaleDateString("pt-BR")}. Seu progresso permanece salvo.` : "Esta jornada não possui uma etapa ativa hoje."}</p> : (
         <article className={styles.daily} key={`${current.enrollment}-${day.id}`}>
-          <span>Jogo {current.current_stage} • Dia {day.day_number}/21 • {day.pillar_label}</span>
+          <div className={styles.dailyTop}><span className={styles.eyebrow}><Sparkles size={16} aria-hidden="true" /> Sua cartada de hoje</span><span className={styles.dayBadge}>Jogo {current.current_stage} • Dia {day.day_number}/21</span></div><span className={styles.pillarTag}>{day.pillar_label}</span>
           <h3>{day.title}</h3>
           {day.image && <Image className={styles.image} src={day.image} alt={day.title} width={600} height={280} unoptimized />}
           {day.objective && <p><strong>Objetivo:</strong> {day.objective}</p>}
@@ -134,6 +136,10 @@ export function PlayerDailyJourney() {
           <p className={styles.text}>{day.instruction}</p>
           {day.alternative_instruction && <p><strong>Alternativa:</strong> {day.alternative_instruction}</p>}
           {day.precautions && <p><strong>Cuidados:</strong> {day.precautions}</p>}
+          <ol className={styles.checkpoints} aria-label="Passos da cartada de hoje">
+            <li>{participation?.intention_at ? <CheckCircle2 aria-hidden="true" /> : <Circle aria-hidden="true" />}<span>Intenção <small>{participation?.intention_at ? "Registrada" : "Seu primeiro passo"}</small></span></li>
+            {day.evidence_type !== "NONE" && <li>{participation?.evidence_at ? <CheckCircle2 aria-hidden="true" /> : <Circle aria-hidden="true" />}<span>Evidência <small>{participation?.evidence_at ? "Registrada" : "Conte sua experiência"}</small></span></li>}
+          </ol>
           <div className={styles.forms}>
             <form onSubmit={(event) => void submit(event, "intention")}>
               <h4>1. Registrar intenção</h4>
@@ -160,7 +166,7 @@ export function PlayerDailyJourney() {
           {participation?.completed_at && <p className={styles.feedback}>Dia jogado. {participation.evidence_at || day.evidence_type === "NONE" ? day.conclusion_message : day.incentive_message}</p>}
         </article>
       )}
-      <h3>Progresso por pilar</h3>
+      <h3 className={styles.progressTitle}><Target aria-hidden="true" /> Progresso por pilar</h3>
       <label className={styles.field}>Período do progresso<select value={pillarStage} onChange={(event) => setPillarStage(event.target.value)}><option value="ALL">Jornada completa (três jogos)</option>{current.stages.map((stage) => <option key={stage.order} value={stage.order}>{stage.name}</option>)}</select></label>
       <p>Um dia conta com intenção e/ou evidência. Dias sem participação não retiram pontos.</p>
       <div className={styles.pillars}>{(pillarProgress ?? []).map((pillar) => <article key={pillar.pillar}><strong>{pillar.label}</strong><progress value={pillar.played_days} max={Math.max(pillar.total_days, 1)} aria-label={`Progresso em ${pillar.label}`} /><span>{pillar.played_days}/{pillar.total_days} cartadas publicadas</span><small>{pillar.evidence_days} com evidência • {pillar.points} pontos</small></article>)}</div>
