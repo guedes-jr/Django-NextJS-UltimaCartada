@@ -225,3 +225,57 @@
     padding: 18px;
   }
 }
+
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; font-weight: 700; color: var(--brand-gold-dark); margin-bottom: 12px; }
+.podiumSection { padding: 32px; margin-bottom: 28px; border: 1px solid #6e5937; border-radius: 24px; color: #fffaf3; background: radial-gradient(ellipse at 50% 0, #5e492c 0, transparent 65%), var(--brand-ink); overflow: hidden; }
+.podiumHeading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.podiumHeading .eyebrow { color: #e3bf7e; }
+.podiumHeading h2 { margin: 0; font-size: clamp(23px, 3vw, 30px); letter-spacing: -.035em; }
+.podiumHeading p, .podiumNote { color: #d8c9b2; font-size: 13px; line-height: 1.7; }
+.trophyIllustration { width: 58px; height: 58px; color: #e3bf7e; flex-shrink: 0; }
+.podium { display: flex; justify-content: center; align-items: flex-end; gap: 14px; padding: 28px 0 0; margin: 0; list-style: none; }
+.podiumPlayer { --height: 70px; --delay: .3s; flex: 1 1 0; min-width: 0; text-align: center; animation: podiumEnter .65s var(--delay) both; }
+.podiumPlayer[data-place="1"] { order: 3; --height: 150px; --delay: .1s; }
+.podiumPlayer[data-place="2"] { order: 2; --height: 118px; --delay: .2s; }
+.podiumPlayer[data-place="3"] { order: 4; --height: 96px; }
+.podiumPlayer[data-place="4"] { order: 1; }
+.podiumPlayer[data-place="5"] { order: 5; }
+.medalIllustration { position: relative; width: 78px; height: 90px; margin: 0 auto 14px; }
+.ribbon { position: absolute; inset: 0 13px auto; height: 40px; background: linear-gradient(90deg, #9c7135 45%, transparent 45%, transparent 55%, #9c7135 55%); clip-path: polygon(0 0, 100% 0, 78% 100%, 22% 100%); }
+.medalFace { position: absolute; inset: 24px 5px 0; border: 3px solid #ddb676; border-radius: 50%; background: linear-gradient(135deg, #f9e2ae, #b88236); color: #352613; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 0 0 4px #d8aa4d20, 0 10px 24px #0004; }
+.medalFace svg { width: 20px; height: 20px; }
+.medalFace strong { font-size: 20px; line-height: 1; }
+.podiumPlayer[data-place="1"] .medalIllustration { animation: medalFloat 1.4s .8s ease-in-out 2; }
+.podiumPlayer[data-place="2"] .medalFace { background: linear-gradient(135deg, #f1eee8, #ada498); border-color: #e0d7c8; }
+.podiumPlayer[data-place="3"] .medalFace { background: linear-gradient(135deg, #e2b38b, #ac7244); border-color: #d7a170; }
+.podiumPlayer[data-place="4"] .medalFace, .podiumPlayer[data-place="5"] .medalFace { background: #413624; color: #e3bf7e; border-color: #967444; }
+.placeLabel { font-size: 11px; color: #e3bf7e; font-weight: 700; }
+.podiumIdentity h3 { margin: 8px 0 16px; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+.podiumBase { min-height: var(--height); padding: 20px 8px; box-sizing: border-box; border: 1px solid #c09a5750; border-radius: 14px 14px 0 0; background: linear-gradient(180deg, #a97e3840, #a97e3810); }
+.podiumBase strong { display: block; font-size: clamp(23px, 3vw, 34px); font-variant-numeric: tabular-nums; }
+.podiumBase span { color: #d8c9b2; font-size: 11px; }
+.podiumYou .podiumBase { border-color: #e3bf7e; box-shadow: inset 0 3px #e3bf7e; }
+.podiumNote { text-align: center; margin-bottom: 0; padding-top: 16px; border-top: 1px solid #c09a5730; }
+.filters, .summaryCard, .section { border-radius: 18px; box-shadow: 0 8px 28px #211b1306; }
+.summaryCard { border-top: 3px solid var(--brand-gold-dark); }
+.rankingCard { border-radius: 14px; }
+.field select:focus-visible { outline: 3px solid var(--brand-gold-dark); outline-offset: 3px; }
+@keyframes podiumEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes medalFloat { 50% { transform: translateY(-6px) rotate(-4deg); } }
+@media (max-width: 640px) {
+  .podiumSection { padding: 22px 18px; }
+  .trophyIllustration { width: 36px; height: 36px; }
+  .podium { flex-direction: column; align-items: stretch; gap: 12px; padding-top: 20px; }
+  .podiumPlayer { order: 0 !important; display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; gap: 12px; align-items: center; text-align: left; padding: 12px; background: #ffffff08; border: 1px solid #c09a5730; border-radius: 14px; }
+  .medalIllustration { width: 52px; height: 64px; margin: 0; }
+  .medalFace { inset: 14px 0 0; border-width: 2px; }
+  .medalFace svg { width: 16px; height: 16px; }
+  .medalFace strong { font-size: 16px; }
+  .ribbon { inset-inline: 10px; }
+  .podiumIdentity h3 { margin: 6px 0 0; font-size: 13px; }
+  .podiumBase { min-height: 0; padding: 0; background: none; border: 0; text-align: right; border-radius: 0; }
+  .podiumBase strong { font-size: 22px; }
+  .podiumYou { border-color: #e3bf7e; }
+  .podiumYou .podiumBase { box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) { .podiumPlayer, .podiumPlayer[data-place="1"] .medalIllustration { animation: none; } }
