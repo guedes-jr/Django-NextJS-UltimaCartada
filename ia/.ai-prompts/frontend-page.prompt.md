@@ -8,7 +8,7 @@ Crie ou ajuste uma página frontend no projeto Última Cartada seguindo estes cr
 - Não usar Tailwind.
 - Usar services em `src/services`.
 - Usar types em `src/types`.
-- Páginas admin usam `AdminLayout` e `ProtectedRoute` com `ADMIN`.
+- Páginas admin usam `AdminLayout` e `ProtectedRoute` conforme os papéis/produtos reais da rota.
 - Cadastro e edição devem abrir em modal.
 - Listagem fica na página principal.
 - Incluir loading, erro, sucesso e estado vazio.

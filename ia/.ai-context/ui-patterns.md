@@ -28,11 +28,6 @@ Padrão obrigatório:
 - Evitar campo desnecessário.
 - Botão fica disabled durante envio.
 
-## Cores
+## Identidade visual
 
-- Roxo principal: `#5b3cc4`
-- Roxo escuro: `#302457`
-- Fundo claro: `#fbfaff`
-- Borda clara: `#ded7f4`
-- Sucesso: fundo `#eefaf5`, texto `#24775c`
-- Erro: fundo `#fff1f1`, texto `#b42318`
+Preto, dourado e branco; reutilize os tokens `--brand-*` de `frontend/src/app/globals.css`. Consulte `../frontend-guidelines.md` e componentes atuais antes de ampliar padrões.

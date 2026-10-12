@@ -2,7 +2,7 @@
 
 ## Papéis
 
-- ADMIN gerencia o sistema.
+- Papéis atuais: DEV, GENERAL_ADMIN, GAME_MEDIATOR, ADMIN legado e PLAYER. Consulte User e o escopo de cada endpoint.
 - PLAYER participa do jogo.
 
 ## Rodadas
@@ -32,6 +32,10 @@
 ## Evidências
 
 - PLAYER envia evidência de uma jogada.
-- ADMIN aprova ou rejeita.
+- Equipe autorizada aprova ou rejeita conforme papel e grupo do endpoint.
 - Evidência aprovada atualiza bônus da jogada.
 - Evidência já revisada não deve ser alterada novamente sem fluxo específico.
+
+## Escopo e validade
+
+Este resumo descreve o jogo de rodadas existente. Confirme regras nos services e testes; não equivale às regras editoriais/competitivas novas do backlog. Jornada tem três etapas de 21 dias, e produtos GAME/MENTORSHIP dependem de concessão ativa.

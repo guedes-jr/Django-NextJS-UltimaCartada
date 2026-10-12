@@ -6,6 +6,8 @@ Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com car
 
 ## Visão do sistema
 
+A landing pública foi reformulada para apresentar o **Método Última Cartada** como foco e a **Cartada Viva** como aplicação prática. As capturas abaixo registram a interface anterior a essa reformulação; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
+
 As imagens abaixo foram atualizadas após a adoção da identidade Cartada Viva em preto, dourado e branco e capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
 
 | Apresentação | Prévia pública do jogo |
@@ -112,6 +114,8 @@ npm run lint
 npm run build
 ```
 
-O PWA deve ser conferido em HTTPS ou `localhost`; veja [PWA_TESTING.md](PWA_TESTING.md). Para ambiente local e deploy, consulte [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) e [DEPLOYMENT.md](DEPLOYMENT.md). O roteiro de evolução está em [PLANO_IMPLEMENTACAO_NOVOS_REQUISITOS.md](PLANO_IMPLEMENTACAO_NOVOS_REQUISITOS.md).
+O PWA deve ser conferido em HTTPS ou `localhost`; veja [PWA_TESTING.md](PWA_TESTING.md). Para ambiente local e deploy, consulte [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) e [DEPLOYMENT.md](DEPLOYMENT.md). O roteiro de evolução está em [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
 Não versione `.env`, bancos locais, uploads, `.venv/`, `node_modules/` ou `.next/`. Evidências e dados de saúde ou participação devem ser tratados conforme as permissões e a política de privacidade efetivamente publicada.
+
+Para desenvolvimento com Codex, comece por [AGENTS.md](AGENTS.md) e pelo [índice técnico](ia/README.md). A revisão do planejamento e suas evidências estão em [docs/PROJECT_AUDIT.md](docs/PROJECT_AUDIT.md); planos antigos foram preservados em [docs/archive/planning](docs/archive/planning/README.md).

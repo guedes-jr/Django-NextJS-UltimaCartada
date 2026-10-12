@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.journeys.models import Journey, JourneyEnrollment, JourneyGame, JourneyStage
+from apps.journeys.models import Journey, JourneyEnrollment, JourneyGame, JourneyStage, JourneyDay, DailyParticipation
 
 
 class JourneyStageInline(admin.TabularInline):
@@ -27,3 +27,32 @@ class JourneyEnrollmentAdmin(admin.ModelAdmin):
 class JourneyGameAdmin(admin.ModelAdmin):
     list_display = ("id", "enrollment", "stage", "game")
     autocomplete_fields = ("game",)
+
+
+@admin.register(JourneyDay)
+class JourneyDayAdmin(admin.ModelAdmin):
+    list_display = ("id", "stage", "day_number", "pillar", "title", "is_published")
+    list_filter = ("stage__journey", "pillar", "is_published")
+    search_fields = ("title", "instruction")
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj and obj.participations.exists():
+            return tuple(field.name for field in self.model._meta.fields if field.name not in ("intention_points", "evidence_points"))
+        return ("created_at", "updated_at")
+
+    def has_delete_permission(self, request, obj=None):
+        return super().has_delete_permission(request, obj) and not (obj and obj.participations.exists())
+
+
+@admin.register(DailyParticipation)
+class DailyParticipationAdmin(admin.ModelAdmin):
+    list_display = ("id", "journey_game", "day", "player", "intention_at", "evidence_at", "total_points")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

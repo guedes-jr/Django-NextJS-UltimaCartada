@@ -13,6 +13,7 @@ class GameSerializer(serializers.ModelSerializer):
     mediators = serializers.SerializerMethodField()
     journey_id = serializers.SerializerMethodField()
     journey_name = serializers.SerializerMethodField()
+    uses_daily_content = serializers.SerializerMethodField()
     journey_stage = serializers.SerializerMethodField()
 
     class Meta:
@@ -27,6 +28,7 @@ class GameSerializer(serializers.ModelSerializer):
             "journey_id",
             "journey_name",
             "journey_stage",
+            "uses_daily_content",
             "start_date",
             "end_date",
             "duration_days",
@@ -51,6 +53,12 @@ class GameSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+
+    def validate(self, attrs):
+        if self.instance and hasattr(self.instance, "journey_game") and self.instance.journey_game.enrollment.journey.daily_enabled:
+            if any(field in attrs and attrs[field] != getattr(self.instance, field) for field in ("start_date", "end_date", "duration_days", "group")):
+                raise serializers.ValidationError({"detail": "Preserve o grupo e o calendário de 21 dias deste jogo da jornada diária."})
+        return attrs
 
     def get_rounds_count(self, obj):
         return obj.rounds.count()
@@ -82,3 +90,6 @@ class GameSerializer(serializers.ModelSerializer):
         if not hasattr(obj, "journey_game"):
             return None
         return obj.journey_game.stage.order
+
+    def get_uses_daily_content(self, obj):
+        return bool(hasattr(obj, "journey_game") and obj.journey_game.enrollment.journey.daily_enabled)

@@ -1,108 +1,41 @@
-# Contratos de API
+# Contratos de API atuais
 
-Base sugerida:
+Inventário estático de 12/10/2026. Fonte de verdade: `backend/config/urls.py`, `backend/apps/*/urls.py`, `views.py` (ações), serializers e `frontend/src/services`. A tabela não substitui campos/permissões do código nem pretende listar cada ação.
 
-```txt
-/api/v1/
-```
+Base local configurável por NEXT_PUBLIC_API_URL; produção `/api/v1`. Preservar barras finais e aliases existentes.
 
-## Auth
+| Domínio | Caminhos relativos à base |
+| --- | --- |
+| Sessão | `POST /accounts/token/`, `POST /accounts/token/refresh/`, `GET /accounts/me/`, `POST /accounts/change-password/`, `POST /accounts/complete-onboarding/` |
+| Aliases de sessão | `/auth/` inclui as mesmas URLs de accounts; `POST /token/refresh/` é alias usado pelo interceptor Axios |
+| Cadastro/mediadores | `/accounts/admin/players/create/`, `/accounts/admin/mediators/` |
+| Players | `/players/players/` |
+| Groups | `/groups/groups/` |
+| Games | `/games/games/`; ação `POST /games/games/{id}/generate-rounds/` |
+| Rounds | `/rounds/schedules/`, `/rounds/rounds/`; ação `POST /rounds/rounds/{id}/score/` |
+| Cards | `/cards/suits/`, `/cards/cards/` |
+| Plays | `/plays/plays/` |
+| Evidences | `/evidences/evidences/`; ações de revisão no ViewSet |
+| Scoring | `/scoring/games/{game_id}/ranking/`, `/scoring/games/{game_id}/summary/`, `/scoring/games/{game_id}/players/{player_id}/performance/` |
+| Journeys | `/journeys/journeys/`, `/journeys/enrollments/`, `/journeys/days/`, `/journeys/participations/`; ações diárias em `docs/DAILY_JOURNEY.md` a partir da raiz |
+| Community | `/community/posts/`, `/community/comments/`, `/community/groups/{group_id}/ranking/` |
+| Reports | `/reports/summary/`, `/reports/timeseries/`, `/reports/export/` |
+| Audit | `/audit/events/` |
+| Notifications | `/notifications/notifications/` |
+| Challenges | `/challenges/challenges/`, `/challenges/submissions/` |
+| Entitlements | `/entitlements/entitlements/` |
+| Mentorship | `/mentorship/programs/`, `/mentorship/modules/`, `/mentorship/contents/` |
+| Support | `/support/tickets/` |
+| Legal | `/legal/documents/` |
 
-```txt
-POST /api/v1/auth/token/
-POST /api/v1/auth/token/refresh/
-GET  /api/v1/auth/me/
-POST /api/v1/auth/admin/players/create/
-```
+Não existe login `/api/v1/token/` nem rodadas `/api/v1/games/rounds/` no urlpatterns atual. Não remover aliases para corrigir documentação.
 
-## Players
+## Alteração de contrato
 
-```txt
-GET    /api/v1/players/players/
-GET    /api/v1/players/players/{id}/
-```
+1. Confira router/path e ações do ViewSet; confirme métodos e acesso.
+2. Leia serializer, incluindo IDs relacionados e campos read-only.
+3. Compare service, types e consumidores; confira listas/paginação, filtros e FormData.
+4. Preserve o contrato ou implemente migração compatível em todos os consumidores.
+5. Teste sucesso e acesso negado; atualize este inventário quando URLs mudarem.
 
-## Groups
-
-```txt
-GET    /api/v1/groups/groups/
-POST   /api/v1/groups/groups/
-GET    /api/v1/groups/groups/{id}/
-PATCH  /api/v1/groups/groups/{id}/
-DELETE /api/v1/groups/groups/{id}/
-```
-
-Payload de criação:
-
-```json
-{
-  "name": "Grupo A",
-  "description": "Grupo inicial",
-  "player_ids": [1, 2, 3],
-  "max_players": 10,
-  "is_active": true
-}
-```
-
-## Games
-
-```txt
-GET    /api/v1/games/games/
-POST   /api/v1/games/games/
-GET    /api/v1/games/games/{id}/
-PATCH  /api/v1/games/games/{id}/
-DELETE /api/v1/games/games/{id}/
-POST   /api/v1/games/games/{id}/generate-rounds/
-```
-
-## Cards
-
-```txt
-GET    /api/v1/cards/suits/
-GET    /api/v1/cards/cards/
-POST   /api/v1/cards/cards/
-GET    /api/v1/cards/cards/{id}/
-PATCH  /api/v1/cards/cards/{id}/
-DELETE /api/v1/cards/cards/{id}/
-```
-
-## Rounds
-
-```txt
-GET  /api/v1/rounds/schedules/
-GET  /api/v1/rounds/rounds/
-POST /api/v1/rounds/rounds/{id}/score/
-```
-
-## Plays
-
-```txt
-GET  /api/v1/plays/plays/
-POST /api/v1/plays/plays/
-```
-
-Payload de criação:
-
-```json
-{
-  "round": 1,
-  "card": 5
-}
-```
-
-## Evidences
-
-```txt
-GET  /api/v1/evidences/evidences/
-POST /api/v1/evidences/evidences/
-POST /api/v1/evidences/evidences/{id}/approve/
-POST /api/v1/evidences/evidences/{id}/reject/
-```
-
-## Scoring
-
-```txt
-GET /api/v1/scoring/games/{game_id}/ranking/
-GET /api/v1/scoring/games/{game_id}/summary/
-GET /api/v1/scoring/games/{game_id}/players/{player_id}/performance/
-```
+Não use exemplos históricos de payload como schema definitivo. Dados derivados (jogador, pontuação, revisão) dependem das regras do servidor. Endpoints públicos legais e de login têm permissões próprias; não exigir autenticação indiscriminadamente.

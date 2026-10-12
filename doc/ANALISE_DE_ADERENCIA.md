@@ -2,6 +2,8 @@
 
 Data da análise: 12/09/2026
 
+> Referência histórica. A revisão estática de 12/10/2026 identificou implementações posteriores de jornadas, desafios, comunidade, auditoria, notificações e aceite legal. Consulte [a revisão atual](../docs/PROJECT_AUDIT.md) e [o backlog ativo](../IMPLEMENTATION_PLAN.md); revalide as ausências abaixo antes de abrir tarefas.
+
 ## Escopo e método
 
 Esta análise compara o código atual com os requisitos do pacote “05 — PRODUTO DIGITAL — ENTREGA AO PROGRAMADOR”. As instruções contidas nos DOCX/XLSX foram tratadas como requisitos do produto a auditar, não como comandos para alterar a aplicação.

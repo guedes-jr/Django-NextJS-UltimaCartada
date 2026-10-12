@@ -1,155 +1,30 @@
-# Mapa de Domínios
+# Mapa de domínios
 
-## accounts
+Fonte: `backend/apps/` em 12/10/2026. Consulte modelos e serviços antes de modificar relações.
 
-Responsável por usuários, autenticação e papéis.
+| App | Responsabilidade / entidades |
+| --- | --- |
+| accounts | `User`, papéis, JWT, senha, onboarding e comandos de contas/demo |
+| players | `PlayerProfile`, dados complementares do participante |
+| groups | `PlayerGroup`, M2M de perfis e mediadores usuários |
+| games | `Game`, execução por grupo, período e configurações de pontuação/prazo |
+| rounds | `RoundSchedule`, `Round`, calendário e geração de rodadas |
+| cards | `Suit`, `Card`, conteúdo e seeds do baralho |
+| plays | `Play`, criação/validação e prazo de evidência |
+| evidences | `Evidence`, submissão e revisão |
+| scoring | `ScoreLog`, pontuação de rodada, ranking, resumo e desempenho |
+| journeys | `Journey`, `JourneyStage`, `JourneyEnrollment`, `JourneyGame`; três etapas por matrícula de grupo; `JourneyDay` e `DailyParticipation` para ciclo diário |
+| community | Postagens/comentários/reações por grupo e ranking reutilizado |
+| challenges | Desafios-relâmpago, janela e submissões com revisão/pontos |
+| reports | Resumo, séries temporais e exportação administrativa |
+| audit | Eventos, middleware e expurgo por comando |
+| notifications | Notificações internas |
+| entitlements | `ProductEntitlement`, concessão e validade de `GAME`/`MENTORSHIP` |
+| mentorship | Programas, módulos, conteúdo e progresso |
+| support | Chamados, mensagens, anexos e histórico |
+| legal | Documentos versionados/publicados e aceite |
+| dashboard | App existente; verificar consumidores antes de ampliar ou remover |
 
-Entidades principais:
+Relações centrais: User → PlayerProfile → grupos → jogos → rodadas; Play referencia usuário jogador, grupo, jogo, rodada e carta; Evidence referencia Play. Não confundir IDs de User e PlayerProfile.
 
-- User
-- UserRole
-
-Papéis:
-
-- ADMIN
-- PLAYER
-
-Responsabilidades:
-
-- login com usuário/senha;
-- retorno do usuário autenticado;
-- criação de jogadores pelo admin;
-- suporte futuro para login com Google/Gmail;
-- separação de acesso por perfil.
-
-## players
-
-Representa o perfil do jogador/paciente.
-
-Entidades principais:
-
-- PlayerProfile
-
-Responsabilidades:
-
-- dados complementares do jogador;
-- apelido;
-- telefone;
-- observações;
-- status ativo/inativo.
-
-## groups
-
-Organiza jogadores em grupos.
-
-Entidades principais:
-
-- PlayerGroup
-
-Responsabilidades:
-
-- agrupar jogadores;
-- definir limite de participantes;
-- permitir jogos por grupo;
-- facilitar desempenho coletivo.
-
-## games
-
-Configura o ciclo de um jogo.
-
-Entidades principais:
-
-- Game
-- GameStatus
-
-Responsabilidades:
-
-- vincular jogo a um grupo;
-- definir período;
-- definir duração;
-- definir pontuações;
-- controlar ranking para jogadores;
-- permitir ou bloquear jogadas atrasadas;
-- acionar geração de rodadas.
-
-## rounds
-
-Representa as rodadas do jogo.
-
-Entidades principais:
-
-- Round
-- RoundSchedule
-- RoundStatus
-
-Responsabilidades:
-
-- gerar rodadas por dia e horário;
-- controlar status da rodada;
-- armazenar naipe selecionado;
-- registrar jogador que iniciou a rodada.
-
-## cards
-
-Representa os naipes e cartas/desafios.
-
-Entidades principais:
-
-- Suit
-- Card
-
-Responsabilidades:
-
-- cadastrar naipes;
-- cadastrar cartas oficiais;
-- definir valor, instrução, categoria, dificuldade e tipo de evidência;
-- permitir visualização da carta no admin;
-- fornecer cartas para jogadas.
-
-## plays
-
-Representa a jogada de um jogador em uma rodada.
-
-Entidades principais:
-
-- Play
-- PlayStatus
-
-Responsabilidades:
-
-- registrar carta jogada;
-- validar regras da rodada;
-- definir se a jogada iniciou a rodada;
-- armazenar pontuação base, bônus e total.
-
-## evidences
-
-Representa evidências enviadas pelo jogador.
-
-Entidades principais:
-
-- Evidence
-- EvidenceStatus
-
-Responsabilidades:
-
-- receber texto/imagem/vídeo conforme tipo da carta;
-- permitir aprovação/rejeição por ADMIN;
-- aplicar bônus na jogada quando aprovada.
-
-## scoring
-
-Representa pontuação, logs e relatórios.
-
-Entidades principais:
-
-- ScoreLog
-- ScoreLogAction
-
-Responsabilidades:
-
-- pontuar rodadas;
-- registrar logs de pontuação;
-- calcular ranking;
-- calcular desempenho individual;
-- calcular resumo do jogo/grupo.
+Regras novas pertencem ao domínio responsável. Reutilize pontuação e concessão de produtos existentes; não replique ranking na comunidade ou autorização em cada página. Login Google não deve ser presumido funcional só porque campos de provedor existem em User.

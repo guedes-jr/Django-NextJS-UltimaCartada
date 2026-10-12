@@ -1,40 +1,19 @@
-# Delivery Workflow
+# Fluxo de desenvolvimento com Codex
 
-## Fluxo recomendado
+1. Leia contexto mínimo em AGENTS.md, PROJECT_CONTEXT.md e IMPLEMENTATION_PLAN.md; selecione apenas guias relevantes.
+2. Confira git status e inspecione fluxo/contratos/testes com rg e leituras focadas.
+3. Defina problema, resultado esperado e um recorte pequeno. Se faltar decisão de negócio, registre a questão e avance no trabalho independente dela.
+4. Implemente respeitando arquitetura e padrões locais. Reutilize serviços/tipos; altere backend quando o problema exigir, sem ampliar escopo desnecessariamente.
+5. Valide conforme o impacto: Django check/migrations/testes do domínio, frontend lint/tsc/build, UI manual quando houver mudança visual, links/diff para documentação.
+6. Revise autorização, efeitos transacionais, contratos, arquivos sensíveis e diff. Atualize contexto/backlog apenas onde a mudança exigir.
+7. Entregue resultado, arquivos alterados, comandos executados, falhas/limitações e próximos passos indispensáveis.
 
-1. Definir a feature.
-2. Conferir domínio afetado.
-3. Criar/ajustar backend.
-4. Testar API via curl ou frontend.
-5. Criar/ajustar frontend.
-6. Testar fluxo completo.
-7. Revisar permissões.
-8. Revisar responsividade.
-9. Fazer commit.
+## Critério de pronto
 
-## Ordem de evolução do MVP
+Comportamento solicitado implementado, validações apropriadas executadas ou limitações explicitadas, contratos preservados e documentação pertinente atualizada. Implementação encontrada, teste aprovado e aceite de negócio/produção são estados separados.
 
-1. Base de autenticação.
-2. Players.
-3. Groups.
-4. Games.
-5. Cards/Suits.
-6. Rounds.
-7. Plays.
-8. Evidences.
-9. Scoring.
-10. Dashboard admin.
-11. Telas admin com modais.
-12. Fluxo player de jogar.
-13. Fluxo player de evidência.
-14. Relatórios finais.
+Não recriar fases já implementadas, não executar migrations/seeds em banco de produção como teste e não incluir commit/deploy como condição automática de pronto. Sem dependências, informe a limitação e use as verificações possíveis; não declare build ou suíte aprovados.
 
-## Critérios de pronto
+## Documentação
 
-- Código compila.
-- Migrations aplicam.
-- Endpoint testado.
-- Tela carrega sem erro.
-- Permissão validada.
-- Mensagem de erro/sucesso existe.
-- Commit gerado com mensagem clara.
+Backlog ativo somente em IMPLEMENTATION_PLAN.md. Regras estáveis em AGENTS.md; arquitetura em ia/architecture.md; evidências e decisões da revisão em docs/PROJECT_AUDIT.md. Planos históricos não são instruções vigentes. Não duplicar o backlog em prompts ou arquivos de agente.

@@ -1,124 +1,51 @@
-# Arquitetura do Projeto
+# Arquitetura implementada e direção de evolução
 
-## Visão geral
+Inspeção de 12/10/2026. Versões declaradas: Django 5.2.14, DRF 3.17.1, Simple JWT 5.5.1; Next.js 16.2.6, React 19.2.4, TypeScript 5. Consulte requirements, package e lockfile antes de alterações.
 
-O projeto Última Cartada / Cartada Viva é uma aplicação web para digitalizar um jogo terapêutico de hábitos saudáveis. O sistema permite que uma psicóloga ou administradora cadastre jogadores, grupos, jogos, cartas, rodadas, jogadas, evidências e acompanhe pontuação/desempenho.
+## Organização
 
-## Stack
+Monólito Django modular por domínio, API REST versionada e frontend Next.js separado. PostgreSQL persiste dados; arquivos têm storage conforme domínio. Nginx/Gunicorn/systemd compõem a operação prevista. Não introduzir microserviços, repository genérico, outro framework ou state manager apenas para uma tarefa local.
 
-### Backend
-
-- Python 3.11+
-- Django
-- Django REST Framework
-- Simple JWT
-- PostgreSQL
-- Apps por domínio dentro de `backend/apps`
-
-### Frontend
-
-- Next.js App Router
-- TypeScript
-- CSS Modules
-- Axios ou cliente HTTP centralizado em `src/lib/api`
-- Sem Tailwind CSS
-
-## Estrutura backend recomendada
-
-```txt
-backend/
-├── config/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-├── apps/
-│   ├── accounts/
-│   ├── players/
-│   ├── groups/
-│   ├── games/
-│   ├── rounds/
-│   ├── cards/
-│   ├── plays/
-│   ├── evidences/
-│   └── scoring/
-├── manage.py
-└── requirements.txt
+```mermaid
+flowchart LR
+  Page[Rotas Next.js e componentes] --> Service[Services TypeScript]
+  Service --> HTTP[Axios central e JWT]
+  HTTP --> API[URLs DRF e views autorizadas]
+  API --> Serializer[Validação e serialização]
+  API --> Domain[Services de domínio]
+  Serializer --> Domain
+  Domain --> ORM[Models e ORM Django]
+  ORM --> DB[(PostgreSQL)]
 ```
 
-## Estrutura frontend recomendada
+O diagrama descreve o fluxo preferido. Há gravações simples e validações nos serializers/views existentes; extraia fluxos complexos incrementalmente, sem reescrever apps para uniformizar tudo.
 
-```txt
-frontend/
-├── src/
-│   ├── app/
-│   │   ├── admin/
-│   │   ├── player/
-│   │   └── login/
-│   ├── components/
-│   │   ├── auth/
-│   │   ├── layout/
-│   │   └── ui/
-│   ├── services/
-│   ├── types/
-│   ├── lib/
-│   └── styles/
-├── package.json
-└── next.config.ts
-```
+## Backend
 
-## Camadas do backend
+- `config/settings.py`: configuração por ambiente; `config/urls.py`: composição de `/api/v1/` e `/django-admin/`.
+- `apps/<dominio>/models.py`: entidades, relações e invariantes persistentes.
+- `serializers.py`: campos explícitos, entrada/saída e validação estrutural.
+- `views.py` e `urls.py`: HTTP, autorização, queryset acessível e ações de domínio.
+- `services.py` ou `services/`: regras reutilizáveis, transações e efeitos relacionados. Preserve o formato existente do app.
+- `migrations/`, `management/commands/`, `tests.py`: evolução de schema, rotinas operacionais e regressão.
 
-### Models
+Autorização combina papel, participação em grupo e produto ativo, conforme endpoint. `User` concentra helpers de papel; não há obrigação de criar um arquivo global de permissões. `PlayerGroup.players` usa perfis e `mediators` usa usuários. Relações recebidas no payload também precisam de validação de acesso.
 
-Representam entidades persistidas no banco.
+## Frontend
 
-### Serializers
+- `src/app`: App Router, rotas públicas, admin e player; páginas compõem apresentação e estado de interação.
+- `src/components`: layouts, proteção, modais, onboarding, legal, PWA e componentes de domínio.
+- `src/services`: HTTP tipado por domínio via `src/lib/api.ts`.
+- `src/types`: entidades e payloads; preserve formato real do serializer.
+- `src/lib/auth.ts`: tokens e usuário no localStorage, helpers de papéis/produtos.
+- CSS Modules: apresentação local; `globals.css`: reset e tokens da identidade preto/dourado/branco.
 
-Validam entrada e formatam saída da API. Devem ficar enxutos.
+Sessão baseada em localStorage exige código cliente para leitura. Axios acrescenta Bearer, coordena refresh concorrente e tenta novamente a requisição; falha de refresh encerra a sessão. Server Components não têm acesso a esse armazenamento. Qualquer migração para cookies exige projeto próprio de autenticação.
 
-### Views/ViewSets
+## Compatibilidade e evolução
 
-Controlam transporte HTTP, autenticação, permissionamento e chamam services.
+`Game` continua execução de um grupo; `Journey`/etapas/matrículas agregam jogos sem substituir sua API. Jornadas atuais geram três etapas de 21 dias; o modo diário usa `JourneyDay` e `DailyParticipation`, com calendário automático e registros privados, sem ligação obrigatória a Round. Ledgers separados e modalidades competitivas permanecem no backlog. Consulte `docs/DAILY_JOURNEY.md` a partir da raiz.
 
-### Services
+Mudanças em banco precisam de migration nova, análise de dados existentes e tests de invariantes. Operações de pontuação/revisão precisam de atomicidade e proteção contra repetição. Não introduzir transição automática, cron, filas ou integrações sem definir a regra e a operação.
 
-Concentram regra de negócio:
-
-- criação de jogadas;
-- geração de rodadas;
-- pontuação;
-- revisão de evidências;
-- ranking;
-- resumo de jogo.
-
-### Management commands
-
-Usados para carga inicial de dados, como naipes, cartas oficiais e geração auxiliar.
-
-## Camadas do frontend
-
-### Pages
-
-Rotas do Next.js. Devem montar tela, controlar estados locais e chamar services.
-
-### Services
-
-Chamadas HTTP centralizadas.
-
-### Types
-
-Contratos TypeScript usados nas páginas e services.
-
-### Components
-
-Componentes reutilizáveis, como `Modal`, layouts e proteção de rotas.
-
-## Princípios
-
-- Separar domínio, transporte e apresentação.
-- Evitar lógica de negócio em páginas React.
-- Evitar lógica de negócio em serializers/views Django.
-- Usar modais para cadastros no painel admin.
-- Manter APIs REST previsíveis.
-- Projetar pensando em evolução do MVP para produção.
+Produção usa API relativa `/api/v1`; frontend ocupa `/admin/...`, Django Admin `/django-admin/`. PWA mantém cache somente da página offline, sem API ou conteúdo privado. Deploy documentado não representa deploy homologado.

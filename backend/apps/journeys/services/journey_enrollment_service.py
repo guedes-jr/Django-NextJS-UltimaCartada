@@ -5,13 +5,14 @@ from rest_framework.exceptions import ValidationError
 
 from apps.games.models import Game, GameStatus
 from apps.groups.models import PlayerGroup
-from apps.journeys.models import JourneyEnrollment, JourneyGame
+from apps.journeys.models import Journey, JourneyEnrollment, JourneyGame
 from apps.rounds.services.round_generation_service import RoundGenerationService
 
 
 class JourneyEnrollmentService:
     @transaction.atomic
     def enroll_groups(self, *, journey, group_ids, generate_rounds=True):
+        journey = Journey.objects.select_for_update().get(pk=journey.pk)
         normalized_ids = list(dict.fromkeys(group_ids))
 
         if not normalized_ids:
@@ -87,7 +88,7 @@ class JourneyEnrollmentService:
                 )
                 games_created += 1
 
-                if generate_rounds:
+                if generate_rounds and not journey.daily_enabled:
                     rounds_created += RoundGenerationService().generate_for_game(game)
 
         return {

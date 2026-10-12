@@ -340,3 +340,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Apresentação da metodologia aplicada, sem mockups de telas do sistema. */
+.methodCards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 24px; background: var(--brand-gold-soft); border-radius: 18px; }
+.methodCards > div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 170px; padding: 12px; border: 1px solid var(--brand-border); border-radius: 12px; background: var(--brand-paper); }
+.methodCards span { color: var(--brand-gold-dark); font-size: 46px; }
+.methodCards strong { color: var(--brand-ink); font: 400 22px Georgia, serif; }
+.methodCards small { color: var(--brand-ink-soft); }
+.pillarVisual { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; min-height: 240px; border-radius: 14px; background: var(--brand-gold-soft); }
+.pillarVisual span { color: var(--brand-gold-dark); font-size: 60px; }
+.pillarVisual strong { font: 400 27px Georgia, serif; color: var(--brand-ink); }
+.methodFooter { padding: 28px max(24px, calc((100vw - 1180px) / 2 + 24px)); border-top: 1px solid var(--brand-border); color: var(--brand-ink-soft); font-size: 12px; line-height: 1.7; }
+.methodFooter a { color: var(--brand-gold-dark); display: inline-flex; align-items: center; min-height: 44px; }
+.page a:focus-visible { outline: 3px solid var(--brand-gold-dark); outline-offset: 4px; }
+@media (max-width: 620px) { .methodCards { padding: 12px; gap: 10px; } .methodCards > div { min-height: 140px; } .methodCards strong { font-size: 17px; } .brandText strong { font-size: 17px; } .brandText small { font-size: 8px; max-width: 175px; } }
+@media (max-width: 620px) {
+  .brand { min-width: 0; gap: 8px; }
+  .brand img { width: 32px; height: 32px; flex-shrink: 0; }
+  .brandText { min-width: 0; }
+  .brandText small { max-width: 130px; line-height: 1.5; letter-spacing: .03em; }
+}

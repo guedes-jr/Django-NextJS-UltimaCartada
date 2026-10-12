@@ -1,0 +1,16 @@
+.editor { color: var(--brand-ink); }
+.editor label { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+.editor input, .editor textarea, .editor select { width: 100%; padding: 10px; border: 1px solid var(--brand-border); border-radius: 8px; box-sizing: border-box; background: white; }
+.editor textarea { min-height: 80px; resize: vertical; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 12px; }
+.editor button { min-height: 44px; border: 1px solid var(--brand-gold-dark); border-radius: 8px; padding: 10px 16px; cursor: pointer; background: var(--brand-ink); color: white; }
+.editor button:disabled { opacity: .6; cursor: wait; }
+.editor :is(button, input, textarea, select):focus-visible { outline: 3px solid var(--brand-gold); outline-offset: 2px; }
+.editor .check { flex-direction: row; align-items: center; }
+.check input { width: auto; }
+.list { display: grid; gap: 10px; }
+.list article { display: flex; gap: 10px; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid var(--brand-border); border-radius: 10px; overflow-wrap: anywhere; }
+.list small { display: block; margin-top: 6px; }
+.actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.error { background: #fff1f1; color: #9c2222; padding: 12px; border-radius: 8px; }
+@media (max-width: 480px) { .list article { align-items: stretch; flex-direction: column; } }

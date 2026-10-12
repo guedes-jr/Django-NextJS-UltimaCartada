@@ -1,7 +1,11 @@
+from datetime import time
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from apps.cards.models import CardEvidenceType
+from apps.journeys.storage import private_journey_storage
 from apps.games.models import Game
 from apps.groups.models import PlayerGroup
 
@@ -24,6 +28,7 @@ class Journey(models.Model):
     description = models.TextField(blank=True)
     start_date = models.DateField()
     interval_days = models.PositiveSmallIntegerField(default=0)
+    daily_enabled = models.BooleanField(default=False)
     status = models.CharField(
         max_length=20,
         choices=JourneyStatus.choices,
@@ -149,3 +154,77 @@ class JourneyGame(models.Model):
 
     def __str__(self):
         return f"{self.enrollment} - Etapa {self.stage.order}"
+
+
+class JourneyPillar(models.TextChoices):
+    BODY = "BODY", "Atividade física"
+    NUTRITION = "NUTRITION", "Nutrição"
+    MINDSET = "MINDSET", "Mentalidade"
+    COMMUNITY = "COMMUNITY", "Comunidade"
+
+
+class JourneyDay(models.Model):
+    """Editorial content shared by all groups enrolled in a journey stage."""
+
+    stage = models.ForeignKey(JourneyStage, on_delete=models.CASCADE, related_name="days")
+    day_number = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(21)]
+    )
+    pillar = models.CharField(max_length=20, choices=JourneyPillar.choices)
+    title = models.CharField(max_length=160)
+    objective = models.TextField(blank=True)
+    content = models.TextField(blank=True)
+    instruction = models.TextField()
+    expected_evidence = models.TextField(blank=True)
+    conclusion_message = models.TextField(blank=True)
+    incentive_message = models.TextField(blank=True)
+    alternative_instruction = models.TextField(blank=True)
+    precautions = models.TextField(blank=True)
+    image = models.ImageField(upload_to="journeys/content/", blank=True, null=True)
+    evidence_type = models.CharField(
+        max_length=30, choices=CardEvidenceType.choices, default=CardEvidenceType.TEXT
+    )
+    intention_points = models.PositiveSmallIntegerField(default=10)
+    evidence_points = models.PositiveSmallIntegerField(default=30)
+    release_time = models.TimeField(default=time(0, 0))
+    is_published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("stage__order", "day_number")
+        constraints = [
+            models.UniqueConstraint(fields=("stage", "day_number"), name="unique_day_per_journey_stage"),
+            models.CheckConstraint(condition=models.Q(day_number__gte=1, day_number__lte=21), name="journey_day_between_1_and_21"),
+        ]
+
+    def __str__(self):
+        return f"{self.stage} — Dia {self.day_number}: {self.title}"
+
+
+class DailyParticipation(models.Model):
+    """Private activity and points; never scored by the legacy round engine."""
+
+    journey_game = models.ForeignKey(JourneyGame, on_delete=models.PROTECT, related_name="daily_participations")
+    day = models.ForeignKey(JourneyDay, on_delete=models.PROTECT, related_name="participations")
+    player = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="daily_participations")
+    intention = models.TextField(blank=True)
+    intention_at = models.DateTimeField(null=True, blank=True)
+    evidence_text = models.TextField(blank=True)
+    evidence_file = models.FileField(storage=private_journey_storage, upload_to="journeys/evidences/", null=True, blank=True)
+    evidence_at = models.DateTimeField(null=True, blank=True)
+    intention_points = models.PositiveSmallIntegerField(default=0)
+    evidence_points = models.PositiveSmallIntegerField(default=0)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        constraints = [
+            models.UniqueConstraint(fields=("journey_game", "day", "player"), name="unique_daily_participation"),
+        ]
+
+    @property
+    def total_points(self):
+        return self.intention_points + self.evidence_points

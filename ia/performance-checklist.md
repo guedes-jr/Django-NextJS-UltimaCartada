@@ -19,7 +19,7 @@
 
 ## Banco
 
-- Criar índices futuramente para campos usados em filtros frequentes:
+- Antes de criar índices, inspecionar os já existentes (FKs e Meta) e medir consultas dos filtros frequentes:
   - `game_id`
   - `group_id`
   - `player_id`

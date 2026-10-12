@@ -1,52 +1,21 @@
-# IA Context — Última Cartada / Cartada Viva
+# Contexto de desenvolvimento com Codex
 
-Esta pasta concentra os arquivos de contexto para uso com Cursor, agentes locais e assistentes de código.
+Este diretório contém referências técnicas consultadas sob demanda. Comece por `../AGENTS.md`, `../PROJECT_CONTEXT.md` e `../IMPLEMENTATION_PLAN.md`; depois leia apenas o que ajuda na tarefa. Não é necessário copiar esta pasta ou carregar todos os arquivos a cada solicitação.
 
-O objetivo é manter a IA alinhada com:
+| Referência | Quando consultar |
+| --- | --- |
+| [architecture.md](architecture.md) | Limites de camadas e fluxo entre frontend, API e banco |
+| [domain-map.md](domain-map.md) | Responsabilidade de cada app e relações |
+| [api-contracts.md](api-contracts.md) | URLs, contratos e compatibilidade |
+| [backend-guidelines.md](backend-guidelines.md) | Models, services, serializers, autorização e migrations |
+| [frontend-guidelines.md](frontend-guidelines.md) | Rotas, componentes, sessão, services e UI |
+| [coding-standards.md](coding-standards.md) | Nomes, erros, tipos e revisão de alterações |
+| [security-checklist.md](security-checklist.md) | Acesso, produtos e mídia |
+| [performance-checklist.md](performance-checklist.md) | Consultas, carregamento e índices |
+| [delivery-workflow.md](delivery-workflow.md) | Execução, validação e entrega |
 
-- a arquitetura do projeto;
-- as tecnologias utilizadas;
-- os domínios do jogo;
-- as regras de negócio;
-- o padrão visual e operacional do painel;
-- os cuidados com dados de pacientes/jogadores.
+Instruções por diretório ficam em `../backend/AGENTS.md` e `../frontend/AGENTS.md`. Prompts atuais: [../docs/CODEX_PROMPTS.md](../docs/CODEX_PROMPTS.md). Evidência da revisão: [../docs/PROJECT_AUDIT.md](../docs/PROJECT_AUDIT.md).
 
-## Como usar
+As pastas `.ai-context/`, `.ai-prompts/`, `.ai-commands/` e `.ai-agents/` são referências auxiliares; não habilitam ferramentas, agentes ou execução automática. O pacote `ultima_cartada.skill` é um artefato legado, não foi instalado nem atualizado nesta revisão; prefira os documentos atuais. `.cursorrules` apenas direciona para estas mesmas fontes.
 
-1. Copie a pasta `ia` para a raiz do projeto.
-2. Copie o arquivo `.cursorrules` para a raiz do projeto.
-3. No Cursor, abra o workspace pela raiz do repositório.
-4. Ao pedir alterações, referencie os arquivos desta pasta quando necessário.
-
-## Estrutura
-
-```txt
-ia/
-├── README.md
-├── architecture.md
-├── domain-map.md
-├── backend-guidelines.md
-├── frontend-guidelines.md
-├── api-contracts.md
-├── coding-standards.md
-├── security-checklist.md
-├── performance-checklist.md
-├── delivery-workflow.md
-├── .ai-context/
-│   ├── project-overview.md
-│   ├── business-rules.md
-│   ├── data-model.md
-│   └── ui-patterns.md
-├── .ai-prompts/
-│   ├── backend-feature.prompt.md
-│   ├── frontend-page.prompt.md
-│   └── debug.prompt.md
-├── .ai-commands/
-│   ├── review-feature.md
-│   ├── generate-service.md
-│   └── create-admin-page.md
-└── .ai-agents/
-    ├── backend-agent.md
-    ├── frontend-agent.md
-    └── product-agent.md
-```
+A distribuição de instruções por diretório segue a [documentação oficial de AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md). As regras técnicas aqui são específicas deste repositório.

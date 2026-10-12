@@ -14,6 +14,8 @@ class PlayCreationService:
     @transaction.atomic
     def create_play(self, player, round_instance: Round, card: Card) -> Play:
         game = round_instance.game
+        if hasattr(game, "journey_game") and game.journey_game.enrollment.journey.daily_enabled:
+            raise ValidationError({"round": "Esta jornada utiliza a cartada diária. Registre sua intenção ou evidência na área da jornada."})
         group = game.group
         now = timezone.now()
 

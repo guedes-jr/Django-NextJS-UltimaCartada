@@ -1,11 +1,11 @@
 import {
   BarChart3,
-  Camera,
+  Sparkles,
   CheckCircle2,
   ChevronRight,
   Gamepad2,
   Layers3,
-  Trophy,
+  Heart,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -16,67 +16,32 @@ import styles from "./CartadaVivaPage.module.css";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 
 export const metadata: Metadata = {
-  title: "Cartada Viva | Jogo terapêutico de hábitos",
+  title: "Cartada Viva | O Método Última Cartada na prática",
   description:
-    "Página dedicada ao jogo Cartada Viva, uma experiência com cartas, rodadas, evidências, ranking e acompanhamento de hábitos.",
+    "A Cartada Viva é a aplicação educacional e gamificada do Método Última Cartada: pequenas ações nos pilares corpo, nutrição, mentalidade e comunidade.",
 };
 
 const WHATSAPP_URL =
   "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20conhecer%20o%20jogo%20Cartada%20Viva.";
 
 const features = [
-  {
-    icon: Layers3,
-    title: "Rodadas com cartas",
-    description:
-      "Cada rodada propõe uma ação prática para transformar intenção em comportamento observável.",
-  },
-  {
-    icon: Camera,
-    title: "Evidências",
-    description:
-      "O jogador registra texto, foto ou vídeo para mostrar que executou o desafio proposto.",
-  },
-  {
-    icon: Trophy,
-    title: "Pontuação e ranking",
-    description:
-      "O progresso fica visível, incentivando participação, constância e senso de conquista.",
-  },
-  {
-    icon: BarChart3,
-    title: "Acompanhamento",
-    description:
-      "A facilitadora visualiza jogadas, evidências e desempenho para orientar melhor o grupo.",
-  },
+  { icon: Layers3, title: "Uma intenção", description: "A cartada do dia convida a reconhecer um cuidado e escolher uma ação possível para a sua rotina." },
+  { icon: Sparkles, title: "Uma prática", description: "Você experimenta a proposta no cotidiano, respeitando seu contexto e suas possibilidades." },
+  { icon: BarChart3, title: "Um aprendizado", description: "O registro da experiência e o progresso por pilar ajudam a perceber o próprio caminho." },
+  { icon: Heart, title: "Um caminho em grupo", description: "Participação e pertencimento acompanham a jornada, com compartilhamento opcional e respeito à privacidade." },
 ];
 
-const screens = [
-  {
-    title: "Área do jogador",
-    description:
-      "Rodada ativa, cartas disponíveis e próximo passo aparecem em uma tela simples de seguir.",
-    image: "/landing/cartada-viva/player-home.svg",
-  },
-  {
-    title: "Dashboard administrativo",
-    description:
-      "A visão da facilitadora reúne jogos, jogadas, pontos distribuídos e evidências pendentes.",
-    image: "/landing/cartada-viva/admin-dashboard.svg",
-  },
-  {
-    title: "Revisão de evidências",
-    description:
-      "Cada evidência pode ser avaliada para fechar o ciclo entre prática real e pontuação.",
-    image: "/landing/cartada-viva/evidence-review.svg",
-  },
+const practicalPillars = [
+  { title: "Corpo e nutrição", description: "Atenção ao movimento, à alimentação e às escolhas de cuidado que encontram lugar na vida real.", suit: "♣ ♦", phrase: "Eu ajo. Eu me nutro." },
+  { title: "Mentalidade", description: "Reflexão e autopercepção para observar experiências, aprender com elas e ajustar a próxima escolha.", suit: "♠", phrase: "Eu transformo." },
+  { title: "Comunidade", description: "Uma experiência de pertencimento em que cada pessoa pode participar e retomar no próprio ritmo.", suit: "♥", phrase: "Eu pertenço." },
 ];
 
 const principles = [
-  "O jogo reduz a distância entre saber e fazer.",
-  "As cartas criam microações possíveis para a rotina.",
-  "As evidências reforçam compromisso e consciência.",
-  "O ranking torna progresso visível sem perder o cuidado humano.",
+  "A Última Cartada é a metodologia que orienta a experiência.",
+  "A Cartada Viva leva os quatro pilares às escolhas do cotidiano.",
+  "Pequenas ações aproximam intenção e prática.",
+  "Aprender, ajustar e retomar fazem parte do caminho.",
 ];
 
 export default function CartadaVivaPage() {
@@ -85,25 +50,25 @@ export default function CartadaVivaPage() {
       <header className={styles.header}>
         <Link className={styles.brand} href="/">
           <Image src="/cartada-viva-mark.png" alt="" width={46} height={46} />
-          <span className={styles.brandText}><strong>Cartada Viva</strong><small>jogo de hábitos</small></span>
+          <span className={styles.brandText}><strong>Cartada Viva</strong><small>Método Última Cartada na prática</small></span>
         </Link>
 
         <PublicNavigation id="cartada-navigation" label="Navegação do Cartada Viva" className={styles.nav}>
           <a href="#ideia">Ideia</a>
-          <a href="#telas">Telas</a>
+          <a href="#telas">Pilares</a>
           <a href="#funciona">Como funciona</a>
-          <Link href="/public/consultoria">Consultoria</Link>
+          <Link href="/#sobre">Método Última Cartada</Link>
         </PublicNavigation>
       </header>
 
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span className={styles.eyebrow}>Game de hábitos e evidências</span>
-          <h1>Cartada Viva transforma cuidado em ação diária.</h1>
+          <span className={styles.eyebrow}>Uma aplicação prática do Método Última Cartada</span>
+          <h1>Cartada Viva: boas práticas que encontram lugar no seu dia.</h1>
           <p>
-            Um jogo terapêutico para grupos, mentorias e acompanhamentos:
-            cartas propõem desafios, jogadores realizam ações, enviam
-            evidências e acompanham sua evolução.
+            Uma experiência educacional e gamificada que leva a metodologia
+            Última Cartada ao cotidiano. Cartas convidam à reflexão e a pequenas
+            ações nos pilares corpo, nutrição, mentalidade e comunidade.
           </p>
 
           <div className={styles.actions}>
@@ -113,31 +78,30 @@ export default function CartadaVivaPage() {
               target="_blank"
               rel="noreferrer"
             >
-              Quero conhecer
+              Conversar sobre a jornada
               <ChevronRight aria-hidden="true" />
             </a>
 
             <a className={styles.secondaryButton} href="#telas">
-              Ver telas
+              Conhecer os pilares
             </a>
           </div>
         </div>
 
         <div className={styles.heroScreen}>
-          <Image
-            src="/landing/cartada-viva/player-home.svg"
-            alt="Tela do jogador com rodada ativa e cartas disponíveis"
-            width={1280}
-            height={820}
-            priority
-          />
+          <div className={styles.methodCards} aria-label="Os quatro pilares da jornada">
+            <div><span aria-hidden="true">♣</span><strong>Eu ajo</strong><small>Corpo</small></div>
+            <div><span aria-hidden="true">♦</span><strong>Eu me nutro</strong><small>Nutrição</small></div>
+            <div><span aria-hidden="true">♠</span><strong>Eu transformo</strong><small>Mentalidade</small></div>
+            <div><span aria-hidden="true">♥</span><strong>Eu pertenço</strong><small>Comunidade</small></div>
+          </div>
         </div>
       </section>
 
       <section className={styles.idea} id="ideia">
         <div>
           <span className={styles.eyebrow}>Ideia por trás</span>
-          <h2>Não é só pontuar. É criar presença, escolha e repetição.</h2>
+          <h2>O método dá direção. A cartada convida à prática.</h2>
         </div>
 
         <div className={styles.principles}>
@@ -174,18 +138,13 @@ export default function CartadaVivaPage() {
       <section className={styles.screens} id="telas">
         <div className={styles.sectionHeader}>
           <Users aria-hidden="true" />
-          <h2>Imagens das principais telas</h2>
+          <h2>Quatro pilares presentes na jornada</h2>
         </div>
 
         <div className={styles.screenList}>
-          {screens.map((screen) => (
+          {practicalPillars.map((screen) => (
             <article key={screen.title}>
-              <Image
-                src={screen.image}
-                alt={screen.title}
-                width={1280}
-                height={820}
-              />
+              <div className={styles.pillarVisual}><span aria-hidden="true">{screen.suit}</span><strong>{screen.phrase}</strong></div>
               <div>
                 <h3>{screen.title}</h3>
                 <p>{screen.description}</p>
@@ -197,10 +156,11 @@ export default function CartadaVivaPage() {
 
       <section className={styles.finalCta}>
         <div>
-          <h2>Quer usar o Cartada Viva em uma jornada guiada?</h2>
+          <h2>Conheça o método. Encontre sua forma de praticar.</h2>
           <p>
-            A experiência funciona como apoio para mentorias, grupos e processos
-            em que mudança de hábito precisa ser acompanhada de perto.
+            A Cartada Viva organiza uma experiência em três jogos de 21 dias,
+            combinando prática diária, reflexão e convivência em grupo.
+            Converse com Magaly para conhecer a proposta e as possibilidades de participação.
           </p>
         </div>
 
@@ -214,6 +174,10 @@ export default function CartadaVivaPage() {
           <ChevronRight aria-hidden="true" />
         </a>
       </section>
+      <footer className={styles.methodFooter}>
+        <Link href="/">Conhecer o Método Última Cartada</Link>
+        <p>Uma aplicação educacional de desenvolvimento de hábitos. Não substitui acompanhamento psicológico, nutricional ou médico.</p>
+      </footer>
     </main>
   );
 }

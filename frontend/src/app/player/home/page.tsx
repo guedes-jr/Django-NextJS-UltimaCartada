@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { PlayerDailyJourney } from "@/components/journeys/PlayerDailyJourney";
 import { PlayerFlashChallenges } from "@/components/challenges/PlayerFlashChallenges";
 import { PlayerLayout } from "@/components/layout/PlayerLayout";
 import { Modal } from "@/components/ui/Modal";
@@ -377,7 +378,7 @@ export default function PlayerHomePage() {
         <div className={styles.header}>
           <h1>Área do Jogador</h1>
           <p>
-            Acompanhe suas rodadas disponíveis e prepare suas jogadas do dia.
+            Acompanhe sua jornada diária e as jogadas dos seus jogos.
           </p>
         </div>
 
@@ -385,6 +386,7 @@ export default function PlayerHomePage() {
           <div className={styles.message}>{feedbackMessage}</div>
         )}
 
+        <PlayerDailyJourney />
         <PlayerFlashChallenges />
 
         {isLoading && <div className={styles.message}>Carregando jogos...</div>}
@@ -452,7 +454,7 @@ export default function PlayerHomePage() {
               </article>
             </section>
 
-            <section className={styles.section} data-tour="player-rounds">
+            {selectedGame?.uses_daily_content ? <p className={styles.message}>A cartada diária desta jornada está na seção Minha jornada. Suas jogadas anteriores permanecem no histórico abaixo.</p> : <section className={styles.section} data-tour="player-rounds">
               <h2>Rodadas do jogo</h2>
 
               {gameRounds.length === 0 ? (
@@ -566,7 +568,7 @@ export default function PlayerHomePage() {
                   ))}
                 </div>
               )}
-            </section>
+            </section>}
 
             <section
               className={styles.playsSection}

@@ -1,73 +1,27 @@
-# Backend Guidelines
+# Padrões do backend
 
-## Organização
+Leia `../backend/AGENTS.md` e [architecture.md](architecture.md). Preserve apps por domínio e imports `apps.<app>`.
 
-- Use apps por domínio dentro de `backend/apps`.
-- Configure cada app no `INSTALLED_APPS` com caminho completo, exemplo: `apps.accounts`.
-- Use imports absolutos, exemplo: `from apps.games.models import Game`.
-- Não criar apps genéricos quando existir domínio claro.
+## HTTP e contratos
 
-## Views
+Use ModelViewSet para CRUD, ReadOnlyModelViewSet para leitura, APIView/função para operações específicas já estabelecidas. Ações customizadas têm verbo e `url_path` compatíveis com consumidores. Serializers declaram campos explicitamente e tornam identidade, status e pontos derivados somente leitura quando apropriado.
 
-- Use `ModelViewSet` para CRUD.
-- Use `ReadOnlyModelViewSet` para listagem/consulta.
-- Use `APIView` para endpoints específicos simples.
-- Use `@action` em ViewSets para ações de domínio, exemplo: `generate-rounds`, `approve`, `reject`, `score`.
-- Sempre validar papel do usuário quando o endpoint for administrativo.
+Confira URL real, serializer e testes antes de alterar payload. Não transforme respostas de listas em paginação sem adaptar services/tipos e manter compatibilidade. Erros devem seguir o contrato DRF já consumido (detail ou campos), sem expor internals.
 
-## Serializers
+## Domínio e persistência
 
-- Valide entrada.
-- Formate saída.
-- Não coloque regra de negócio complexa.
-- Para criação com campos derivados, usar `create` com transação apenas quando for algo simples.
-- Para fluxos complexos, chamar services.
+Reutilize services do próprio app, preferindo métodos claros com parâmetros de domínio; não imponha uma classe base comum. O código tem classes de serviço e funções (`entitlements/services.py`); siga o padrão local.
 
-## Services
+Use transaction.atomic em fluxos com gravações dependentes. Para concorrência, avalie constraints, select_for_update e idempotência dentro da transação no ponto real de conflito. Pontuação/revisão não deve aplicar bônus duas vezes. Evite efeitos externos antes do commit de uma operação.
 
-Use services para regras como:
+Models guardam schema/invariantes; serializers validam formato e relações; services conduzem regras complexas; views autorizam e coordenam HTTP. Não mover tudo para services em uma correção pequena.
 
-- criar jogador e perfil;
-- gerar rodadas;
-- criar jogada;
-- revisar evidência;
-- pontuar rodada;
-- calcular ranking e desempenho.
+Migrations são versionadas; não alterar migrations aplicadas nem trocar AUTH_USER_MODEL. Consultas usam select_related para FK/OneToOne, prefetch_related para coleções e agregações no banco. Antes de adicionar índices, verifique os já existentes (inclusive os de FKs) e a consulta afetada.
 
-Padrão:
+## Autorização e testes
 
-```python
-class NomeDoService:
-    def executar(self, ...):
-        ...
-```
+Confirme papel, queryset, FK de entrada, ação e produto. Admin global, mediador de grupo e participante têm escopos distintos. Use helpers reais de User e entitlements; não confie em is_staff nem no frontend.
 
-Use `@transaction.atomic` em operações que alteram múltiplas tabelas.
+Teste regra afetada em `apps/<dominio>/tests.py`, com terceiros/grupos distintos e produtos vencidos quando pertinente. Para pontuação/transação, cubra repetição, rollback e limites temporais. Execute check, detecção de migrations pendentes e testes conforme `../AGENTS.md`.
 
-## Querysets
-
-- Use `select_related` para FKs.
-- Use `prefetch_related` para M2M.
-- Use `annotate`, `Count`, `Sum`, `Q` e `Coalesce` para rankings.
-- Evite N+1 em dashboards.
-
-## Permissions
-
-- ADMIN pode gerenciar dados.
-- PLAYER só acessa seus dados e dados do grupo/jogo em que participa.
-- Nunca confiar apenas no frontend para proteção.
-
-## Banco
-
-- Usar PostgreSQL.
-- `AUTH_USER_MODEL` deve apontar para o usuário customizado.
-- Não trocar o user model depois que migrations forem aplicadas em banco com dados reais.
-
-## Commands
-
-Use management commands para:
-
-- seed de naipes;
-- seed de cartas oficiais;
-- geração manual auxiliar;
-- rotinas de manutenção.
+Seeds/commands existentes ficam no app responsável. `seed_demo` atualiza senhas e datas; usar somente em desenvolvimento. Mídia e dados sensíveis não devem ser incluídos em fixtures reais ou logs.

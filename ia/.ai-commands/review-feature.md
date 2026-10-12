@@ -9,6 +9,6 @@ Revise a feature atual considerando:
 - UX;
 - nomes de arquivos;
 - contratos de API;
-- impacto em ADMIN e PLAYER.
+- impacto nos papéis reais, grupos de mediadores e produtos concedidos.
 
 Entregue uma lista curta de ajustes recomendados em ordem de prioridade.

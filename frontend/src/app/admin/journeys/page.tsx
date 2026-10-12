@@ -5,9 +5,12 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import { DailyGroupSummary } from "@/components/journeys/DailyGroupSummary";
+import { JourneyDailyEditor } from "@/components/journeys/JourneyDailyEditor";
 import { Modal } from "@/components/ui/Modal";
 import { getGroups } from "@/services/groupService";
 import {
+  updateJourneyStatus,
   createJourney,
   enrollJourneyGroups,
   getJourneyEnrollments,
@@ -32,6 +35,7 @@ const INITIAL_FORM: JourneyForm = {
   description: "",
   start_date: "",
   interval_days: 0,
+  daily_enabled: true,
   status: "DRAFT",
   is_active: true,
   stages: [
@@ -82,6 +86,7 @@ function getApiError(error: unknown) {
 }
 
 export default function AdminJourneysPage() {
+  const [contentJourney, setContentJourney] = useState<Journey | null>(null);
   const [journeys, setJourneys] = useState<Journey[]>([]);
   const [groups, setGroups] = useState<PlayerGroup[]>([]);
   const [progress, setProgress] = useState<Record<number, JourneyEnrollment[]>>(
@@ -320,20 +325,26 @@ export default function AdminJourneysPage() {
                     <span>Nenhum grupo matriculado.</span>
                   ) : (
                     enrollments.map((enrollment) => (
-                      <div className={styles.enrollment} key={enrollment.id}>
+                      <div key={enrollment.id}><div className={styles.enrollment}>
                         <strong>{enrollment.group_name}</strong>
                         <span>
                           {enrollment.journey_games.length}/3 jogos • {" "}
-                          {enrollment.journey_games.reduce(
-                            (total, game) => total + game.rounds_count,
-                            0
-                          )} rodadas
+                          {journey.daily_enabled ? "Fluxo diário" : `${enrollment.journey_games.reduce((total, game) => total + game.rounds_count, 0)} rodadas`}
                         </span>
+                      </div>
+                      {journey.daily_enabled && <DailyGroupSummary enrollment={enrollment.id} />}
                       </div>
                     ))
                   )}
                 </div>
 
+                <button className={styles.secondaryButton} type="button" onClick={() => setContentJourney(journey)}>Conteúdo diário (63 dias)</button>
+                {journey.status === "DRAFT" && <button className={styles.secondaryButton} type="button" disabled={isSubmitting} onClick={async () => {
+                  setIsSubmitting(true); setErrorMessage("");
+                  try { await updateJourneyStatus(journey.id, "ACTIVE"); await loadData(); }
+                  catch (error) { setErrorMessage(getApiError(error)); }
+                  finally { setIsSubmitting(false); }
+                }}>Ativar jornada</button>}
                 <button
                   className={styles.secondaryButton}
                   type="button"
@@ -348,6 +359,8 @@ export default function AdminJourneysPage() {
             );
           })}
         </div>
+
+        {contentJourney && <JourneyDailyEditor journey={contentJourney} onClose={() => { setContentJourney(null); void loadData(); }} />}
 
         <Modal
           title="Nova Jornada"
@@ -459,9 +472,14 @@ export default function AdminJourneysPage() {
             </fieldset>
 
             <label className={styles.checkOption}>
+              <input type="checkbox" checked={form.daily_enabled ?? false} onChange={(event) => setForm({ ...form, daily_enabled: event.target.checked })} />
+              <span>Usar cartadas diárias do calendário (conteúdo cadastrado após criar a jornada)</span>
+            </label>
+            <label className={styles.checkOption}>
               <input
                 type="checkbox"
-                checked={form.generate_rounds}
+                disabled={form.daily_enabled}
+                checked={!form.daily_enabled && form.generate_rounds}
                 onChange={(event) =>
                   setForm({ ...form, generate_rounds: event.target.checked })
                 }
@@ -498,10 +516,11 @@ export default function AdminJourneysPage() {
             <label className={styles.checkOption}>
               <input
                 type="checkbox"
-                checked={generateEnrollmentRounds}
+                disabled={selectedJourney?.daily_enabled}
+                checked={!selectedJourney?.daily_enabled && generateEnrollmentRounds}
                 onChange={(event) => setGenerateEnrollmentRounds(event.target.checked)}
               />
-              <span>Gerar rodadas automaticamente</span>
+              <span>{selectedJourney?.daily_enabled ? "O fluxo diário usa o calendário das cartadas, sem gerar rodadas" : "Gerar rodadas automaticamente"}</span>
             </label>
             {errorMessage && <div className={styles.error}>{errorMessage}</div>}
             <button

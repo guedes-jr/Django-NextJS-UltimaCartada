@@ -28,12 +28,18 @@
 
 ## Admin
 
-- Apenas ADMIN pode criar jogadores, grupos, jogos, cartas e revisar evidências.
-- Apenas ADMIN pode gerar rodadas e pontuar rodadas manualmente.
-- Staff/superuser deve ter `role = ADMIN`.
+- Use `User.is_admin_user` e `is_game_staff` conforme a ação, incluindo escopo de grupo para mediadores.
+- Confira autorização em queryset, FKs de escrita e ações customizadas.
+- Superuser é normalizado para DEV; staff PLAYER para GENERAL_ADMIN em User.save(). Não usar is_staff como permissão de negócio.
 
 ## Banco
 
 - Usar PostgreSQL.
 - Usar migrations versionadas.
 - Não alterar migrations antigas sem necessidade depois de aplicadas em ambiente compartilhado.
+
+## Produtos e validação
+
+- Verifique concessões GAME/MENTORSHIP e validade quando exigidas pelo endpoint.
+- Reutilize testes de autorização existentes e amplie para grupos distintos.
+- Este checklist é critério de revisão, não certificação de segurança do estado atual.

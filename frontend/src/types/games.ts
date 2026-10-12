@@ -12,6 +12,7 @@ export type Game = {
   journey_id: number | null;
   journey_name: string;
   journey_stage: number | null;
+  uses_daily_content: boolean;
   start_date: string;
   end_date: string;
   total_rounds: number;

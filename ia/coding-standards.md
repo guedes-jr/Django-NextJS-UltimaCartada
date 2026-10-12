@@ -1,40 +1,13 @@
-# Coding Standards
+# Padrões de código
 
-## Python/Django
+- Preserve nomenclatura local e nomes em inglês no código; mensagens de interface em português.
+- Python: imports `apps.<dominio>`, métodos claros e type hints quando úteis; não introduzir uma abstração genérica para uniformizar apps.
+- TypeScript: contratos em `src/types`, payload/resposta tipados, unknown com refinamento para erros; evitar any e assertions que ocultem incompatibilidade.
+- Frontend services: `<dominio>Service.ts`; CSS Modules junto à tela/componente. Backend mantém `services.py` ou `services/` conforme app.
+- Trate erros esperados com mensagens úteis; não ocultar falhas nem retornar sucesso após erro de persistência.
+- Não misturar refatoração ampla, atualização de dependências ou formatação em massa com correção local.
+- Registre datas com timezone e regras do domínio; não calcular prazo de evidência apenas no cliente.
+- Não alterar banco/model sem migration compatível e inspeção dos dados existentes.
+- Testes devem verificar comportamento observável e falhas relevantes, não espelhar a implementação.
 
-- Usar nomes claros e em inglês para código.
-- Usar classes de serviço para regra de negócio.
-- Usar type hints quando ajudar a leitura.
-- Evitar funções longas.
-- Evitar duplicação.
-- Usar `transaction.atomic` em fluxos críticos.
-- Não criar lógica de negócio em templates ou views administrativas.
-
-## TypeScript/Next.js
-
-- Usar tipos explícitos para payloads e respostas.
-- Não usar `any` sem necessidade real.
-- Componentes devem ser pequenos e claros.
-- Services centralizam chamadas HTTP.
-- CSS Modules por página/componente.
-- Não usar Tailwind.
-
-## Nomenclatura
-
-- Backend apps: plural quando representar coleção de domínio (`players`, `groups`, `games`, `cards`).
-- Services: `NomeDoFluxoService`.
-- Serializers: `NomeSerializer`, `NomeCreateSerializer`, `NomeReviewSerializer`.
-- Frontend services: `playerService.ts`, `gameService.ts`.
-- Types: `players.ts`, `games.ts`, `cards.ts`.
-
-## Commits
-
-Padrão:
-
-```txt
-feat: add admin games page
-fix: correct user role redirect
-refactor: move player form to modal
-docs: add ai context files
-chore: update project rules
-```
+Se solicitado, commits seguem `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` ou `test:` com descrição curta. Não fazer commit/push automaticamente só porque um guia antigo sugere.

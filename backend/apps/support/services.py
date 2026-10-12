@@ -42,7 +42,7 @@ class SupportService:
 
     @transaction.atomic
     def reply(self, *, ticket, author, message, attachment=None):
-        ticket = SupportTicket.objects.select_for_update().select_related("requester", "assignee").get(id=ticket.id)
+        ticket = SupportTicket.objects.select_for_update(of=("self",)).select_related("requester", "assignee").get(id=ticket.id)
         if ticket.status == TicketStatus.CLOSED:
             raise ValidationError({"ticket": "Chamados encerrados não recebem novas mensagens. Um administrador deve reabri-lo."})
         support_message = SupportMessage.objects.create(
