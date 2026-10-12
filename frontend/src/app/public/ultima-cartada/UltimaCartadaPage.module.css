@@ -129,3 +129,39 @@
   .returnNote { padding: 22px; }
 }
 @media (prefers-reduced-motion: reduce) { .deckGallery a { transition: none; } .deckGallery a:hover { transform: none; } }
+
+.audience, .sharedJourney, .founder { padding: 80px max(24px, calc((100vw - 1160px) / 2)); }
+.audience { background: var(--brand-gold-soft); border-bottom: 1px solid var(--brand-border); }
+.audience .sectionHeader { max-width: 760px; }
+.audienceGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.audienceGrid article { padding: 26px; border: 1px solid #ddc9a6; border-radius: 14px; background: #fffaf38c; }
+.audienceGrid article > span { color: var(--brand-gold-dark); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.audienceGrid h3 { font-size: 27px; line-height: 1.25; margin: 18px 0; }
+.audienceGrid p { color: var(--brand-ink-soft); margin-bottom: 0; }
+.sharedJourney { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; border-top: 1px solid var(--brand-border); }
+.sharedJourney h2, .founder h2 { font-size: clamp(32px, 3.7vw, 46px); line-height: 1.15; margin: 18px 0 24px; }
+.sharedJourney p, .founder p { color: var(--brand-ink-soft); }
+.sharedValues { display: grid; gap: 26px; align-content: center; }
+.sharedValues article { display: flex; align-items: flex-start; gap: 18px; padding-bottom: 22px; border-bottom: 1px solid var(--brand-border); }
+.sharedValues svg { flex-shrink: 0; color: var(--brand-gold-dark); width: 24px; height: 24px; margin-top: 4px; }
+.sharedValues h3 { margin: 0 0 12px; font-size: 25px; line-height: 1.3; }
+.sharedValues p { margin: 0; font-size: 15px; }
+.founder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; background: white; border-bottom: 1px solid var(--brand-border); }
+.founder figure { margin: 0; min-width: 0; }
+.founder img { display: block; width: 100%; height: auto; border-radius: 16px; }
+.founder figcaption { margin-top: 14px; text-align: center; font-size: 12px; line-height: 1.7; color: var(--brand-ink-soft); }
+.founder .secondaryButton { margin-top: 12px; }
+@media (min-width: 981px) and (max-width: 1100px) { .nav { gap: 14px; } .nav a { font-size: 12px; } .header { gap: 18px; } }
+@media (max-width: 980px) { .sharedJourney, .founder { grid-template-columns: minmax(0, 1fr); gap: 36px; } }
+@media (max-width: 620px) { .audience, .sharedJourney, .founder { padding: 52px 20px; } .audienceGrid { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+
+.mentorship { padding: 80px max(24px, calc((100vw - 1160px) / 2)); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 64px; align-items: center; background: var(--brand-gold-soft); }
+.mentorship h2 { font-size: clamp(32px, 3.7vw, 46px); line-height: 1.15; margin: 18px 0 24px; }
+.mentorship p { color: var(--brand-ink-soft); }
+.participationCard { background: white; border: 1px solid var(--brand-border); border-radius: 16px; padding: 32px; }
+.participationCard h3 { font-size: 30px; margin: 0 0 18px; }
+.participationCard .primaryButton { width: 100%; margin-top: 12px; }
+.page .participationNote { font-size: 13px; line-height: 1.65; margin-bottom: 0; }
+.footerLinks { display: flex; flex-wrap: wrap; gap: 24px; }
+@media (max-width: 980px) { .mentorship { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+@media (max-width: 620px) { .mentorship { padding: 52px 20px; } .participationCard { padding: 24px; } }

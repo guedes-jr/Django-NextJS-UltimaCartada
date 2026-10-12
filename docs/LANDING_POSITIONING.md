@@ -59,3 +59,20 @@ Arquivos deste refinamento: `frontend/src/app/public/ultima-cartada/page.tsx`, `
 A conexão com o navegador continua indisponível; não houve validação visual interativa nesta sessão. Conferências estáticas verificaram CSS, âncoras, arquivos de imagem e XML do SVG.
 
 Validações do refinamento: `npm run lint` sem erros (oito avisos existentes em outras telas), `npm run build` com TypeScript aprovado e `git diff --check`. Dimensões das cartas e XML da ilustração conferidos.
+
+## Abertura própria e novas seções
+
+A foto de abertura passou a ser `acauamedia-130.jpg`, um retrato diferente das imagens usadas na landing principal. Foram acrescentadas seções sobre o público/proposta, convivência e participação em grupo, e Magaly como criadora do método. A seção da autora usa `acauamedia-117.jpg`, também sem repetir fotos da landing principal. Os textos desenvolvem o contexto já fornecido, sem acrescentar credenciais, resultados garantidos ou condições comerciais.
+
+Arquivos ajustados: página e CSS em `frontend/src/app/public/ultima-cartada/` e este registro. Foram reutilizadas fotos já presentes no repositório.
+
+Validação dessa ampliação: `npm run build` com TypeScript aprovado, `npm run lint` sem erros (oito avisos existentes) e `git diff --check`; fotos, classes CSS e âncoras conferidas.
+
+
+## Mentoria e Hotmart — 12/10/2026
+
+O responsável confirmou a oferta **Método Última Cartada / mentoria**, com checkout pendente. Hero, seção da mentoria, FAQ e convite final priorizam essa oferta. O jogo é aplicação prática sem inclusão automática prometida. Preço, agenda, duração, garantia e materiais não foram inventados. Rodapé vincula termos e privacidade existentes.
+
+Configure `NEXT_PUBLIC_HOTMART_CHECKOUT_URL` no frontend e execute novo build. Aceita HTTPS em hosts exatos `pay.hotmart.com`, `checkout.hotmart.com` e `go.hotmart.com`, sem credenciais. Preserva parâmetros existentes do link. Sem configuração válida, direciona ao WhatsApp. Não há concessão automática de acesso, captura de dados ou pixels nesta entrega. Confirme os detalhes comerciais antes de ativar o checkout.
+
+Referência: [Hotmart — página de vendas externa](https://help.hotmart.com/pt-br/article/360017889651/como-configurar-minha-pagina-de-vendas-externas-na-hotmart-). A orientação é vincular a página externa à página de pagamento da oferta.
