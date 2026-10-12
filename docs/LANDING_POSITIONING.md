@@ -39,3 +39,11 @@ Executados: `npm run lint` (zero erros, quatro avisos anteriores em outras telas
 O Browser foi tentado, mas a sessão falhou antes de permitir navegação. Não foi feita validação visual em navegador nesta revisão; a captura anterior da página dedicada no README não representa sua reformulação. Os ZIPs e a extração temporária não foram adicionados ao repositório.
 
 Validação da correção: `npm run build` e `git diff --check` passaram; comparação byte a byte confirmou a restauração dos três arquivos públicos gerais e a preservação da página dedicada.
+
+## Hierarquia final esclarecida pelo responsável
+
+A página dedicada passa a ser Última Cartada, em `/public/ultima-cartada`: apresentação da metodologia e seus quatro pilares primeiro; seção própria para o jogo Cartada Viva em `#jogo`. `/public/cartada-viva` redireciona para a nova página, preservando acessos anteriores. Na landing principal, somente os links de acesso à página dedicada foram atualizados; seu conteúdo e layout gerais permanecem iguais.
+
+Arquivos deste ajuste: nova `frontend/src/app/public/ultima-cartada/page.tsx` e `UltimaCartadaPage.module.css`, redirect na página antiga, links em `frontend/src/app/page.tsx`, contexto e este registro.
+
+Validações do ajuste final: `npm run build`, `npm run lint` (zero erros; avisos existentes), `git diff --check` e conferência das classes/âncoras e da ordem metodologia → pilares → jogo.

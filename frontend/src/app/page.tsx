@@ -109,7 +109,7 @@ export default function HomePage() {
         <PublicNavigation id="landing-navigation" label="Navegação principal" className={styles.nav}>
           <a href="#sobre">Sobre</a>
           <Link href="/public/consultoria">Consultoria</Link>
-          <Link href="/public/cartada-viva">Cartada Viva</Link>
+          <Link href="/public/ultima-cartada">Última Cartada</Link>
           <Link href="/public/herbilife">Herbalife</Link>
           <a href="#depoimentos">Depoimentos</a>
           <a href="#contato">Contato</a>
@@ -268,8 +268,8 @@ export default function HomePage() {
               Uma jornada prática com desafios, reflexões e pequenas ações para
               fortalecer consistência.
             </strong>
-            <Link className={styles.programLink} href="/public/cartada-viva">
-              Conhecer o Cartada Viva
+            <Link className={styles.programLink} href="/public/ultima-cartada">
+              Conhecer o método e o jogo
               <ChevronRight aria-hidden="true" />
             </Link>
           </article>
@@ -349,7 +349,7 @@ export default function HomePage() {
         <nav aria-label="Links do rodapé">
           <a href="#sobre">Sobre</a>
           <Link href="/public/consultoria">Consultoria</Link>
-          <Link href="/public/cartada-viva">Cartada Viva</Link>
+          <Link href="/public/ultima-cartada">Última Cartada</Link>
           <Link href="/public/herbilife">Herbalife</Link>
           <Link href="/player/support">Suporte</Link>
           <Link href="/terms">Termos</Link>

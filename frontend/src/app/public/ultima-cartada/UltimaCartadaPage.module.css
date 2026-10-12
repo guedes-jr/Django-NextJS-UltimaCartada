@@ -360,3 +360,13 @@
   .brandText { min-width: 0; }
   .brandText small { max-width: 130px; line-height: 1.5; letter-spacing: .03em; }
 }
+.brand .brandSymbol { display: grid; place-items: center; width: 40px; height: 48px; flex-shrink: 0; border: 1px solid var(--brand-gold); border-radius: 8px; font-size: 32px; }
+.heroScreen .founderImage { height: 480px; object-fit: cover; object-position: center 20%; }
+.photoCaption { text-align: center; color: var(--brand-ink-soft); font-size: 12px; line-height: 1.7; }
+.methodDescription { color: var(--brand-ink-soft); font-size: 17px; line-height: 1.8; }
+.gameEyebrow { color: var(--brand-gold); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.gameDescription { color: #e3d9c8; font-size: 17px; line-height: 1.8; margin: 0; }
+.gameButton { display: inline-flex; justify-content: center; align-items: center; gap: 12px; min-height: 48px; padding: 12px 20px; border: 1px solid var(--brand-gold); border-radius: 8px; background: var(--brand-gold-soft); color: var(--brand-ink); font-weight: 700; text-decoration: none; }
+.features a:focus-visible { outline-color: var(--brand-gold); }
+.page #funciona { scroll-margin-top: 90px; }
+@media (max-width: 620px) { .heroScreen .founderImage { height: 360px; } .gameButton { box-sizing: border-box; width: 100%; } }

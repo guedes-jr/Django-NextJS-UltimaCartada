@@ -4,7 +4,7 @@ Atualizado em 12/10/2026 por inspeção estática. As validações técnicas ant
 
 ## Produto e acesso
 
-A página dedicada `/public/cartada-viva` apresenta o Método Última Cartada, de Magaly Abreu: hábitos, autoconhecimento e autonomia nos pilares corpo, nutrição, mentalidade e comunidade. Cartada Viva é sua aplicação educacional e gamificada para a prática cotidiana em grupo. A landing principal mantém sua apresentação anterior. Contexto editorial: `docs/LANDING_POSITIONING.md`.
+A página dedicada `/public/ultima-cartada` apresenta o Método Última Cartada, de Magaly Abreu: hábitos, autoconhecimento e autonomia nos pilares corpo, nutrição, mentalidade e comunidade. Cartada Viva é sua aplicação educacional e gamificada para a prática cotidiana em grupo. A landing principal mantém sua apresentação anterior. Contexto editorial: `docs/LANDING_POSITIONING.md`.
 
 Plataforma para conduzir jogos de hábitos com grupos, rodadas, cartas, jogadas, evidências e pontuação. Há também jornadas, comunidade por grupo, desafios-relâmpago, mentoria, suporte, documentos legais, auditoria e notificações internas.
 
@@ -25,7 +25,7 @@ Fluxo por rodadas: equipe cadastra participante/grupo/jogo → gera rodadas → 
 
 ## Superfícies existentes
 
-Públicas: `/`, `/login`, `/public/cartada-viva`, `/public/consultoria`, `/public/herbilife`, `/terms`, `/privacy`. Entrada autenticada: `/dashboard`.
+Públicas: `/`, `/login`, `/public/ultima-cartada` (antiga `/public/cartada-viva` redireciona), `/public/consultoria`, `/public/herbilife`, `/terms`, `/privacy`. Entrada autenticada: `/dashboard`.
 
 Jogador: `/player/home`, `/player/community`, `/player/performance`, `/player/ranking`, `/player/settings`, `/player/support` e `/mentorship` conforme produto.
 
