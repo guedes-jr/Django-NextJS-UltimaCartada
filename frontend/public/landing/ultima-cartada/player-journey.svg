@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="920" viewBox="0 0 1280 920" role="img" aria-labelledby="title desc">
+<title id="title">Prévia ilustrativa da área do jogador Cartada Viva</title>
+<desc id="desc">Ilustração do painel com jornada, cartada do dia, registro de intenção, evidência e progresso por quatro pilares. Não representa dados de participantes.</desc>
+<rect width="1280" height="920" rx="28" fill="#fffaf3"/>
+<rect x="28" y="28" width="1224" height="864" rx="20" fill="#fff" stroke="#e4d8c4"/>
+<path d="M48 28H1232Q1252 28 1252 48V116H28V48Q28 28 48 28" fill="#1b1813"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="64" y="81" fill="#fffaf3" font-size="26" font-weight="700">Cartada Viva</text>
+<text x="383" y="80" fill="#e2c38d" font-size="16">Início</text><text x="481" y="80" fill="#f3e9d5" font-size="16">Meu desempenho</text><text x="680" y="80" fill="#f3e9d5" font-size="16">Comunidade</text><text x="858" y="80" fill="#f3e9d5" font-size="16">Configurações</text>
+<text x="64" y="171" fill="#8b601f" font-size="14" letter-spacing="2">MINHA JORNADA</text>
+<text x="64" y="210" fill="#1b1813" font-size="32" font-weight="700">Um cuidado de cada vez</text>
+<text x="64" y="244" fill="#62594d" font-size="17">Cartada do dia, prática e acompanhamento no mesmo lugar.</text>
+<g fill="#fffaf3" stroke="#e4d8c4"><rect x="64" y="274" width="366" height="82" rx="12"/><rect x="456" y="274" width="366" height="82" rx="12"/><rect x="848" y="274" width="366" height="82" rx="12"/></g>
+<g fill="#1b1813" font-size="20" font-weight="700"><text x="85" y="308">Jogo 1</text><text x="477" y="308">Jogo 2</text><text x="869" y="308">Jogo 3</text></g>
+<g fill="#70675b" font-size="15"><text x="85" y="334">21 dias de prática</text><text x="477" y="334">21 dias de prática</text><text x="869" y="334">21 dias de prática</text></g>
+<rect x="64" y="386" width="744" height="348" rx="16" fill="#fbf6eb" stroke="#e4d8c4"/>
+<text x="88" y="420" fill="#8b601f" font-size="14" letter-spacing="1">CARTADA DO DIA</text>
+<text x="88" y="459" fill="#1b1813" font-size="27" font-weight="700">Uma proposta para a sua rotina</text>
+<text x="88" y="490" fill="#62594d" font-size="16">Conheça a ação, registre sua intenção e viva a experiência.</text>
+<rect x="88" y="521" width="316" height="120" rx="10" fill="#fff" stroke="#e4d8c4"/>
+<rect x="428" y="521" width="356" height="120" rx="10" fill="#fff" stroke="#e4d8c4"/>
+<text x="107" y="552" fill="#1b1813" font-size="18" font-weight="700">Minha intenção</text><text x="107" y="581" fill="#70675b" font-size="14">Um espaço para a próxima escolha</text>
+<text x="448" y="552" fill="#1b1813" font-size="18" font-weight="700">Registro da experiência</text><text x="448" y="581" fill="#70675b" font-size="14">Texto, imagem ou vídeo conforme a carta</text>
+<rect x="88" y="664" width="316" height="44" rx="8" fill="#1b1813"/><text x="160" y="692" fill="#fff" font-size="15">Registrar intenção</text>
+<rect x="428" y="664" width="356" height="44" rx="8" fill="#1b1813"/><text x="529" y="692" fill="#fff" font-size="15">Enviar evidência</text>
+<rect x="840" y="386" width="374" height="348" rx="16" fill="#fff" stroke="#e4d8c4"/>
+<text x="864" y="424" fill="#1b1813" font-size="21" font-weight="700">Meu progresso por pilar</text>
+<g fill="#62594d" font-size="16"><text x="864" y="472">Corpo</text><text x="864" y="535">Nutrição</text><text x="864" y="598">Mentalidade</text><text x="864" y="661">Comunidade</text></g>
+<g fill="#f3e9d5"><rect x="864" y="487" width="322" height="10" rx="5"/><rect x="864" y="550" width="322" height="10" rx="5"/><rect x="864" y="613" width="322" height="10" rx="5"/><rect x="864" y="676" width="322" height="10" rx="5"/></g>
+<rect x="64" y="762" width="1150" height="87" rx="12" fill="#f3e9d5"/>
+<text x="88" y="797" fill="#1b1813" font-size="20" font-weight="700">Meu histórico</text><text x="88" y="827" fill="#62594d" font-size="16">Intenções, experiências e aprendizados ficam registrados no seu percurso.</text>
+<text x="64" y="875" fill="#70675b" font-size="12">Prévia ilustrativa • sem dados de participantes</text>
+</g></svg>

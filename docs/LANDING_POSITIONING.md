@@ -47,3 +47,15 @@ A página dedicada passa a ser Última Cartada, em `/public/ultima-cartada`: apr
 Arquivos deste ajuste: nova `frontend/src/app/public/ultima-cartada/page.tsx` e `UltimaCartadaPage.module.css`, redirect na página antiga, links em `frontend/src/app/page.tsx`, contexto e este registro.
 
 Validações do ajuste final: `npm run build`, `npm run lint` (zero erros; avisos existentes), `git diff --check` e conferência das classes/âncoras e da ordem metodologia → pilares → jogo.
+
+## Refinamento editorial e visual da página dedicada
+
+A página Última Cartada ganhou uma escala tipográfica consistente (Georgia regular nos títulos; sans-serif e peso regular no texto), mais respiro, quatro pilares com exemplos cotidianos, seção de reflexão/prática/retomada e perguntas frequentes.
+
+A seção do jogo foi ampliada com uma prévia SVG ilustrativa da área do jogador, estrutura da jornada, explicação dos registros e imagens originais de duas cartas do pacote fornecido. As cartas são material visual histórico, não conteúdo novo aprovado para as jornadas; não foram associadas automaticamente ao cadastro de cartadas. A área do jogador está identificada como ilustração e não como captura de uma sessão real.
+
+Arquivos deste refinamento: `frontend/src/app/public/ultima-cartada/page.tsx`, `UltimaCartadaPage.module.css`, `frontend/public/landing/ultima-cartada/player-journey.svg`, `carta-pausa.png`, `carta-comunidade.png` e este registro. A landing principal não foi alterada.
+
+A conexão com o navegador continua indisponível; não houve validação visual interativa nesta sessão. Conferências estáticas verificaram CSS, âncoras, arquivos de imagem e XML do SVG.
+
+Validações do refinamento: `npm run lint` sem erros (oito avisos existentes em outras telas), `npm run build` com TypeScript aprovado e `git diff --check`. Dimensões das cartas e XML da ilustração conferidos.
