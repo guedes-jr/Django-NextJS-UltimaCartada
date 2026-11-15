@@ -38,13 +38,13 @@ Autorização combina papel, participação em grupo e produto ativo, conforme e
 - `src/services`: HTTP tipado por domínio via `src/lib/api.ts`.
 - `src/types`: entidades e payloads; preserve formato real do serializer.
 - `src/lib/auth.ts`: tokens e usuário no localStorage, helpers de papéis/produtos.
-- CSS Modules: apresentação local; `globals.css`: reset e tokens da identidade preto/dourado/branco.
+- CSS Modules: apresentação local; `globals.css`: reset e tokens. Preto/dourado/branco é a implementação legada; a nova direção visual está em `DESIGN.md`, com migração incremental prevista no backlog da consultoria.
 
 Sessão baseada em localStorage exige código cliente para leitura. Axios acrescenta Bearer, coordena refresh concorrente e tenta novamente a requisição; falha de refresh encerra a sessão. Server Components não têm acesso a esse armazenamento. Qualquer migração para cookies exige projeto próprio de autenticação.
 
 ## Compatibilidade e evolução
 
-`Game` continua execução de um grupo; `Journey`/etapas/matrículas agregam jogos sem substituir sua API. Jornadas atuais geram três etapas de 21 dias; o modo diário usa `JourneyDay` e `DailyParticipation`, com calendário automático e registros privados, sem ligação obrigatória a Round. Ledgers separados e modalidades competitivas permanecem no backlog. Consulte `docs/DAILY_JOURNEY.md` a partir da raiz.
+`Game` continua execução de um grupo; `Journey`/etapas/matrículas agregam jogos sem substituir sua API. Jornadas atuais geram três etapas de 21 dias; o modo diário usa `JourneyDay` e `DailyParticipation`, com calendário automático e registros privados, sem ligação obrigatória a Round. Ledgers separados e modalidades competitivas pertenciam ao plano anterior encerrado; não são tarefas automáticas da revisão atual da consultoria. Consulte `docs/DAILY_JOURNEY.md` a partir da raiz.
 
 Mudanças em banco precisam de migration nova, análise de dados existentes e tests de invariantes. Operações de pontuação/revisão precisam de atomicidade e proteção contra repetição. Não introduzir transição automática, cron, filas ou integrações sem definir a regra e a operação.
 

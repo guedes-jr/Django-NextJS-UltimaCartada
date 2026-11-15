@@ -1,1 +1,13 @@
-.button{position:fixed;right:18px;bottom:18px;z-index:1000;padding:12px 18px;border:1px solid #bc9046;border-radius:999px;background:#1b1813;color:#fff;box-shadow:0 6px 24px #1b181330;font:700 14px system-ui,sans-serif;cursor:pointer}.button:hover{background:#3b2e1c}.button:focus-visible{outline:3px solid #bc9046;outline-offset:3px}@media(max-width:600px){.button{right:12px;bottom:12px}}
+.installation { position: fixed; right: 18px; bottom: 18px; z-index: 1000; max-width: min(360px, calc(100vw - 36px)); }
+.button, .error button { min-height: 44px; padding: 12px 18px; border: 1px solid #bc9046; border-radius: 999px; background: #1b1813; color: #fff; font: 700 14px system-ui, sans-serif; cursor: pointer; }
+.button { box-shadow: 0 6px 24px #1b181330; }
+.button:hover, .error button:hover { background: #3b2e1c; }
+.button:focus-visible, .error button:focus-visible { outline: 3px solid #bc9046; outline-offset: 3px; }
+.button[aria-disabled="true"] { cursor: wait; }
+.error { padding: 16px; border: 1px solid #bc9046; border-radius: 8px; background: #fffaf3; color: #1b1813; box-shadow: 0 6px 24px #1b181330; font: 400 14px/1.6 system-ui, sans-serif; overflow-wrap: anywhere; }
+.error p { margin: 0 0 12px; }
+.consultoria .button, .consultoria .error button { min-height: 48px; border-color: #702c40; border-radius: 4px; background: #702c40; color: #faf5ef; font-weight: 600; }
+.consultoria .button:hover, .consultoria .error button:hover { background: #493044; }
+.consultoria .button:focus-visible, .consultoria .error button:focus-visible { outline-color: #702c40; box-shadow: 0 0 0 2px #faf5ef; }
+.consultoria .error { border-color: #702c40; background: #faf5ef; color: #493044; }
+@media (max-width: 600px) { .installation { right: 12px; bottom: 12px; max-width: calc(100vw - 24px); } }

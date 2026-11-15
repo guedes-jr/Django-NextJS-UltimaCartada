@@ -23,7 +23,8 @@ export default function PublicNavigation({ id, label, className, children }: Pro
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && (buttonRef.current?.contains(event.target as Node) || navRef.current?.contains(event.target as Node))) {
+        event.preventDefault();
         setOpenAtPath(null);
         buttonRef.current?.focus();
       }
@@ -34,9 +35,14 @@ export default function PublicNavigation({ id, label, className, children }: Pro
         setOpenAtPath(null);
       }
     };
+    const onFocusIn = (event: FocusEvent) => {
+      if (!buttonRef.current?.contains(event.target as Node) && !navRef.current?.contains(event.target as Node)) setOpenAtPath(null);
+    };
+    document.addEventListener("focusin", onFocusIn);
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
     return () => {
+      document.removeEventListener("focusin", onFocusIn);
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };
@@ -60,7 +66,10 @@ export default function PublicNavigation({ id, label, className, children }: Pro
         aria-label={label}
         className={`${className ?? ""} ${styles.navigation} ${open ? styles.open : ""}`}
         onClickCapture={(event) => {
-          if ((event.target as Element).closest("a")) setOpenAtPath(null);
+          if ((event.target as Element).closest("a")) {
+            if (open) buttonRef.current?.focus({ preventScroll: true });
+            setOpenAtPath(null);
+          }
         }}
       >
         {children}

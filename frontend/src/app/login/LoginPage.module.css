@@ -157,3 +157,5 @@
 
 .passwordToggle { align-self: flex-start; background: transparent; border: 0; color: var(--brand-gold-dark); cursor: pointer; min-height: 44px; padding: 0 4px; margin-top: -12px; font-size: 13px; }
 .passwordToggle:focus-visible, .error:focus-visible { outline: 3px solid var(--brand-gold-dark); outline-offset: 3px; }
+
+.experiences { margin: -12px 0 24px; color: #4d4438; font-size: 14px; line-height: 1.6; }

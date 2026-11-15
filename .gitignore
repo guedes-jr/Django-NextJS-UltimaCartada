@@ -246,3 +246,6 @@ celerybeat.pid
 !frontend/next-env.d.ts
 !frontend/public/
 !frontend/public/**
+
+# Artefatos isolados da prévia local da consultoria
+frontend/.next-consultoria-preview/

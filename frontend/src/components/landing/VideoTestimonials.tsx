@@ -1,5 +1,7 @@
 "use client";
 
+import { lockPageScroll } from "@/lib/scrollLock";
+
 import { Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -22,11 +24,8 @@ export default function VideoTestimonials({ items }: VideoTestimonialsProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    document.body.style.overflow = activeVideo ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
+    if (!activeVideo) return;
+    return lockPageScroll(document.body);
   }, [activeVideo]);
 
   useEffect(() => {

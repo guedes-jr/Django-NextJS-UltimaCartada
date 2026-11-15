@@ -14,7 +14,7 @@ Aplicam-se também `../AGENTS.md` e `../ia/frontend-guidelines.md`.
 - Papéis e produtos: consulte `src/lib/auth.ts` e usos atuais de `ProtectedRoute`; não restrinja todo admin ao literal `ADMIN` nem libere mediador globalmente.
 - Reutilize services e types existentes; HTTP via Axios de `src/lib/api.ts`. Sessão atual usa localStorage: acesse somente no cliente e não duplique o refresh.
 - Use `"use client"` quando houver hooks, sessão ou APIs do navegador; não converta páginas autenticadas em Server Components sem desenhar o acesso à sessão.
-- Identidade: preto, dourado e branco; reutilize tokens `--brand-*` de `src/app/globals.css`. Estilos de tela pertencem ao CSS Module.
+- Identidade das atualizações: leia `../DESIGN.md` e `../CONSULTORIA.md`; paleta vinho/ameixa/rosé/nude/marfim/dourado, Cormorant Garamond e Montserrat. Preto/dourado/branco descreve o legado e aplicações originais das logos. Migre tokens de `src/app/globals.css` incrementalmente, preservando consumidores e símbolos. Estilos de tela pertencem ao CSS Module. Propostas e teste precedem publicação expressamente autorizada.
 - Preserve loading, erro, vazio, confirmação e bloqueio de envio repetido. Modais precisam de teclado, foco e rolagem adequados; valide mobile quando a interface mudar.
 - Preserve a rota pública existente `/public/herbilife`, inclusive a grafia, até uma migração de URL explicitamente definida.
 - PWA: não colocar API, páginas autenticadas ou mídias privadas no cache do service worker.

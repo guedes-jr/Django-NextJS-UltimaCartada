@@ -17,7 +17,7 @@ import {
 } from "@/lib/auth";
 
 type ProtectedRouteProps = {
-  children: ReactNode;
+  children: ReactNode | ((user: AuthUser) => ReactNode);
   allowedRoles: UserRole[];
   requiredProduct?: ProductCode;
 };
@@ -107,10 +107,10 @@ export function ProtectedRoute({ children, allowedRoles, requiredProduct }: Prot
   if (isChecking || !user) {
     return (
       <main style={{ padding: 24 }}>
-        <p>Carregando...</p>
+        <p role="status">Carregando...</p>
       </main>
     );
   }
 
-  return <LegalAcceptanceGate>{children}</LegalAcceptanceGate>;
+  return <LegalAcceptanceGate>{typeof children === "function" ? children(user) : children}</LegalAcceptanceGate>;
 }

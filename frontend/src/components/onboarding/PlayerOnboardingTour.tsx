@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { getAuthUser, saveAuthUser } from "@/lib/auth";
 import { completeOnboarding } from "@/services/accountService";
+
+import { Modal } from "@/components/ui/Modal";
 
 import styles from "./PlayerOnboardingTour.module.css";
 
@@ -49,6 +51,7 @@ export function PlayerOnboardingTour({
 }: PlayerOnboardingTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const savingRef = useRef(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const step = steps[currentStep];
@@ -62,10 +65,12 @@ export function PlayerOnboardingTour({
       `[data-tour="${step.target}"]`
     );
 
-    target?.scrollIntoView({ behavior: "smooth", block: "center" });
+    target?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
   }, [isOpen, step.target]);
 
   async function finishTour() {
+    if (savingRef.current) return;
+    savingRef.current = true;
     try {
       setIsSaving(true);
       setErrorMessage("");
@@ -83,6 +88,7 @@ export function PlayerOnboardingTour({
         "Não foi possível salvar a conclusão do tour. Tente novamente."
       );
     } finally {
+      savingRef.current = false;
       setIsSaving(false);
     }
   }
@@ -94,13 +100,8 @@ export function PlayerOnboardingTour({
   const isLastStep = currentStep === steps.length - 1;
 
   return (
-    <div className={styles.overlay} role="presentation">
-      <section
-        className={styles.tour}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="onboarding-title"
-      >
+    <Modal title={step.title} isOpen={isOpen} closeDisabled={isSaving} onClose={() => { if (!savingRef.current) onClose(); }}>
+      <section className={styles.tour} aria-busy={isSaving}>
         <div className={styles.progress} aria-label="Progresso do tour">
           {steps.map((item, index) => (
             <span
@@ -111,14 +112,13 @@ export function PlayerOnboardingTour({
         </div>
 
         <span className={styles.eyebrow}>{step.eyebrow}</span>
-        <h2 id="onboarding-title">{step.title}</h2>
         <p>{step.description}</p>
 
-        <span className={styles.counter}>
+        <span role="status" className={styles.counter}>
           {currentStep + 1} de {steps.length}
         </span>
 
-        {errorMessage && <div className={styles.error}>{errorMessage}</div>}
+        {errorMessage && <div role="alert" className={styles.error}>{errorMessage}</div>}
 
         <div className={styles.actions}>
           <button
@@ -164,6 +164,6 @@ export function PlayerOnboardingTour({
           </div>
         </div>
       </section>
-    </div>
+    </Modal>
   );
 }

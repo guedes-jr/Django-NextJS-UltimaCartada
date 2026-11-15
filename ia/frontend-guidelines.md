@@ -18,7 +18,7 @@ LocalStorage, File, URL.createObjectURL e hooks exigem contexto cliente. Revogue
 
 ## Interface
 
-Use tokens --brand-* de globals.css (preto/dourado/branco) e CSS Module da tela/componente. Inclua estados de loading, erro, vazio e sucesso; mantenha botão desabilitado durante envio. Falha de gravação mantém dados/formulário para correção.
+Siga o padrão visual de [DESIGN.md](../DESIGN.md) e o briefing em [CONSULTORIA.md](../CONSULTORIA.md). Use tokens --brand-* de globals.css e CSS Module da tela/componente, migrando o legado preto/dourado/branco para a paleta aprovada de forma incremental; preserve cores e desenhos originais das logos. Inclua estados de loading, erro, vazio e sucesso; mantenha botão desabilitado durante envio. Falha de gravação mantém dados/formulário para correção.
 
 Reutilize Modal, PublicNavigation e componentes de domínio. Valide foco, Esc, aria-expanded/controls, labels, contraste, toque e layout em 320 px quando a UI mudar. Tabelas densas precisam de rolagem local ou cards móveis sem ocultar ações.
 

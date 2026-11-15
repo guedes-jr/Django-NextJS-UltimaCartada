@@ -1,3 +1,6 @@
+import { permanentRedirect } from "next/navigation";
+import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
+import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
 import {
   CalendarCheck,
   CheckCircle2,
@@ -14,11 +17,15 @@ import type { Metadata } from "next";
 import styles from "./ConsultoriaPage.module.css";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 
-export const metadata: Metadata = {
+const legacyMetadata: Metadata = {
   title: "Consultoria Magaly Abreu | A Última Cartada",
   description:
     "Página dedicada à consultoria de Magaly Abreu com acompanhamento para hábitos, rotina, alimentação e mudança emocional.",
 };
+
+export function generateMetadata(): Metadata {
+  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("mentorship") : legacyMetadata;
+}
 
 const WHATSAPP_URL =
   "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20saber%20mais%20sobre%20a%20consultoria.";
@@ -52,6 +59,7 @@ const steps = [
 ];
 
 export default function ConsultoriaPage() {
+  if (isConsultoriaSiteEnabled()) permanentRedirect("/public/ultima-cartada");
   return (
     <main className={styles.page}>
       <header className={styles.header}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Crown, Medal, Sparkles, Trophy } from "lucide-react";
 import { AxiosError } from "axios";
 
@@ -25,59 +25,74 @@ export default function PlayerRankingPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [rankingErrorMessage, setRankingErrorMessage] = useState("");
 
-  async function loadGames() {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const gamesData = await getGames();
-
-      setGames(gamesData);
-
-      if (gamesData.length > 0) {
-        setSelectedGameId(gamesData[0].id);
-      }
-    } catch {
-      setErrorMessage("Não foi possível carregar o ranking.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const [gamesAttempt, setGamesAttempt] = useState(0);
+  const [rankingAttempt, setRankingAttempt] = useState(0);
+  const gamesRetryRef = useRef(false);
+  const rankingRetryRef = useRef(false);
+  const rankingGameRef = useRef<number | null>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const rankingTitleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    void Promise.resolve().then(loadGames);
-  }, []);
-
-  useEffect(() => {
-    if (!selectedGameId) {
-      return;
-    }
-
-    const gameId = selectedGameId;
     let canceled = false;
+    async function loadGames() {
+      try {
+        setIsLoading(true);
+        const gamesData = await getGames();
+        if (canceled) return;
+        setGames(gamesData);
+        setSelectedGameId(gamesData[0]?.id ?? null);
+        setErrorMessage("");
+        if (gamesRetryRef.current) requestAnimationFrame(() => {
+          if (!canceled) titleRef.current?.focus();
+        });
+      } catch {
+        if (!canceled) setErrorMessage("Não foi possível carregar o ranking.");
+      } finally {
+        if (!canceled) {
+          gamesRetryRef.current = false;
+          setIsLoading(false);
+        }
+      }
+    }
+    void loadGames();
+    return () => { canceled = true; };
+  }, [gamesAttempt]);
 
+  useEffect(() => {
+    if (!selectedGameId) return;
+    const gameId = selectedGameId;
+    const changedGame = rankingGameRef.current !== gameId;
+    rankingGameRef.current = gameId;
+    if (changedGame) rankingRetryRef.current = false;
+    let canceled = false;
     async function loadRanking() {
       try {
-        if (canceled) return;
         setIsRankingLoading(true);
         setRanking([]);
-        setRankingErrorMessage("");
-
+        if (changedGame) setRankingErrorMessage("");
         const rankingData = await getGameRanking(gameId);
-        if (!canceled) setRanking(rankingData);
+        if (canceled) return;
+        setRanking(rankingData);
+        setRankingErrorMessage("");
+        if (rankingRetryRef.current) requestAnimationFrame(() => {
+          if (!canceled) rankingTitleRef.current?.focus();
+        });
       } catch (error) {
         if (!canceled) {
           setRanking([]);
           setRankingErrorMessage(error instanceof AxiosError && error.response?.status === 403 ? "O ranking deste jogo não está disponível para visualização." : "Não foi possível carregar o ranking deste jogo. Tente novamente em instantes.");
         }
       } finally {
-        if (!canceled) setIsRankingLoading(false);
+        if (!canceled) {
+          rankingRetryRef.current = false;
+          setIsRankingLoading(false);
+        }
       }
     }
-
-    void Promise.resolve().then(loadRanking);
+    void loadRanking();
     return () => { canceled = true; };
-  }, [selectedGameId]);
+  }, [selectedGameId, rankingAttempt]);
 
   const selectedGame = games.find((game) => game.id === selectedGameId);
 
@@ -94,22 +109,29 @@ export default function PlayerRankingPage() {
       <PlayerLayout>
         <div className={styles.header}>
           <span className={styles.eyebrow}><Trophy size={16} aria-hidden="true" /> Cada participação conta</span>
-          <h1>Ranking do grupo</h1>
+          <h1 ref={titleRef} tabIndex={-1}>Ranking do grupo</h1>
           <p>
             Veja sua posição no jogo e acompanhe a evolução dos participantes.
           </p>
         </div>
 
-        {isLoading && (
-          <div className={styles.message}>Carregando ranking...</div>
+        {isLoading && !errorMessage && (
+          <div role="status" className={styles.message}>Carregando ranking...</div>
         )}
 
-        {!isLoading && errorMessage && (
-          <div className={styles.error}>{errorMessage}</div>
+        {errorMessage && (
+          <div role="alert" className={styles.error}>
+            <p>{errorMessage}</p>
+            <button className={styles.retryButton} type="button" aria-disabled={isLoading} onClick={() => {
+              if (gamesRetryRef.current) return;
+              gamesRetryRef.current = true;
+              setGamesAttempt((attempt) => attempt + 1);
+            }}>{isLoading ? "Carregando jogos..." : "Recarregar jogos"}</button>
+          </div>
         )}
 
         {!isLoading && !errorMessage && games.length === 0 && (
-          <div className={styles.message}>
+          <div role="status" className={styles.message}>
             Você ainda não possui jogos disponíveis para ranking.
           </div>
         )}
@@ -162,28 +184,35 @@ export default function PlayerRankingPage() {
 
               <article className={styles.summaryCard}>
                 <span>Seus pontos</span>
-                <strong>{isRankingLoading ? "—" : currentPlayer?.total_points ?? 0}</strong>
+                <strong>{isRankingLoading || rankingErrorMessage ? "—" : currentPlayer?.total_points ?? 0}</strong>
               </article>
 
               <article className={styles.summaryCard}>
                 <span>Participantes no ranking</span>
-                <strong>{isRankingLoading ? "—" : ranking.length}</strong>
+                <strong>{isRankingLoading || rankingErrorMessage ? "—" : ranking.length}</strong>
               </article>
             </section>
 
             <section className={styles.section}>
-              <h2>
+              <h2 ref={rankingTitleRef} tabIndex={-1}>
                 {selectedGame
                   ? `Ranking — ${selectedGame.name}`
                   : "Ranking"}
               </h2>
 
-              {isRankingLoading ? (
-                <div className={styles.message}>Carregando ranking do jogo...</div>
-              ) : rankingErrorMessage ? (
-                <div className={styles.error}>{rankingErrorMessage}</div>
+              {rankingErrorMessage ? (
+                <div role="alert" className={styles.error}>
+                  <p>{rankingErrorMessage}</p>
+                  <button className={styles.retryButton} type="button" aria-disabled={isRankingLoading} onClick={() => {
+                    if (rankingRetryRef.current) return;
+                    rankingRetryRef.current = true;
+                    setRankingAttempt((attempt) => attempt + 1);
+                  }}>{isRankingLoading ? "Carregando ranking..." : "Tentar novamente"}</button>
+                </div>
+              ) : isRankingLoading ? (
+                <div role="status" className={styles.message}>Carregando ranking do jogo...</div>
               ) : ranking.length === 0 ? (
-                <div className={styles.message}>
+                <div role="status" className={styles.message}>
                   Ainda não existem jogadas neste jogo.
                 </div>
               ) : (

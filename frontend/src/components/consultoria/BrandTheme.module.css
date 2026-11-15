@@ -1,0 +1,32 @@
+/* Tokens da nova apresentação. Aplicar somente no escopo migrado. */
+.theme {
+  --brand-wine: #702c40;
+  --brand-plum: #493044;
+  --brand-rose: #c98f97;
+  --brand-nude: #e9d4cc;
+  --brand-ivory: #faf5ef;
+  --brand-gold: #b79258;
+  --color-bg: var(--brand-ivory);
+  --color-surface: var(--brand-ivory);
+  --color-surface-soft: var(--brand-nude);
+  --color-action-hover: var(--brand-plum);
+  --color-accent: var(--brand-gold);
+  --color-control-border: #856571;
+  --color-focus: var(--brand-wine);
+  --color-focus-halo: var(--brand-ivory);
+  --color-text: var(--brand-plum);
+  --color-heading: var(--brand-wine);
+  --color-action: var(--brand-wine);
+  --color-on-action: var(--brand-ivory);
+  --color-border: #c9acae;
+  --color-muted: #70545e;
+  --layout-max: 1200px;
+  --space-page: clamp(1rem, 4vw, 3rem);
+  --font-sans: var(--font-interface), Arial, sans-serif;
+  --navigation-button-bg: var(--brand-wine);
+  --navigation-button-text: var(--brand-ivory);
+  --navigation-border: var(--color-border);
+  --navigation-panel-bg: var(--brand-ivory);
+  --navigation-focus: var(--brand-wine);
+  --navigation-font: 600 0.875rem var(--font-sans);
+}

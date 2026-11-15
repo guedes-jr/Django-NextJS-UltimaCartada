@@ -22,7 +22,7 @@ const menuItems = [
     product: null,
   },
   {
-    label: "Início",
+    label: "Cartada Viva — Game",
     href: "/player/home",
     product: "GAME" as const,
   },
@@ -42,7 +42,7 @@ const menuItems = [
     product: "GAME" as const,
   },
   {
-    label: "Minha mentoria",
+    label: "A Última Cartada — Mentoria",
     href: "/mentorship",
     product: "MENTORSHIP" as const,
   },
@@ -61,9 +61,14 @@ const menuItems = [
 export function PlayerLayout({ children }: PlayerLayoutProps) {
   const user = getAuthUser();
   const pathname = usePathname();
+  const isGameArea = pathname.startsWith("/player/") && !["/player/support", "/player/settings"].includes(pathname);
+  const isMentorshipArea = pathname === "/mentorship";
+  const brandName = isGameArea ? "Cartada Viva" : isMentorshipArea ? "A Última Cartada" : "Magaly Abreu";
+  const brandDescription = isGameArea ? "Game · Área da participante" : isMentorshipArea ? "Mentoria · Área da participante" : "Área de participantes";
   const [menuOpenAtPath, setMenuOpenAtPath] = useState<string | null>(null);
   const isMenuOpen = menuOpenAtPath === pathname;
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
   const [isTourOpen, setIsTourOpen] = useState(
     () =>
       pathname === "/player/home" &&
@@ -84,13 +89,23 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
   useEffect(() => {
     if (!isMenuOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && (menuButtonRef.current?.contains(event.target as Node) || navRef.current?.contains(event.target as Node))) {
+        event.preventDefault();
         setMenuOpenAtPath(null);
         menuButtonRef.current?.focus();
       }
     };
+    const onOutside = (event: FocusEvent | PointerEvent) => {
+      if (!menuButtonRef.current?.contains(event.target as Node) && !navRef.current?.contains(event.target as Node)) setMenuOpenAtPath(null);
+    };
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener("focusin", onOutside);
+    document.addEventListener("pointerdown", onOutside);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("focusin", onOutside);
+      document.removeEventListener("pointerdown", onOutside);
+    };
   }, [isMenuOpen]);
 
   function isActive(href: string) {
@@ -98,27 +113,30 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
   }
 
   function closeMenu() {
+    if (isMenuOpen) menuButtonRef.current?.focus({ preventScroll: true });
     setMenuOpenAtPath(null);
   }
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.brand}>
-          <Image
+    <div className={styles.page} data-brand-surface="participant">
+      <a className={styles.skipLink} href="#participant-content">Pular para o conteúdo</a>
+      <header className={styles.header} data-brand-part="header">
+        <div className={styles.brand} data-brand-part="brand">
+          {isGameArea && <Image
             className={styles.brandLogo}
             src="/cartada-viva-mark.png"
             alt=""
             width={58}
             height={58}
             priority
-          />
-          <div className={styles.brandText}><strong>Cartada Viva</strong><span>Área do jogador</span></div>
+          />}
+          <div className={styles.brandText}><strong>{brandName}</strong><span>{brandDescription}</span></div>
         </div>
 
         <button
           ref={menuButtonRef}
           className={styles.menuButton}
+          data-brand-part="menu-button"
           type="button"
           aria-expanded={isMenuOpen}
           aria-controls="player-navigation"
@@ -128,8 +146,11 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         </button>
 
         <nav
+          ref={navRef}
+          aria-label="Navegação da participante"
           className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
           id="player-navigation"
+          data-brand-part="navigation"
           data-tour="player-navigation"
         >
           {menuItems.filter((item) => !item.product || hasProduct(user, item.product)).map((item) => (
@@ -148,8 +169,8 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <LogoutButton className={styles.logoutButton} />
       </header>
 
-      <main className={styles.main}>
-        <section className={styles.welcome}>
+      <main id="participant-content" tabIndex={-1} className={styles.main}>
+        <section className={styles.welcome} data-brand-part="welcome">
           <span>Olá,</span>
           <strong>
             {user?.full_name || user?.first_name || user?.username}

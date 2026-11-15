@@ -1,0 +1,254 @@
+{
+  "scope": "Laboratório local; amostra única por página e experimento revertido; não são dados de campo.",
+  "raw_reports_directory": "/private/tmp",
+  "samples": [
+    {
+      "sample": "home_baseline",
+      "requested_url": "http://127.0.0.1:3002/",
+      "final_url": "http://127.0.0.1:3002/",
+      "fetch_time_utc": "2026-11-14T12:16:57.003Z",
+      "lighthouse_version": "13.5.0",
+      "config": {
+        "formFactor": "mobile",
+        "throttlingMethod": "simulate",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "locale": "en-US"
+      },
+      "scores": {
+        "performance": 0.96,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1058.49,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        },
+        "largest-contentful-paint": {
+          "value": 2695.8575,
+          "unit": "millisecond",
+          "display": "2.7 s"
+        },
+        "total-blocking-time": {
+          "value": 3,
+          "unit": "millisecond",
+          "display": "0 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless",
+          "display": "0"
+        },
+        "speed-index": {
+          "value": 1058.49,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        }
+      },
+      "raw_report_file": "consultoria-lighthouse-home-20261114.json",
+      "raw_report_sha256": "b6eed511b55416ec1a5914532230da026dd4f1ab51986f7ba743c84ef9a30f33"
+    },
+    {
+      "sample": "mentoria_baseline",
+      "requested_url": "http://127.0.0.1:3002/public/ultima-cartada",
+      "final_url": "http://127.0.0.1:3002/public/ultima-cartada",
+      "fetch_time_utc": "2026-11-14T12:19:21.456Z",
+      "lighthouse_version": "13.5.0",
+      "config": {
+        "formFactor": "mobile",
+        "throttlingMethod": "simulate",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "locale": "en-US"
+      },
+      "scores": {
+        "performance": 0.96,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1057.506,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        },
+        "largest-contentful-paint": {
+          "value": 2693.259,
+          "unit": "millisecond",
+          "display": "2.7 s"
+        },
+        "total-blocking-time": {
+          "value": 3.5,
+          "unit": "millisecond",
+          "display": "0 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless",
+          "display": "0"
+        },
+        "speed-index": {
+          "value": 1057.506,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        }
+      },
+      "raw_report_file": "consultoria-lighthouse-mentoria-20261114.json",
+      "raw_report_sha256": "caf43d3f91845508051a62ae8033249075a682a8356c20b3ed913e9a69a50378"
+    },
+    {
+      "sample": "game_baseline",
+      "requested_url": "http://127.0.0.1:3002/public/cartada-viva",
+      "final_url": "http://127.0.0.1:3002/public/cartada-viva",
+      "fetch_time_utc": "2026-11-14T12:20:30.273Z",
+      "lighthouse_version": "13.5.0",
+      "config": {
+        "formFactor": "mobile",
+        "throttlingMethod": "simulate",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "locale": "en-US"
+      },
+      "scores": {
+        "performance": 0.96,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1057.623,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        },
+        "largest-contentful-paint": {
+          "value": 2693.4345000000003,
+          "unit": "millisecond",
+          "display": "2.7 s"
+        },
+        "total-blocking-time": {
+          "value": 3.5,
+          "unit": "millisecond",
+          "display": "0 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless",
+          "display": "0"
+        },
+        "speed-index": {
+          "value": 1057.623,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        }
+      },
+      "raw_report_file": "consultoria-lighthouse-game-20261114.json",
+      "raw_report_sha256": "017ff92c91fbd3aa7fabc84b5138fb63d6142559282e12c2429a9ccf29967471"
+    },
+    {
+      "sample": "home_experimento_revertido",
+      "requested_url": "http://127.0.0.1:3002/",
+      "final_url": "http://127.0.0.1:3002/",
+      "fetch_time_utc": "2026-11-14T12:22:32.174Z",
+      "lighthouse_version": "13.5.0",
+      "config": {
+        "formFactor": "mobile",
+        "throttlingMethod": "simulate",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 562.5,
+          "downloadThroughputKbps": 1474.5600000000002,
+          "uploadThroughputKbps": 675,
+          "cpuSlowdownMultiplier": 4
+        },
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": true
+        },
+        "locale": "en-US"
+      },
+      "scores": {
+        "performance": 0.96,
+        "accessibility": 1,
+        "best-practices": 1,
+        "seo": 1
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1062.332,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        },
+        "largest-contentful-paint": {
+          "value": 2855.4979999999996,
+          "unit": "millisecond",
+          "display": "2.9 s"
+        },
+        "total-blocking-time": {
+          "value": 6,
+          "unit": "millisecond",
+          "display": "10 ms"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless",
+          "display": "0"
+        },
+        "speed-index": {
+          "value": 1062.332,
+          "unit": "millisecond",
+          "display": "1.1 s"
+        }
+      },
+      "raw_report_file": "consultoria-lighthouse-home-experimento-20261114.json",
+      "raw_report_sha256": "91fd278897dcc2203a6732902a46f19b39dd7361a543f059a4c1ba6d4f5d0484"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#702C40">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Sem conexão · Magaly Abreu</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;background:#faf5ef;color:#493044;font:400 1rem/1.7 Montserrat,Arial,sans-serif}main{width:min(100%,680px);padding:48px 24px}.brand{margin:0 0 36px;font-size:.875rem;letter-spacing:.1em;text-transform:uppercase}.eyebrow{color:#702c40;font-size:.875rem;font-weight:600}h1{max-width:16ch;margin:12px 0 24px;color:#702c40;font:500 clamp(2.5rem,8vw,4rem)/1.08 "Cormorant Garamond",Georgia,serif}p{max-width:56ch;margin:0 0 20px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}button,a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:1px solid #702c40;border-radius:4px;font:600 1rem Montserrat,Arial,sans-serif;text-decoration:none;cursor:pointer}button{background:#702c40;color:#faf5ef}a{background:transparent;color:#702c40}:is(button,a):focus-visible{outline:3px solid #702c40;outline-offset:4px}.note{padding:20px;border-left:3px solid #702c40;background:#e9d4cc;font-size:.875rem}footer{margin-top:36px;padding-top:20px;border-top:1px solid #c9acae;font-size:.875rem}@media(max-width:380px){main{padding:32px 16px}.actions{flex-direction:column;align-items:stretch}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="brand">Magaly Abreu</p>
+    <p class="eyebrow">Uma pausa na conexão</p>
+    <h1>Retome quando a conexão voltar.</h1>
+    <p>O jogo e a mentoria precisam de internet. Reconecte-se para abrir sua área e continuar.</p>
+    <div class="actions"><button type="button" id="retry">Tentar novamente</button><a href="/dashboard">Ir para minha área</a></div>
+    <p class="note">Esta tela offline não mostra seus registros pessoais e não permite registrar atividades. Envios e atividades precisam de conexão para serem confirmados.</p>
+    <footer>A Última Cartada — Mentoria<br>Cartada Viva — Game incluído</footer>
+  </main>
+  <script>document.getElementById('retry').addEventListener('click',function(){window.location.reload();});</script>
+</body>
+</html>

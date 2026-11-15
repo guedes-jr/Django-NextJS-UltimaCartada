@@ -6,7 +6,7 @@ Aplicação Django + DRF + PostgreSQL e Next.js App Router + TypeScript + CSS Mo
 
 Antes de alterar:
 1. Leia `PROJECT_CONTEXT.md` e `IMPLEMENTATION_PLAN.md`.
-2. Consulte `ia/architecture.md` e somente os guias de domínio necessários em `ia/README.md`.
+2. Para interfaces e comunicação, leia `DESIGN.md` e `CONSULTORIA.md`. Consulte `ia/architecture.md` e somente os guias de domínio necessários em `ia/README.md`.
 3. Leia as instruções locais em `backend/AGENTS.md` ou `frontend/AGENTS.md` e inspecione código, contratos e testes relacionados.
 4. Confira `git status --short`; preserve alterações pré-existentes do usuário.
 
@@ -58,4 +58,4 @@ Documentação: `git diff --check` e conferência de links/caminhos locais. Não
 
 ## Manutenção do contexto
 
-Mantenha aqui regras estáveis e curtas; arquitetura em `ia/architecture.md`, contexto funcional em `PROJECT_CONTEXT.md`, pendências em `IMPLEMENTATION_PLAN.md`, prompts em `docs/CODEX_PROMPTS.md`. Remova tarefas concluídas do backlog somente com evidência registrada em `docs/PROJECT_AUDIT.md`. Diferencie implementação encontrada, teste executado e aceite em produção.
+Mantenha aqui regras estáveis e curtas; arquitetura em `ia/architecture.md`, contexto funcional em `PROJECT_CONTEXT.md`, padrão visual em `DESIGN.md`, briefing em `CONSULTORIA.md`, pendências em `IMPLEMENTATION_PLAN.md`, prompts em `docs/CODEX_PROMPTS.md`. Remova tarefas concluídas do backlog somente com evidência registrada em `docs/PROJECT_AUDIT.md`. Diferencie implementação encontrada, teste executado e aceite em produção.

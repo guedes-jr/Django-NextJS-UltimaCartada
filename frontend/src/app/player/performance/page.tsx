@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { PlayerLayout } from "@/components/layout/PlayerLayout";
@@ -17,28 +17,38 @@ export default function PlayerPerformancePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function loadData() {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const [playsData, evidencesData] = await Promise.all([
-        getPlays(),
-        getEvidences(),
-      ]);
-
-      setPlays(playsData);
-      setEvidences(evidencesData);
-    } catch {
-      setErrorMessage("Não foi possível carregar seu desempenho.");
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const [attempt, setAttempt] = useState(0);
+  const retryRef = useRef(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    void Promise.resolve().then(loadData);
-  }, []);
+    let cancelled = false;
+    async function loadData() {
+      try {
+        setIsLoading(true);
+        const [playsData, evidencesData] = await Promise.all([
+          getPlays(),
+          getEvidences(),
+        ]);
+        if (cancelled) return;
+        setPlays(playsData);
+        setEvidences(evidencesData);
+        setErrorMessage("");
+        if (retryRef.current) requestAnimationFrame(() => {
+          if (!cancelled) headingRef.current?.focus();
+        });
+      } catch {
+        if (!cancelled) setErrorMessage("Não foi possível carregar seu desempenho.");
+      } finally {
+        if (!cancelled) {
+          retryRef.current = false;
+          setIsLoading(false);
+        }
+      }
+    }
+    void loadData();
+    return () => { cancelled = true; };
+  }, [attempt]);
 
   const totalPoints = useMemo(() => {
     return plays.reduce((total, play) => total + play.total_points, 0);
@@ -104,19 +114,26 @@ export default function PlayerPerformancePage() {
     <ProtectedRoute allowedRoles={["PLAYER"]}>
       <PlayerLayout>
         <div className={styles.header}>
-          <h1>Meu desempenho</h1>
+          <h1 ref={headingRef} tabIndex={-1}>Meu desempenho</h1>
           <p>
             Acompanhe sua pontuação, suas jogadas e o status das evidências
             enviadas.
           </p>
         </div>
 
-        {isLoading && (
-          <div className={styles.message}>Carregando desempenho...</div>
+        {isLoading && !errorMessage && (
+          <div role="status" className={styles.message}>Carregando desempenho...</div>
         )}
 
-        {!isLoading && errorMessage && (
-          <div className={styles.error}>{errorMessage}</div>
+        {errorMessage && (
+          <div role="alert" className={styles.error}>
+            <p>{errorMessage}</p>
+            <button className={styles.retryButton} type="button" aria-disabled={isLoading} onClick={() => {
+              if (retryRef.current) return;
+              retryRef.current = true;
+              setAttempt((current) => current + 1);
+            }}>{isLoading ? "Carregando desempenho..." : "Tentar novamente"}</button>
+          </div>
         )}
 
         {!isLoading && !errorMessage && (
@@ -169,20 +186,20 @@ export default function PlayerPerformancePage() {
               <h2>Histórico de jogadas</h2>
 
               {plays.length === 0 ? (
-                <div className={styles.message}>
+                <div role="status" className={styles.message}>
                   Você ainda não realizou nenhuma jogada.
                 </div>
               ) : (
-                <div className={styles.tableWrapper}>
+                <div className={styles.tableWrapper} tabIndex={0} role="region" aria-label="Histórico de jogadas, tabela com rolagem horizontal">
                   <table className={styles.table}>
                     <thead>
                       <tr>
-                        <th>Carta</th>
-                        <th>Rodada</th>
-                        <th>Pontos</th>
-                        <th>Status da jogada</th>
-                        <th>Evidência</th>
-                        <th>Data</th>
+                        <th scope="col">Carta</th>
+                        <th scope="col">Rodada</th>
+                        <th scope="col">Pontos</th>
+                        <th scope="col">Status da jogada</th>
+                        <th scope="col">Evidência</th>
+                        <th scope="col">Data</th>
                       </tr>
                     </thead>
 

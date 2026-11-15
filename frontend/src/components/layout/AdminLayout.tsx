@@ -1,5 +1,7 @@
 "use client";
 
+import { lockPageScroll } from "@/lib/scrollLock";
+
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -121,10 +123,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   useEffect(() => {
     if (!isMenuOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const unlockScroll = lockPageScroll(document.body);
     sidebarRef.current?.querySelector<HTMLElement>("a")?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof Element && event.target.closest("dialog[open]")) return;
       if (event.key === "Escape") {
         setMenuOpenAtPath(null);
         window.requestAnimationFrame(() => menuButtonRef.current?.focus());
@@ -145,7 +147,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     };
     document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      unlockScroll();
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [isMenuOpen]);

@@ -145,3 +145,13 @@
     width: 100%;
   }
 }
+/* O posicionamento, foco e rolagem pertencem ao Modal compartilhado. */
+.tour{width:100%;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}
+:global([data-consultoria-access-theme="true"]) .tour p{color:var(--brand-plum);line-height:1.7}
+:global([data-consultoria-access-theme="true"]) :is(.eyebrow,.counter){color:var(--color-muted);font-size:.875rem;font-weight:500}
+:global([data-consultoria-access-theme="true"]) .progress span{background:var(--brand-nude)}
+:global([data-consultoria-access-theme="true"]) .progress .progressActive{background:var(--brand-wine)}
+:global([data-consultoria-access-theme="true"]) :is(.skipButton,.backButton,.nextButton){min-height:48px;font-size:1rem;font-weight:600}
+:global([data-consultoria-access-theme="true"]) .nextButton{background:var(--brand-wine);color:var(--brand-ivory)}
+:global([data-consultoria-access-theme="true"]) .backButton{background:var(--brand-nude);color:var(--brand-wine)}
+:global([data-consultoria-access-theme="true"]) .skipButton{color:var(--brand-wine)}

@@ -4,9 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
+    "dev:consultoria": "ENABLE_CONSULTORIA_SITE=true ENABLE_CONSULTORIA_PREVIEW=true CONSULTORIA_LOCAL_API_PROXY=true NEXT_PUBLIC_API_URL=/api/v1 next dev --webpack --hostname 127.0.0.1 --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:ui-utils": "node --test scripts/ui-utils.test.mjs",
+    "test:pwa": "node --test scripts/service-worker.test.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "test:consultoria-content": "node --test scripts/consultoria-content.test.mjs",
+    "test:local-preview": "node --test scripts/local-preview.test.mjs",
+    "test:pwa-install": "node --test scripts/pwa-install.test.mjs",
+    "test:support-recovery": "node --test scripts/support-recovery.test.mjs",
+    "test:support-attachments": "node --test scripts/support-attachments.test.mjs",
+    "test:public-navigation": "node --test scripts/public-navigation.test.mjs",
+    "test:community-feed": "node --test scripts/community-feed.test.mjs",
+    "test:performance-recovery": "node --test scripts/performance-recovery.test.mjs",
+    "test:ranking-recovery": "node --test scripts/ranking-recovery.test.mjs",
+    "test:change-password": "node --test scripts/change-password.test.mjs",
+    "test:legal-recovery": "node --test scripts/legal-recovery.test.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

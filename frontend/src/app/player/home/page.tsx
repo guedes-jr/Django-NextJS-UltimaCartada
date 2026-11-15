@@ -383,23 +383,24 @@ export default function PlayerHomePage() {
         </div>
 
         {feedbackMessage && (
-          <div className={styles.message}>{feedbackMessage}</div>
+          <div role="status" className={styles.message}>{feedbackMessage}</div>
         )}
 
         <nav className={styles.quickLinks} aria-label="Atalhos do jogador"><Link href="/player/performance">Meu progresso <ArrowUpRight size={16} aria-hidden="true" /></Link><Link href="/player/community">Minha comunidade <ArrowUpRight size={16} aria-hidden="true" /></Link><Link href="/player/support">Preciso de ajuda <ArrowUpRight size={16} aria-hidden="true" /></Link></nav>
         <PlayerDailyJourney />
         <PlayerFlashChallenges />
 
-        {isLoading && <div className={styles.message}>Carregando jogos...</div>}
+        {isLoading && <div role="status" className={styles.message}>Carregando jogos...</div>}
 
         {!isLoading && errorMessage && !isPlayModalOpen && (
-          <div className={styles.error}>{errorMessage}</div>
+          <div role="alert" className={styles.error}>{errorMessage}</div>
         )}
 
         {!isLoading && !errorMessage && games.length === 0 && (
-          <div className={styles.message}>
-            Você ainda não possui jogos disponíveis. Peça para o administrador
-            adicionar você a um grupo.
+          <div role="status" className={styles.message}>
+            Você ainda não tem um jogo vinculado ao seu grupo. A disponibilidade
+            depende da matrícula na jornada, além do acesso ao game. Fale com a
+            responsável pelo seu grupo ou <Link href="/player/support">acesse o suporte</Link>.
           </div>
         )}
 
@@ -459,7 +460,7 @@ export default function PlayerHomePage() {
               <h2>Rodadas do jogo</h2>
 
               {gameRounds.length === 0 ? (
-                <div className={styles.message}>
+                <div role="status" className={styles.message}>
                   Este jogo ainda não possui rodadas geradas.
                 </div>
               ) : (
@@ -578,7 +579,7 @@ export default function PlayerHomePage() {
               <h2>Minhas jogadas</h2>
 
               {gamePlays.length === 0 ? (
-                <div className={styles.message}>
+                <div role="status" className={styles.message}>
                   Você ainda não realizou jogadas neste jogo.
                 </div>
               ) : (
@@ -660,7 +661,7 @@ export default function PlayerHomePage() {
               <h2>Histórico de evidências</h2>
 
               {gameEvidences.length === 0 ? (
-                <div className={styles.message}>
+                <div role="status" className={styles.message}>
                   Nenhuma evidência enviada neste jogo.
                 </div>
               ) : (
@@ -696,6 +697,7 @@ export default function PlayerHomePage() {
           title="Jogar carta"
           isOpen={isPlayModalOpen}
           onClose={closePlayModal}
+          closeDisabled={isSubmittingPlay}
         >
           <div className={styles.playModalContent}>
             {selectedRound && (
@@ -716,11 +718,11 @@ export default function PlayerHomePage() {
             )}
 
             {isLoadingCards && (
-              <div className={styles.message}>Carregando cartas...</div>
+              <div role="status" className={styles.message}>Carregando cartas...</div>
             )}
 
             {!isLoadingCards && cards.length === 0 && (
-              <div className={styles.message}>
+              <div role="status" className={styles.message}>
                 Nenhuma carta disponível para esta rodada.
               </div>
             )}
@@ -736,6 +738,8 @@ export default function PlayerHomePage() {
                         ? styles.cardOptionSelected
                         : ""
                     }`}
+                    aria-pressed={selectedCardId === card.id}
+                    disabled={isSubmittingPlay}
                     onClick={() => setSelectedCardId(card.id)}
                   >
                     <div className={styles.cardOptionHeader}>
@@ -751,7 +755,7 @@ export default function PlayerHomePage() {
               </div>
             )}
 
-            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
+            {errorMessage && <div role="alert" className={styles.error}>{errorMessage}</div>}
 
             <div className={styles.modalActions}>
               <button
@@ -778,6 +782,7 @@ export default function PlayerHomePage() {
           title="Enviar evidência"
           isOpen={isEvidenceModalOpen}
           onClose={closeEvidenceModal}
+          closeDisabled={isSubmittingEvidence}
         >
           <div className={styles.evidenceForm}>
             {selectedPlay && (
@@ -796,6 +801,7 @@ export default function PlayerHomePage() {
               <label htmlFor="evidenceText">Descrição da evidência</label>
               <textarea
                 id="evidenceText"
+                disabled={isSubmittingEvidence}
                 value={evidenceText}
                 onChange={(event) => setEvidenceText(event.target.value)}
                 placeholder="Descreva brevemente o que foi realizado..."
@@ -806,6 +812,7 @@ export default function PlayerHomePage() {
               <label htmlFor="evidenceFile">Arquivo</label>
               <input
                 id="evidenceFile"
+                disabled={isSubmittingEvidence}
                 type="file"
                 accept="image/*,video/*"
                 onChange={(event) => {
@@ -834,7 +841,7 @@ export default function PlayerHomePage() {
               </div>
             )}
 
-            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
+            {errorMessage && <div role="alert" className={styles.error}>{errorMessage}</div>}
 
             <div className={styles.modalActions}>
               <button

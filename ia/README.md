@@ -19,3 +19,5 @@ Instruções por diretório ficam em `../backend/AGENTS.md` e `../frontend/AGENT
 As pastas `.ai-context/`, `.ai-prompts/`, `.ai-commands/` e `.ai-agents/` são referências auxiliares; não habilitam ferramentas, agentes ou execução automática. O pacote `ultima_cartada.skill` é um artefato legado, não foi instalado nem atualizado nesta revisão; prefira os documentos atuais. `.cursorrules` apenas direciona para estas mesmas fontes.
 
 A distribuição de instruções por diretório segue a [documentação oficial de AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md). As regras técnicas aqui são específicas deste repositório.
+
+Para alterações de interface e comunicação da consultoria, leia [DESIGN.md](../DESIGN.md) e o briefing integral [CONSULTORIA.md](../CONSULTORIA.md). Diagnóstico da atualização: [docs/CONSULTORIA_DIAGNOSTICO.md](../docs/CONSULTORIA_DIAGNOSTICO.md).

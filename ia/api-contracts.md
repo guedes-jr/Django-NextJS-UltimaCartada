@@ -39,3 +39,11 @@ Não existe login `/api/v1/token/` nem rodadas `/api/v1/games/rounds/` no urlpat
 5. Teste sucesso e acesso negado; atualize este inventário quando URLs mudarem.
 
 Não use exemplos históricos de payload como schema definitivo. Dados derivados (jogador, pontuação, revisão) dependem das regras do servidor. Endpoints públicos legais e de login têm permissões próprias; não exigir autenticação indiscriminadamente.
+
+## Produtos efetivos — atualização da consultoria em 13/11/2026
+
+O array `products` de login e sessão mantém o mesmo formato. Mentoria vigente retorna `GAME` e `MENTORSHIP`, mesmo sem registro GAME separado. Apenas GAME não concede mentoria. A inclusão termina quando a mentoria expira ou é revogada, preservando GAME independente que ainda estiver vigente. Contas inativas não recebem produtos efetivos.
+
+O CRUD de entitlements continua representando registros reais, não concessões derivadas. Não foi criado endpoint, campo, matrícula ou migration. A atualização do array é refletida pelo login e pelo GET `/accounts/me/` usado por ProtectedRoute; o dashboard utiliza esse usuário recém-validado. Revogar somente um registro GAME não anula a inclusão originada de mentoria ainda vigente.
+
+Endpoints existentes mantêm seus filtros e regras específicas de papel/grupo/usuário. Os bloqueios de produto já existentes em mentoria e jornada diária usam o helper compartilhado; esta alteração não é uma auditoria global de autorização de todos os endpoints legados.

@@ -201,7 +201,7 @@ class DailyJourneyTests(TestCase):
         self.other_group.players.add(PlayerProfile.objects.create(user=self.outsider))
         self.group.mediators.add(self.mediator)
         for player in (self.player, self.outsider):
-            ProductEntitlement.objects.create(user=player, product=ProductCode.GAME)
+            ProductEntitlement.objects.create(user=player, product=ProductCode.GAME, starts_at=self.now - timedelta(days=1))
         self.client.force_authenticate(self.admin)
         response = self.client.post(reverse("journey-list"), {
             "name": "Jornada diária", "start_date": "2026-10-12", "status": "ACTIVE", "daily_enabled": True,
@@ -226,6 +226,19 @@ class DailyJourneyTests(TestCase):
     def record(self, kind="intention", **data):
         return self.client.post(reverse(f"journey-enrollment-{kind}", args=[self.enrollment.id]),
                                 {"day": self.day.id, **data}, format="json")
+
+    def test_mentorship_includes_daily_game_without_exposing_other_groups(self):
+        ProductEntitlement.objects.filter(user=self.player, product=ProductCode.GAME).delete()
+        ProductEntitlement.objects.create(user=self.player, product=ProductCode.MENTORSHIP, starts_at=self.now - timedelta(days=1))
+        response = self.client.get(reverse("journey-enrollment-daily"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([item["enrollment"] for item in response.data], [self.enrollment.id])
+        self.assertEqual(self.record(text="Intenção privada").status_code, 200)
+        response = self.client.post(reverse("journey-enrollment-intention", args=[self.other_enrollment.id]),
+                                    {"day": self.day.id, "text": "Não autorizado"}, format="json")
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(DailyParticipation.objects.filter(player=self.player,
+                         journey_game__enrollment=self.other_enrollment).exists())
 
     def test_current_day_and_private_progress_are_released_from_server_calendar(self):
         result = self.dashboard()

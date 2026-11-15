@@ -1,3 +1,5 @@
+> Registro da apresentação anterior. A direção atual está em [CONSULTORIA.md](../CONSULTORIA.md), [DESIGN.md](../DESIGN.md) e no [plano ativo](../IMPLEMENTATION_PLAN.md): Magaly como marca principal, A Última Cartada como mentoria e Cartada Viva como game incluído. O modo legado continua disponível enquanto a nova apresentação não for aprovada e ativada. Não usar este texto histórico para criar uma terceira oferta comercial.
+
 # Landing page — Método Última Cartada
 
 Revisão em 12/10/2026, a partir do pedido do responsável: apresentar a metodologia Última Cartada como foco e a Cartada Viva como uma aplicação prática para incentivar boas práticas do cotidiano.

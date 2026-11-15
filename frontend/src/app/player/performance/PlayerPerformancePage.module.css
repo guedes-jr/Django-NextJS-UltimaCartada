@@ -177,3 +177,27 @@
     white-space: normal;
   }
 }
+
+/* Apresentação da consultoria: escopo condicionado pelo layout existente. */
+:global([data-consultoria-access-theme="true"]) .header h1 { color: var(--brand-wine); font: 500 clamp(2rem, 5vw, 3rem)/1.15 var(--font-editorial), Georgia, serif; }
+:global([data-consultoria-access-theme="true"]) .header p { color: var(--color-muted); font-size: 1rem; line-height: 1.6; }
+:global([data-consultoria-access-theme="true"]) :is(.summaryCard, .section, .message) { background: var(--brand-ivory); color: var(--brand-plum); border-color: var(--color-border); box-shadow: 0 8px 28px #4930440c; }
+:global([data-consultoria-access-theme="true"]) .summaryCard span { color: var(--color-muted); font-weight: 500; }
+:global([data-consultoria-access-theme="true"]) .summaryCard strong { color: var(--brand-wine); font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+:global([data-consultoria-access-theme="true"]) .section h2 { color: var(--brand-wine); font: 600 1.75rem/1.2 var(--font-editorial), Georgia, serif; overflow-wrap: anywhere; }
+
+.tableWrapper:focus-visible { outline: 3px solid var(--navigation-focus, #8b601f); outline-offset: 4px; }
+:global([data-consultoria-access-theme="true"]) .table th { background: var(--brand-nude); color: var(--brand-plum); border-color: var(--color-border); font-size: .875rem; }
+:global([data-consultoria-access-theme="true"]) .table td { color: var(--brand-plum); border-color: var(--color-border); }
+:global([data-consultoria-access-theme="true"]) .cardInfo strong { color: var(--brand-plum); }
+:global([data-consultoria-access-theme="true"]) .cardInfo span { color: var(--color-muted); font-size: .875rem; }
+:global([data-consultoria-access-theme="true"]) .badge { background: var(--brand-nude); color: var(--brand-plum); font-weight: 600; }
+:global([data-consultoria-access-theme="true"]) .pending { background: #fff7e6; color: #805000; }
+:global([data-consultoria-access-theme="true"]) .approved { background: #e6f4e7; color: #28643b; }
+:global([data-consultoria-access-theme="true"]) .rejected { background: #fff1f1; color: #b42318; }
+
+.retryButton { min-height: 48px; padding: 10px 18px; border: 1px solid #8b601f; border-radius: 8px; background: #1b1813; color: #fffaf3; font: inherit; cursor: pointer; }
+.retryButton[aria-disabled="true"] { cursor: wait; }
+.retryButton:focus-visible, .header h1:focus-visible { outline: 3px solid var(--brand-wine, #8b601f); outline-offset: 3px; }
+
+:global([data-consultoria-access-theme="true"]) .retryButton { background: var(--brand-wine); color: var(--brand-ivory); border-color: var(--brand-wine); }

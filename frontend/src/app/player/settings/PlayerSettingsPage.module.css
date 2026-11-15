@@ -57,3 +57,9 @@
     padding: 18px;
   }
 }
+
+:global([data-consultoria-access-theme="true"]) .header h1 { color: var(--brand-wine); font: 500 clamp(2rem, 5vw, 3rem)/1.15 var(--font-editorial), Georgia, serif; }
+:global([data-consultoria-access-theme="true"]) :is(.header p, .cardDescription) { color: var(--color-muted); font-size: 1rem; line-height: 1.6; }
+:global([data-consultoria-access-theme="true"]) .card { background: var(--brand-ivory); border-color: var(--color-border); box-shadow: 0 12px 32px #4930440c; min-width: 0; }
+:global([data-consultoria-access-theme="true"]) .card h2 { color: var(--brand-wine); font: 600 1.75rem/1.2 var(--font-editorial), Georgia, serif; }
+:global([data-consultoria-access-theme="true"]) .tourButton { background: var(--brand-wine); color: var(--brand-ivory); min-height: 48px; font-size: 1rem; font-weight: 600; }

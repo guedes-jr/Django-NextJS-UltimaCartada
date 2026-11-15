@@ -4,6 +4,12 @@ Plataforma web para conduzir um jogo terapêutico de hábitos em grupos, com car
 
 > O sistema organiza a participação e o acompanhamento; não substitui atendimento, diagnóstico ou tratamento por profissionais de saúde.
 
+## Atualização solicitada pela consultoria
+
+O novo planejamento está em [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), com requisitos em [CONSULTORIA.md](CONSULTORIA.md), padrão visual em [DESIGN.md](DESIGN.md) e [diagnóstico técnico](docs/CONSULTORIA_DIAGNOSTICO.md). A direção é Magaly Abreu como marca principal, Mentoria A Última Cartada como oferta principal e Game Cartada Viva incluído. A apresentação descrita abaixo é a versão existente; sua substituição pública depende de aprovação e autorização expressa.
+
+Prévia local integrada: com Django em `127.0.0.1:8000`, execute `cd frontend && npm run dev:consultoria` e abra `http://127.0.0.1:3001/preview/consultoria`. Consulte [o roteiro de revisão](docs/CONSULTORIA_PREVIEW.md) e [o guia de criativos](docs/CONSULTORIA_CRIATIVOS.md). A prévia também inclui Herbalife e um guia visual navegável. A prévia é bloqueada por padrão em builds de produção.
+
 ## Visão do sistema
 
 Somente a página dedicada, agora em `/public/ultima-cartada` (com redirecionamento de `/public/cartada-viva`), foi reformulada para apresentar sua relação com o **Método Última Cartada**. A landing principal mantém a apresentação anterior. A captura da página dedicada abaixo é anterior à reformulação; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
@@ -27,7 +33,7 @@ As imagens abaixo foram atualizadas após a adoção da identidade Cartada Viva 
 - **Gestão:** relatórios, auditoria, notificações e chamados de suporte com histórico.
 - **Acesso e transparência:** autenticação JWT, papéis de usuário, tour de primeiro acesso, documentos legais versionados e PWA instalável.
 
-Os textos padrão de Termos de Uso e Privacidade são **minutas não publicadas**. Precisam ser completados e revisados antes da publicação em `/admin/legal`; consulte [LEGAL_CONTENT_REVIEW.md](LEGAL_CONTENT_REVIEW.md). O tutorial Herbalife também depende da validação do fluxo comercial real: [HERBALIFE_CONTENT_REVIEW.md](HERBALIFE_CONTENT_REVIEW.md).
+Os textos padrão de Termos de Uso e Privacidade são **minutas não publicadas**. Precisam ser completados e revisados antes da publicação em `/admin/legal`; consulte [docs/LEGAL_CONTENT_REVIEW.md](docs/LEGAL_CONTENT_REVIEW.md). O tutorial Herbalife também depende da validação do fluxo comercial real: [docs/HERBALIFE_CONTENT_REVIEW.md](docs/HERBALIFE_CONTENT_REVIEW.md).
 
 ## Stack e estrutura
 
@@ -83,7 +89,7 @@ Copie `frontend/.env.example` para `frontend/.env.local` e defina `NEXT_PUBLIC_A
 npm run dev
 ```
 
-Acesse `http://localhost:3000`; a API local fica em `http://127.0.0.1:8000/api/v1/`. Em produção, `NEXT_PUBLIC_API_URL=/api/v1` funciona com o proxy Nginx descrito em [DEPLOYMENT.md](DEPLOYMENT.md).
+Acesse `http://localhost:3000`; a API local fica em `http://127.0.0.1:8000/api/v1/`. Em produção, `NEXT_PUBLIC_API_URL=/api/v1` funciona com o proxy Nginx descrito em [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ### Dados de demonstração
 
@@ -114,7 +120,7 @@ npm run lint
 npm run build
 ```
 
-O PWA deve ser conferido em HTTPS ou `localhost`; veja [PWA_TESTING.md](PWA_TESTING.md). Para ambiente local e deploy, consulte [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) e [DEPLOYMENT.md](DEPLOYMENT.md). O roteiro de evolução está em [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
+O PWA deve ser conferido em HTTPS ou `localhost`; veja [docs/PWA_TESTING.md](docs/PWA_TESTING.md). Para ambiente local e deploy, consulte [docs/LOCAL_DEVELOPMENT.md](docs/LOCAL_DEVELOPMENT.md) e [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). O roteiro de evolução está em [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
 Não versione `.env`, bancos locais, uploads, `.venv/`, `node_modules/` ou `.next/`. Evidências e dados de saúde ou participação devem ser tratados conforme as permissões e a política de privacidade efetivamente publicada.
 

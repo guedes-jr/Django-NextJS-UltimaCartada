@@ -1,3 +1,6 @@
+import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
+import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
+import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
 import { BarChart3, CheckCircle2, ChevronRight, Gamepad2, Heart, Layers3, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,10 +8,14 @@ import type { Metadata } from "next";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./UltimaCartadaPage.module.css";
 
-export const metadata: Metadata = {
+const legacyMetadata: Metadata = {
   title: "Última Cartada | Método e mentoria com Magaly Abreu",
   description: "Conheça o Método Última Cartada, de Magaly Abreu, seus quatro pilares, as possibilidades de mentoria e a Cartada Viva, sua aplicação prática em forma de jogo.",
 };
+export function generateMetadata(): Metadata {
+  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("mentorship") : legacyMetadata;
+}
+
 const WHATSAPP_URL = "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20do%20Método%20Última%20Cartada.";
 function getCheckoutUrl(): string | null {
   try {
@@ -38,6 +45,7 @@ const gameSteps = [
 ];
 
 export default function UltimaCartadaPage() {
+  if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="mentorship" />;
   const checkoutUrl = getCheckoutUrl();
   const participationUrl = checkoutUrl ?? WHATSAPP_URL;
   const participationLabel = checkoutUrl ? "Ver condições na Hotmart" : "Quero conhecer a mentoria";

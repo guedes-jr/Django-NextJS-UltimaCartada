@@ -4,7 +4,6 @@ import { AxiosError } from "axios";
 import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { api } from "@/lib/api";
 import { hasProduct, isGameStaffRole, ProductCode, UserRole } from "@/lib/auth";
 import styles from "./LoginPage.module.css";
@@ -41,6 +40,7 @@ export default function LoginPage() {
     if (submitting.current) return;
     if (!username.trim() || !password) {
       setErrorMessage("Informe seu usuário e sua senha para entrar.");
+      requestAnimationFrame(() => errorRef.current?.focus());
       return;
     }
     submitting.current = true;
@@ -103,16 +103,16 @@ export default function LoginPage() {
   }
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} data-brand-surface="login">
       <section className={styles.card}>
         <div className={styles.brand}>
-          <Image className={styles.logo} src="/cartada-viva-mark.png" alt="" width={58} height={58} priority />
           <div>
-            <h1>Cartada Viva</h1>
-            <p>Jogo digital de hábitos saudáveis</p>
+            <h1>Magaly Abreu</h1>
+            <p>Área de participantes</p>
           </div>
         </div>
 
+        <p className={styles.experiences}>A Última Cartada — Mentoria · Cartada Viva — Game</p>
         <form className={styles.form} onSubmit={handleSubmit} noValidate aria-busy={isLoading}>
           <div className={styles.field}>
             <label htmlFor="username">Usuário</label>
@@ -152,8 +152,8 @@ export default function LoginPage() {
           <button className={styles.button} type="submit" disabled={isLoading}>
             {isLoading ? "Entrando..." : "Entrar"}
           </button>
-          <Link className={styles.supportLink} href="/player/support">
-            Precisa de ajuda? Acesse o suporte
+          <Link className={styles.supportLink} href="/#contato">
+            Precisa de ajuda? Veja os canais de contato
           </Link>
           <div className={styles.legalLinks}><Link href="/terms">Termos de Uso</Link><Link href="/privacy">Privacidade</Link></div>
         </form>

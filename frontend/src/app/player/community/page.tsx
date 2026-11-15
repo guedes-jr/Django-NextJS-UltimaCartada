@@ -3,7 +3,7 @@
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { Camera, CheckCircle2, MessageCircle, Send, Sparkles, Trophy, Users } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { PlayerLayout } from "@/components/layout/PlayerLayout";
@@ -82,6 +82,8 @@ export default function PlayerCommunityPage() {
   const [evidences, setEvidences] = useState<Evidence[]>([]);
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [ranking, setRanking] = useState<PlayerRanking[]>([]);
+  const [rankingLoading, setRankingLoading] = useState(false);
+  const [rankingError, setRankingError] = useState(false);
   const [comments, setComments] = useState<Record<number, CommunityComment[]>>({});
   const [openComments, setOpenComments] = useState<number[]>([]);
   const [commentDrafts, setCommentDrafts] = useState<Record<number, string>>({});
@@ -92,9 +94,24 @@ export default function PlayerCommunityPage() {
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<number | null>(null);
   const [nextPage, setNextPage] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [contextError, setContextError] = useState(false);
+  const [contextAttempt, setContextAttempt] = useState(0);
+  const contextRetryRef = useRef(false);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const [isFeedLoading, setIsFeedLoading] = useState(false);
+  const [feedError, setFeedError] = useState(false);
+  const [feedAttempt, setFeedAttempt] = useState(0);
+  const feedContextRef = useRef("");
+  const feedRetryRef = useRef(false);
+  const feedHeadingRef = useRef<HTMLDivElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const postRequestRef = useRef<number | null>(null);
+  const postActionsRef = useRef(new Map<number, number>());
+  const commentReadsRef = useRef(new Map<number, number>());
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [moreError, setMoreError] = useState(false);
+  const feedGenerationRef = useRef(0);
+  const moreRequestRef = useRef<number | null>(null);
   const [busyPostId, setBusyPostId] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -114,6 +131,7 @@ export default function PlayerCommunityPage() {
   );
 
   useEffect(() => {
+    let cancelled = false;
     async function loadContext() {
       try {
         setIsLoading(true);
@@ -122,6 +140,8 @@ export default function PlayerCommunityPage() {
           getGames(),
           getEvidences(),
         ]);
+        if (cancelled) return;
+        setContextError(false);
         setGroups(groupsData);
         setGames(gamesData);
         setEvidences(evidencesData);
@@ -130,57 +150,92 @@ export default function PlayerCommunityPage() {
         setSelectedGameId(
           gamesData.find((game) => game.group === firstGroup?.id)?.id ?? null
         );
+        if (contextRetryRef.current) requestAnimationFrame(() => {
+          if (!cancelled) titleRef.current?.focus();
+        });
       } catch {
-        setErrorMessage("Não foi possível carregar sua comunidade.");
+        if (!cancelled) setContextError(true);
       } finally {
-        setIsLoading(false);
+        if (!cancelled) {
+          contextRetryRef.current = false;
+          setIsLoading(false);
+        }
       }
     }
     void loadContext();
-  }, []);
+    return () => { cancelled = true; };
+  }, [contextAttempt]);
 
   useEffect(() => {
+    let cancelled = false;
+    const generation = ++feedGenerationRef.current;
+    moreRequestRef.current = null;
+    postRequestRef.current = null;
+    postActionsRef.current.clear();
+    commentReadsRef.current.clear();
+    const context = `${selectedGroupId}:${selectedGameId}`;
+    const retrying = feedContextRef.current === context && feedRetryRef.current;
+    feedContextRef.current = context;
     if (!selectedGroupId) return;
 
     async function loadFeed() {
       try {
+        setPosts([]);
+        setNextPage(null);
+        setIsLoadingMore(false);
+        setIsSubmitting(false);
+        setBusyPostId(null);
+        setMoreError(false);
+        setComments({});
+        setOpenComments([]);
+        if (!retrying) setFeedError(false);
         setIsFeedLoading(true);
-        setErrorMessage("");
         const data = await getCommunityPosts({
           group: selectedGroupId as number,
           game: selectedGameId ?? undefined,
           page: 1,
         });
+        if (cancelled) return;
         setPosts(data.results);
         setNextPage(data.next ? 2 : null);
-        setComments({});
-        setOpenComments([]);
+        setFeedError(false);
+        if (retrying) requestAnimationFrame(() => {
+          if (!cancelled) feedHeadingRef.current?.focus();
+        });
       } catch {
-        setErrorMessage("Não foi possível carregar as publicações.");
+        if (!cancelled) setFeedError(true);
       } finally {
-        setIsFeedLoading(false);
+        if (!cancelled) {
+          feedRetryRef.current = false;
+          setIsFeedLoading(false);
+        }
       }
     }
     void loadFeed();
-  }, [selectedGameId, selectedGroupId]);
+    return () => { cancelled = true; feedGenerationRef.current = generation + 1; };
+  }, [selectedGameId, selectedGroupId, feedAttempt]);
 
   useEffect(() => {
-    if (!selectedGroupId || !selectedGameId) {
-      return;
-    }
+    let cancelled = false;
     async function loadRanking() {
+      setRanking([]);
+      setRankingError(false);
+      if (!selectedGroupId || !selectedGameId) {
+        setRankingLoading(false);
+        return;
+      }
       try {
-        setRanking(
-          await getCommunityRanking(
-            selectedGroupId as number,
-            selectedGameId as number
-          )
-        );
+        setRankingLoading(true);
+        const data = await getCommunityRanking(selectedGroupId, selectedGameId);
+        if (!cancelled) setRanking(data);
       } catch {
-        setRanking([]);
+        if (!cancelled) setRankingError(true);
+      } finally {
+        if (!cancelled) setRankingLoading(false);
       }
     }
     void loadRanking();
+    return () => { cancelled = true; };
   }, [selectedGameId, selectedGroupId]);
 
   function changeGroup(groupId: number) {
@@ -205,11 +260,13 @@ export default function PlayerCommunityPage() {
 
   async function submitPost(event: FormEvent) {
     event.preventDefault();
-    if (!selectedGroupId) return;
+    if (!selectedGroupId || postRequestRef.current !== null) return;
     if (!postText.trim() && !postFile && !selectedEvidenceId) {
       setErrorMessage("Escreva algo ou compartilhe uma mídia/evidência.");
       return;
     }
+    const generation = feedGenerationRef.current;
+    postRequestRef.current = generation;
     try {
       setIsSubmitting(true);
       setErrorMessage("");
@@ -220,32 +277,39 @@ export default function PlayerCommunityPage() {
         media: postFile,
         evidence_id: selectedEvidenceId,
       });
-      setPosts((current) => [post, ...current]);
-      setPostText("");
-      setPostFile(null);
-      setSelectedEvidenceId(null);
+      if (generation !== feedGenerationRef.current) return;
+      setPosts((current) => [post, ...current.filter((item) => item.id !== post.id)]);
+      setPostText((current) => current === postText ? "" : current);
+      setPostFile((current) => current === postFile ? null : current);
+      setSelectedEvidenceId((current) => current === selectedEvidenceId ? null : current);
       setFeedbackMessage("Sua publicação já está na comunidade.");
     } catch (error) {
-      setErrorMessage(apiError(error));
+      if (generation === feedGenerationRef.current) setErrorMessage(apiError(error));
     } finally {
-      setIsSubmitting(false);
+      if (generation === feedGenerationRef.current) {
+        postRequestRef.current = null;
+        setIsSubmitting(false);
+      }
     }
   }
 
   async function react(postId: number, type: CommunityReactionType) {
+    if (postActionsRef.current.has(postId)) return;
+    const generation = feedGenerationRef.current;
+    postActionsRef.current.set(postId, generation);
     try {
       setBusyPostId(postId);
       setErrorMessage("");
       const result = await reactToCommunityPost(postId, type);
-      setPosts((current) =>
-        current.map((post) =>
-          post.id === postId ? { ...post, ...result } : post
-        )
-      );
+      if (generation !== feedGenerationRef.current) return;
+      setPosts((current) => current.map((post) => post.id === postId ? { ...post, ...result } : post));
     } catch (error) {
-      setErrorMessage(apiError(error));
+      if (generation === feedGenerationRef.current) setErrorMessage(apiError(error));
     } finally {
-      setBusyPostId(null);
+      if (generation === feedGenerationRef.current) {
+        postActionsRef.current.delete(postId);
+        setBusyPostId((current) => current === postId ? null : current);
+      }
     }
   }
 
@@ -254,29 +318,40 @@ export default function PlayerCommunityPage() {
       setOpenComments((current) => current.filter((id) => id !== post.id));
       return;
     }
+    if (commentReadsRef.current.has(post.id)) return;
+    const generation = feedGenerationRef.current;
+    commentReadsRef.current.set(post.id, generation);
     try {
-      setOpenComments((current) => [...current, post.id]);
+      setOpenComments((current) => [...new Set([...current, post.id])]);
       if (!comments[post.id]) {
         const data = await getCommunityComments(post.id);
+        if (generation !== feedGenerationRef.current) return;
         setComments((current) => ({ ...current, [post.id]: data.results }));
       }
     } catch (error) {
+      if (generation !== feedGenerationRef.current) return;
       setOpenComments((current) => current.filter((id) => id !== post.id));
       setErrorMessage(apiError(error));
+    } finally {
+      if (generation === feedGenerationRef.current) commentReadsRef.current.delete(post.id);
     }
   }
 
   async function submitComment(postId: number) {
     const text = commentDrafts[postId]?.trim();
-    if (!text) return;
+    if (!text || postActionsRef.current.has(postId)) return;
+    const generation = feedGenerationRef.current;
+    const draft = commentDrafts[postId];
+    postActionsRef.current.set(postId, generation);
     try {
       setBusyPostId(postId);
       const comment = await createCommunityComment(postId, text);
+      if (generation !== feedGenerationRef.current) return;
       setComments((current) => ({
         ...current,
         [postId]: [...(current[postId] ?? []), comment],
       }));
-      setCommentDrafts((current) => ({ ...current, [postId]: "" }));
+      setCommentDrafts((current) => current[postId] === draft ? { ...current, [postId]: "" } : current);
       setPosts((current) =>
         current.map((post) =>
           post.id === postId
@@ -285,56 +360,84 @@ export default function PlayerCommunityPage() {
         )
       );
     } catch (error) {
-      setErrorMessage(apiError(error));
+      if (generation === feedGenerationRef.current) setErrorMessage(apiError(error));
     } finally {
-      setBusyPostId(null);
+      if (generation === feedGenerationRef.current) {
+        postActionsRef.current.delete(postId);
+        setBusyPostId((current) => current === postId ? null : current);
+      }
     }
   }
 
   async function removePost(postId: number) {
+    if (postActionsRef.current.has(postId)) return;
     if (!window.confirm("Deseja excluir esta publicação?")) return;
+    const generation = feedGenerationRef.current;
+    postActionsRef.current.set(postId, generation);
     try {
+      setBusyPostId(postId);
       await deleteCommunityPost(postId);
+      if (generation !== feedGenerationRef.current) return;
       setPosts((current) => current.filter((post) => post.id !== postId));
     } catch (error) {
-      setErrorMessage(apiError(error));
+      if (generation === feedGenerationRef.current) setErrorMessage(apiError(error));
+    } finally {
+      if (generation === feedGenerationRef.current) {
+        postActionsRef.current.delete(postId);
+        setBusyPostId((current) => current === postId ? null : current);
+      }
     }
   }
 
   async function removeComment(postId: number, commentId: number) {
+    if (postActionsRef.current.has(postId)) return;
+    const generation = feedGenerationRef.current;
+    postActionsRef.current.set(postId, generation);
     try {
+      setBusyPostId(postId);
       await deleteCommunityComment(commentId);
+      if (generation !== feedGenerationRef.current) return;
       setComments((current) => ({
         ...current,
         [postId]: (current[postId] ?? []).filter((item) => item.id !== commentId),
       }));
-      setPosts((current) =>
-        current.map((post) =>
-          post.id === postId
-            ? { ...post, comments_count: Math.max(0, post.comments_count - 1) }
-            : post
-        )
-      );
+      setPosts((current) => current.map((post) => post.id === postId
+        ? { ...post, comments_count: Math.max(0, post.comments_count - 1) } : post));
     } catch (error) {
-      setErrorMessage(apiError(error));
+      if (generation === feedGenerationRef.current) setErrorMessage(apiError(error));
+    } finally {
+      if (generation === feedGenerationRef.current) {
+        postActionsRef.current.delete(postId);
+        setBusyPostId((current) => current === postId ? null : current);
+      }
     }
   }
 
   async function loadMore() {
-    if (!selectedGroupId || !nextPage || isLoadingMore) return;
+    if (!selectedGroupId || !nextPage || isFeedLoading || moreRequestRef.current !== null) return;
+    const generation = feedGenerationRef.current;
+    moreRequestRef.current = generation;
     try {
       setIsLoadingMore(true);
+      setMoreError(false);
       const data = await getCommunityPosts({
         group: selectedGroupId,
         game: selectedGameId ?? undefined,
         page: nextPage,
       });
-      setPosts((current) => [...current, ...data.results]);
+      if (generation !== feedGenerationRef.current) return;
+      setPosts((current) => {
+        const ids = new Set(current.map((post) => post.id));
+        return [...current, ...data.results.filter((post) => !ids.has(post.id))];
+      });
       setNextPage(data.next ? nextPage + 1 : null);
-    } catch (error) {
-      setErrorMessage(apiError(error));
+    } catch {
+      if (generation === feedGenerationRef.current) setMoreError(true);
     } finally {
-      setIsLoadingMore(false);
+      if (generation === feedGenerationRef.current) {
+        moreRequestRef.current = null;
+        setIsLoadingMore(false);
+      }
     }
   }
 
@@ -344,7 +447,7 @@ export default function PlayerCommunityPage() {
         <header className={styles.hero}>
           <div>
             <span className={styles.eyebrow}><Users size={14} aria-hidden="true" /> Seu espaço de conexão</span>
-            <h1>Comunidade</h1>
+            <h1 ref={titleRef} tabIndex={-1}>Comunidade</h1>
             <p>Um lugar para celebrar cada passo, trocar apoio e crescer junto.</p>
           </div>
           <div className={styles.filters}>
@@ -370,14 +473,23 @@ export default function PlayerCommunityPage() {
           </div>
         </header>
 
-        {feedbackMessage && <div className={styles.success}>{feedbackMessage}</div>}
-        {errorMessage && <div className={styles.error}>{errorMessage}</div>}
-        {isLoading ? <div className={styles.state}>Carregando comunidade...</div> : groups.length === 0 ? (
-          <div className={styles.state}>Você ainda não participa de nenhum grupo.</div>
+        {feedbackMessage && <div role="status" className={styles.success}>{feedbackMessage}</div>}
+        {errorMessage && <div role="alert" className={styles.error}>{errorMessage}</div>}
+        {contextError ? (
+          <div role="alert" className={styles.state}>
+            <p>Não foi possível carregar sua comunidade. Tente novamente.</p>
+            <button className={styles.loadMore} type="button" aria-disabled={isLoading} onClick={() => {
+              if (contextRetryRef.current) return;
+              contextRetryRef.current = true;
+              setContextAttempt((attempt) => attempt + 1);
+            }}>{isLoading ? "Carregando comunidade..." : "Recarregar comunidade"}</button>
+          </div>
+        ) : isLoading ? <div role="status" className={styles.state}>Carregando comunidade...</div> : groups.length === 0 ? (
+          <div role="status" className={styles.state}>Você ainda não participa de nenhum grupo.</div>
         ) : (
           <div className={styles.layout}>
             <div className={styles.feedColumn}>
-              <div className={styles.feedHeading}>
+              <div className={styles.feedHeading} ref={feedHeadingRef} tabIndex={-1}>
                 <div><span className={styles.liveDot} aria-hidden="true" /> Timeline do grupo</div>
                 <small>{posts.length} {posts.length === 1 ? "publicação" : "publicações"}</small>
               </div>
@@ -414,7 +526,17 @@ export default function PlayerCommunityPage() {
                 {selectedEvidenceId && <small className={styles.consent}>Ao publicar, você escolhe compartilhar esta evidência com seu grupo.</small>}
               </form>
 
-              {isFeedLoading ? <div className={styles.state}>Atualizando timeline...</div> : posts.length === 0 ? (
+              {feedError ? (
+                <div role="alert" className={styles.emptyFeed}>
+                  <strong>Publicações indisponíveis</strong>
+                  <p>Não foi possível carregar as publicações deste grupo. Tente novamente.</p>
+                  <button className={styles.loadMore} type="button" aria-disabled={isFeedLoading} onClick={() => {
+                    if (feedRetryRef.current) return;
+                    feedRetryRef.current = true;
+                    setFeedAttempt((attempt) => attempt + 1);
+                  }}>{isFeedLoading ? "Carregando publicações..." : "Tentar novamente"}</button>
+                </div>
+              ) : isFeedLoading ? <div role="status" className={styles.state}>Atualizando timeline...</div> : posts.length === 0 ? (
                 <div className={styles.emptyFeed}><span>◇</span><strong>Comece a conversa</strong><p>Ainda não há publicações neste jogo. Compartilhe a primeira conquista.</p></div>
               ) : posts.map((post) => (
                 <article className={styles.post} key={post.id}>
@@ -459,7 +581,7 @@ export default function PlayerCommunityPage() {
                         {post.reaction_counts[reaction.type] > 0 && <small>{post.reaction_counts[reaction.type]}</small>}
                       </button>
                     ))}
-                    <button type="button" aria-expanded={openComments.includes(post.id)} onClick={() => void toggleComments(post)}><MessageCircle size={16} aria-hidden="true" /> Comentar</button>
+                    <button type="button" aria-controls={`comments-${post.id}`} aria-expanded={openComments.includes(post.id)} onClick={() => void toggleComments(post)}><MessageCircle size={16} aria-hidden="true" /> Comentar</button>
                   </div>
                   {openComments.includes(post.id) && (
                     <section className={styles.comments} id={`comments-${post.id}`} aria-label={`Comentários da publicação de ${post.author_name}`}>
@@ -485,12 +607,13 @@ export default function PlayerCommunityPage() {
                   )}
                 </article>
               ))}
-              {nextPage && <button className={styles.loadMore} type="button" disabled={isLoadingMore} onClick={() => void loadMore()}>{isLoadingMore ? "Carregando..." : "Carregar mais publicações"}</button>}
+              {moreError && <p role="alert" className={styles.error}>Não foi possível carregar mais publicações. As publicações já carregadas foram mantidas; tente novamente.</p>}
+              {nextPage && <button className={styles.loadMore} type="button" aria-disabled={isLoadingMore} onClick={() => void loadMore()}>{isLoadingMore ? "Carregando..." : "Carregar mais publicações"}</button>}
             </div>
 
             <aside className={styles.ranking}>
               <div className={styles.rankingHeader}><span><Trophy size={16} aria-hidden="true" /> Ranking do grupo</span><strong>{selectedGameId ? "Destaques do jogo" : "Selecione um jogo"}</strong><p>Celebrando a constância de quem está nessa jornada.</p></div>
-              {!selectedGameId ? <p className={styles.rankingEmpty}>Escolha um jogo para visualizar a classificação.</p> : ranking.length === 0 ? <p className={styles.rankingEmpty}>O ranking aparecerá após as primeiras pontuações.</p> : (
+              {!selectedGameId ? <p className={styles.rankingEmpty}>Escolha um jogo para visualizar a classificação.</p> : rankingLoading ? <p role="status" className={styles.rankingEmpty}>Carregando ranking...</p> : rankingError ? <p role="alert" className={styles.rankingEmpty}>Ranking indisponível. Não foi possível consultar a classificação deste jogo.</p> : ranking.length === 0 ? <p className={styles.rankingEmpty}>O ranking aparecerá após as primeiras pontuações.</p> : (
                 <div className={styles.rankingList}>
                   {ranking.slice(0, 10).map((player, index) => (
                     <div className={styles.rankingItem} key={player.player_id}>

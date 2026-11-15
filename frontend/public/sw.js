@@ -1,19 +1,30 @@
-const CACHE_NAME = "ultima-cartada-offline-v1";
-const OFFLINE_URL = "/offline.html";
+const OFFLINE_CACHE_PREFIX = "ultima-cartada-offline-";
+const updatedPresentation = new URL(self.location.href).searchParams.get("presentation") === "consultoria";
+const CACHE_NAME = `${OFFLINE_CACHE_PREFIX}v2-${updatedPresentation ? "consultoria" : "legacy"}`;
+const OFFLINE_URL = updatedPresentation ? "/offline-consultoria.html" : "/offline.html";
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.add(OFFLINE_URL)));
-  self.skipWaiting();
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.add(OFFLINE_URL);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(Promise.all([
-    caches.keys().then((names) => Promise.all(names.filter((name) => name.startsWith("ultima-cartada-") && name !== CACHE_NAME).map((name) => caches.delete(name)))),
-    self.clients.claim(),
-  ]));
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    await Promise.all(names.filter((name) => name.startsWith(OFFLINE_CACHE_PREFIX) && name !== CACHE_NAME).map((name) => caches.delete(name)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.mode !== "navigate") return;
-  event.respondWith(fetch(event.request).catch(async () => (await caches.match(OFFLINE_URL)) || Response.error()));
+  const request = event.request;
+  if (request.method !== "GET" || request.mode !== "navigate" || new URL(request.url).origin !== self.location.origin) return;
+  // Network-first, sem gravar resposta de página, API ou mídia no cache.
+  event.respondWith(fetch(request).catch(async () => {
+    const cache = await caches.open(CACHE_NAME);
+    return (await cache.match(OFFLINE_URL)) || Response.error();
+  }));
 });

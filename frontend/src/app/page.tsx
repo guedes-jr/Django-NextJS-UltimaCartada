@@ -1,3 +1,6 @@
+import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
+import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
+import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
 import {
   CalendarDays,
   CheckCircle2,
@@ -18,11 +21,15 @@ import VideoTestimonials from "@/components/landing/VideoTestimonials";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
+const legacyMetadata: Metadata = {
   title: "Magaly Abreu | Mentoria A Última Cartada",
   description:
     "Mentoria para mulheres que querem construir uma nova relação com o corpo, a comida e a rotina.",
 };
+
+export function generateMetadata(): Metadata {
+  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("home") : legacyMetadata;
+}
 
 const WHATSAPP_URL =
   "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20A%20Última%20Cartada.";
@@ -92,6 +99,7 @@ const videoTestimonials = [
 ];
 
 export default function HomePage() {
+  if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="home" />;
   return (
     <main className={styles.page} id="top">
       <header className={styles.header}>

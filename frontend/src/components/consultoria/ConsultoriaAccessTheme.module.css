@@ -1,0 +1,63 @@
+.scope {
+  min-height: 100vh;
+  background: var(--brand-ivory);
+  color: var(--brand-plum);
+  font: 400 1rem/1.6 var(--font-sans);
+}
+.scope :is(button, input, select, textarea) { font-family: var(--font-sans); }
+.scope :is(a, button, input, select, textarea):focus-visible { outline: 3px solid var(--brand-wine); outline-offset: 4px; box-shadow: 0 0 0 2px var(--brand-ivory); }
+.scope [data-brand-surface="login"] { background: var(--brand-ivory); color: var(--brand-plum); }
+.scope [data-brand-surface="login"] > section { max-width: 480px; border-color: var(--color-border); background: var(--brand-ivory); box-shadow: 0 16px 48px #49304412; }
+.scope [data-brand-surface="login"] h1 { font: 500 clamp(2rem, 6vw, 2.8rem)/1.1 var(--font-editorial), Georgia, serif; color: var(--brand-wine); }
+.scope [data-brand-surface="login"] :is(label, p) { color: var(--brand-plum); }
+.scope [data-brand-surface="login"] label { font-weight: 600; }
+.scope [data-brand-surface="login"] input { color: var(--brand-plum); background: var(--brand-ivory); border-color: var(--color-control-border, #947480); font-size: 1rem; }
+.scope [data-brand-surface="login"] input:focus { border-color: var(--brand-wine); box-shadow: none; }
+.scope [data-brand-surface="login"] button[type="submit"] { color: var(--brand-ivory); background: var(--brand-wine); font-weight: 600; }
+.scope [data-brand-surface="login"] button[type="submit"]:hover:not(:disabled) { background: var(--brand-plum); }
+.scope [data-brand-surface="login"] :is(a, button[type="button"]) { color: var(--brand-wine); font-size: 0.875rem; }
+.scope [data-brand-surface="login"] [role="alert"] { color: #a33227; background: #fff0ed; }
+.scope [data-brand-surface="participant"] { background: var(--brand-ivory); color: var(--brand-plum); }
+.scope [data-brand-part="header"] { background: var(--brand-ivory); border-color: var(--color-border); box-shadow: 0 4px 24px #49304408; }
+.scope [data-brand-part="brand"] strong { font: 600 clamp(1.25rem, 2vw, 1.6rem)/1.15 var(--font-editorial), Georgia, serif; color: var(--brand-wine); }
+.scope [data-brand-part="brand"] span { color: var(--brand-plum); font-weight: 500; font-size: 0.75rem; }
+.scope [data-brand-part="navigation"] a { color: var(--brand-plum); background: transparent; font-weight: 500; min-height: 44px; }
+.scope [data-brand-part="navigation"] a:hover { background: var(--brand-nude); }
+.scope [data-brand-part="navigation"] a[aria-current="page"] { background: var(--brand-wine); color: var(--brand-ivory); box-shadow: none; }
+.scope [data-brand-part="menu-button"] { background: var(--brand-wine); color: var(--brand-ivory); font-weight: 600; }
+.scope [data-brand-part="welcome"] :is(span, strong) { color: var(--brand-plum); }
+.scope [data-brand-part="welcome"] strong { font-weight: 500; }
+.scope [data-brand-page="dashboard"] h1,
+.scope [data-brand-page="mentorship"] :is(h1, h2, h3) { color: var(--brand-wine); font-family: var(--font-editorial), Georgia, serif; font-weight: 500; line-height: 1.15; }
+.scope [data-brand-page="dashboard"] h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); }
+.scope [data-brand-page="dashboard"] header :is(span, p) { color: var(--brand-plum); }
+.scope [data-brand-offer] { border: 1px solid var(--color-border); box-shadow: 0 10px 26px #4930440c; }
+.scope [data-brand-offer] h2 { font: 500 clamp(1.8rem, 3vw, 2.25rem)/1.15 var(--font-editorial), Georgia, serif; }
+.scope [data-brand-offer="mentorship"] { color: var(--brand-ivory); background: var(--brand-wine); }
+.scope [data-brand-offer="mentorship"] > span { color: var(--brand-ivory); font-weight: 500; }
+.scope [data-brand-offer="mentorship"] a { color: var(--brand-wine); background: var(--brand-ivory); font-weight: 600; min-height: 48px; }
+.scope [data-brand-offer="game"] { color: var(--brand-plum); background: var(--brand-nude); }
+.scope [data-brand-offer="game"] a { color: var(--brand-ivory); background: var(--brand-wine); font-weight: 600; min-height: 48px; }
+.scope [data-brand-page="mentorship"] header > div > span,
+.scope [data-brand-page="mentorship"] header > span { color: var(--brand-plum); }
+.scope [data-brand-page="mentorship"] :is(header, [data-brand-part="module"]) p { color: var(--brand-plum); line-height: 1.6; }
+.scope [data-brand-part="mentorship-program"] { background: var(--brand-ivory); border-color: var(--color-border); }
+.scope [data-brand-part="module"] { border-color: var(--color-border); }
+.scope [data-brand-part="mentorship-progress"] { background: var(--brand-ivory); border-color: var(--color-border); }
+.scope [data-brand-part="mentorship-progress"] :is(strong, span) { color: var(--brand-plum); }
+.scope [data-brand-part="mentorship-progress"] i { background: var(--brand-nude); }
+.scope [data-brand-part="mentorship-progress"] b { background: var(--brand-wine); }
+.scope [data-brand-part="mentorship-content"] { background: var(--brand-ivory); border-color: var(--color-border); color: var(--brand-plum); min-height: 48px; }
+.scope [data-brand-part="mentorship-content"] > span { background: var(--brand-nude); }
+.scope [data-brand-part="mentorship-content"] small { color: var(--color-muted); }
+.scope [data-brand-part="mentorship-content"][data-completed="true"] { background: #edf6ed; }
+.scope [data-brand-part="mentorship-modal"] { background: var(--brand-ivory); color: var(--brand-plum); }
+.scope [data-brand-part="mentorship-modal"] :is(a, footer button) { color: var(--brand-ivory); background: var(--brand-wine); min-height: 48px; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .scope *, .scope *::before, .scope *::after { transition: none !important; scroll-behavior: auto !important; } }
+
+.preview { min-height: 0; }
+.scope [data-ui-modal] { background: var(--brand-ivory); color: var(--brand-plum); }
+.scope [data-ui-modal] > header { border-color: var(--color-border); }
+.scope [data-ui-modal] > header h2 { color: var(--brand-wine); font: 500 1.75rem/1.2 var(--font-editorial), Georgia, serif; }
+
+.scope [data-ui-modal] > header button { background: var(--brand-nude); color: var(--brand-wine); }

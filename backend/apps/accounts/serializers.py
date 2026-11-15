@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from apps.accounts.models import User, UserRole
 from apps.players.models import PlayerProfile
 from apps.entitlements.models import ProductCode, ProductEntitlement
-from apps.entitlements.services import active_entitlements
+from apps.entitlements.services import effective_products
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,9 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_full_name()
 
     def get_products(self, obj):
-        if obj.is_admin_user:
-            return [ProductCode.GAME, ProductCode.MENTORSHIP]
-        return list(active_entitlements(obj).values_list("product", flat=True))
+        return effective_products(obj)
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -156,9 +154,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
         return full_name or obj.username
 
     def get_products(self, obj):
-        if obj.is_admin_user:
-            return [ProductCode.GAME, ProductCode.MENTORSHIP]
-        return list(active_entitlements(obj).values_list("product", flat=True))
+        return effective_products(obj)
 
 
 class UserSummarySerializer(serializers.ModelSerializer):

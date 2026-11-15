@@ -11,3 +11,7 @@ Arquivado em 12/10/2026 após comparação estática com o código. Estes arquiv
 Não reaplicar fases completas a partir destes documentos. Antes de recuperar um requisito, comparar com código, testes e backlog. Requisitos sem confirmação permanecem no histórico para triagem; arquivar não significa cancelar nem aprovar sua implementação.
 
 Os materiais originais em `../../../doc/` e a análise de aderência foram preservados por conterem requisitos editoriais e de produto ainda relevantes.
+
+## Encerramento de 13/11/2026
+
+O [plano anterior à consultoria](IMPLEMENTATION_PLAN_PRE_CONSULTORIA_2026-11-13.md) foi considerado concluído e encerrado por orientação expressa do responsável. O arquivo conserva o estado documental anterior; não é backlog ativo nem nova evidência de homologação. A solicitação da consultoria substitui integralmente o plano em `../../../IMPLEMENTATION_PLAN.md`.

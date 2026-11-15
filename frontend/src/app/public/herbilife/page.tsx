@@ -1,3 +1,6 @@
+import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
+import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
+import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
 import Image from "next/image";
 import Link from "next/link";
 import PublicNavigation from "@/components/landing/PublicNavigation";
@@ -5,10 +8,14 @@ import type { Metadata } from "next";
 
 import styles from "./HerbilifePage.module.css";
 
-export const metadata: Metadata = {
+const legacyMetadata: Metadata = {
   title: "Como se cadastrar e comprar | Herbalife com Magaly Abreu",
   description: "Guia para solicitar orientação de cadastro, acessar o canal oficial e conferir as condições de compra de produtos Herbalife.",
 };
+
+export function generateMetadata(): Metadata {
+  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("herbalife") : legacyMetadata;
+}
 
 const OFFICIAL_URL = "https://www.herbalife.com/pt-br";
 const registrationCandidate = process.env.NEXT_PUBLIC_HERBALIFE_REGISTRATION_URL?.trim();
@@ -54,6 +61,7 @@ const faqs = [
 ];
 
 export default function HerbilifePage() {
+  if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="herbalife" />;
   return <main className={styles.page}>
     <header className={styles.header}>
       <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-mark.png" width={58} height={58} alt="" /><span>Cartada Viva</span></Link>
