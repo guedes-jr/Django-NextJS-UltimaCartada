@@ -16,29 +16,60 @@ export function PlayerFlashChallenges() {
   const [text, setText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const submittingRef = useRef(false);
+  const retryLoadRef = useRef(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const [submitError, setSubmitError] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  async function reload() {
+  async function getChallengeData() {
     const data = await getFlashChallenges();
-    setChallenges(data);
     const entries = await Promise.all(data.map(async (challenge) => [challenge.id, await getChallengeRanking(challenge.id)] as const));
-    setRankings(Object.fromEntries(entries));
+    return { data, rankings: Object.fromEntries(entries) };
+  }
+
+  async function reload() {
+    const { data, rankings: nextRankings } = await getChallengeData();
+    setChallenges(data);
+    setRankings(nextRankings);
   }
 
   useEffect(() => {
-    getFlashChallenges()
-      .then(async (data) => {
+    let cancelled = false;
+
+    async function loadChallenges() {
+      try {
+        setLoading(true);
+        const { data, rankings: nextRankings } = await getChallengeData();
+        if (cancelled) return;
         setChallenges(data);
-        const entries = await Promise.all(data.map(async (challenge) => [challenge.id, await getChallengeRanking(challenge.id)] as const));
-        setRankings(Object.fromEntries(entries));
-      })
-      .catch(() => setError("Não foi possível carregar os desafios-relâmpago."))
-      .finally(() => setLoading(false));
-  }, []);
+        setRankings(nextRankings);
+        setError("");
+        if (retryLoadRef.current) requestAnimationFrame(() => {
+          if (!cancelled) headingRef.current?.focus();
+        });
+      } catch {
+        if (!cancelled) setError("Não foi possível carregar os desafios-relâmpago.");
+      } finally {
+        if (!cancelled) {
+          retryLoadRef.current = false;
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadChallenges();
+    return () => { cancelled = true; };
+  }, [loadAttempt]);
+
+  function retryLoad() {
+    if (retryLoadRef.current) return;
+    retryLoadRef.current = true;
+    setLoadAttempt((current) => current + 1);
+  }
 
   async function submit() {
     if (!selected || submittingRef.current) return;
@@ -63,12 +94,12 @@ export function PlayerFlashChallenges() {
     }
   }
 
-  if (loading) return null;
-  if (challenges.length === 0) return error ? <p role="alert" className={styles.error}>{error}</p> : null;
+  if (loading && challenges.length === 0) return null;
+  if (challenges.length === 0) return error ? <section className={styles.recovery} aria-busy={loading}><p role="alert">{error}</p><button type="button" aria-disabled={loading} onClick={retryLoad}>{loading ? "Carregando desafios..." : "Tentar novamente"}</button></section> : null;
 
   return (
     <section className={styles.section}>
-      <header><div><span>Tempo limitado</span><h2>Desafios-relâmpago</h2></div><strong>{challenges.length} ativo{challenges.length > 1 ? "s" : ""}</strong></header>
+      <header><div><span>Tempo limitado</span><h2 ref={headingRef} tabIndex={-1}>Desafios-relâmpago</h2></div><strong>{challenges.length} ativo{challenges.length > 1 ? "s" : ""}</strong></header>
       {message && <p role="status" className={styles.success}>{message}</p>}
       {error && <p role="alert" className={styles.error}>{error}</p>}
       <div className={styles.grid}>

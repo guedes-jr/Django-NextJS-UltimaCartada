@@ -10,7 +10,7 @@ Antes de alterar:
 3. Leia as instruções locais em `backend/AGENTS.md` ou `frontend/AGENTS.md` e inspecione código, contratos e testes relacionados.
 4. Confira `git status --short`; preserve alterações pré-existentes do usuário.
 
-`IMPLEMENTATION_PLAN.md` é o único backlog ativo. `docs/archive/planning/` guarda histórico, não tarefas atuais. `doc/ANALISE_DE_ADERENCIA.md` é uma auditoria datada: revalide suas afirmações antes de usá-las. Instruções do usuário prevalecem sobre recomendações destes documentos.
+`IMPLEMENTATION_PLAN.md` é o único backlog ativo. `docs/archive/planning/` guarda histórico, não tarefas atuais. `docs/requisitos-originais/ANALISE_DE_ADERENCIA.md` é uma auditoria datada: revalide suas afirmações antes de usá-las. Instruções do usuário prevalecem sobre recomendações destes documentos.
 
 ## Regras obrigatórias
 

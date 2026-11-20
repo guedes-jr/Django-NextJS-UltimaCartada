@@ -31,6 +31,10 @@ export function PlayerDailyJourney() {
   const [pillarStage, setPillarStage] = useState("ALL");
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
+  const mounted = useRef(true);
+  const loadRequest = useRef(0);
+  const retryLoad = useRef(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const previewRef = useRef("");
   const selectedEnrollment = useRef<number | null>(null);
   const loadedDay = useRef("");
@@ -42,9 +46,11 @@ export function PlayerDailyJourney() {
   const pillarProgress = pillarStage === "ALL" ? current?.pillars : current?.stages.find((stage) => String(stage.order) === pillarStage)?.pillars;
 
   const load = useCallback(async () => {
+    const request = ++loadRequest.current;
     setError("");
     try {
       const data = await getDailyJourneys();
+      if (!mounted.current || request !== loadRequest.current) return;
       const item = data.find((entry) => entry.enrollment === selectedEnrollment.current) ?? data[0];
       const key = `${item?.enrollment ?? ""}:${item?.current_day?.id ?? ""}`;
       if (loadedDay.current !== key) {
@@ -54,19 +60,24 @@ export function PlayerDailyJourney() {
       }
       setJourneys(data);
     } catch (error) {
-      setError(errorText(error));
+      if (mounted.current && request === loadRequest.current) setError(errorText(error));
     } finally {
-      setLoading(false);
+      if (mounted.current && request === loadRequest.current) {
+        if (retryLoad.current) requestAnimationFrame(() => headingRef.current?.focus());
+        retryLoad.current = false;
+        setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
+    mounted.current = true;
     void Promise.resolve().then(load);
     // Refresh on return to the tab and across midnight/release-time boundaries.
     const onFocus = () => { if (!submitting.current) void load(); };
     window.addEventListener("focus", onFocus);
     const timer = window.setInterval(onFocus, 60000);
-    return () => { window.removeEventListener("focus", onFocus); window.clearInterval(timer); };
+    return () => { mounted.current = false; window.removeEventListener("focus", onFocus); window.clearInterval(timer); };
   }, [load]);
 
   useEffect(() => () => {
@@ -109,13 +120,20 @@ export function PlayerDailyJourney() {
     if (fileInput.current) fileInput.current.value = "";
   }
 
+  function retryJourneyLoad() {
+    if (retryLoad.current) return;
+    retryLoad.current = true;
+    setLoading(true);
+    void load();
+  }
+
   if (loading) return <section className={styles.panel} aria-busy="true">Carregando sua jornada diária...</section>;
-  if (!current) return error ? <section className={styles.panel}><p role="alert">{error}</p><button type="button" onClick={() => void load()}>Tentar novamente</button></section> : null;
+  if (!current) return error ? <section className={styles.panel}><p role="alert">{error}</p><button type="button" aria-disabled={loading} onClick={retryJourneyLoad}>{loading ? "Carregando jornada..." : "Tentar novamente"}</button></section> : null;
 
   return (
     <section className={styles.panel} aria-label="Jornada diária">
       <div className={styles.heading}>
-        <div><span className={styles.eyebrow}><Flag size={16} aria-hidden="true" /> Minha jornada</span><h2>{current.journey_name}</h2><p>{current.group_name}</p></div>
+        <div><span className={styles.eyebrow}><Flag size={16} aria-hidden="true" /> Minha jornada</span><h2 ref={headingRef} tabIndex={-1}>{current.journey_name}</h2><p>{current.group_name}</p></div>
         <div className={styles.score}><Trophy size={24} aria-hidden="true" /><div><strong>{current.points}</strong><span> pontos de Jornada</span></div></div>
       </div>
       <div className={styles.journeyProgress}><div><span>Seu caminho até aqui</span><strong>{current.played_days}/{current.total_days} dias com participação</strong></div><progress value={current.played_days} max={Math.max(current.total_days, 1)} aria-label="Dias com participação na jornada" /></div>

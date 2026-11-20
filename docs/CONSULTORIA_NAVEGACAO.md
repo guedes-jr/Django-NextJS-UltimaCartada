@@ -1,15 +1,15 @@
 # Mapa de navegação da consultoria
 
-Inspeção e testes locais em 13/11/2026. Este mapa registra o código do repositório, sem afirmar quais URLs foram divulgadas em campanhas externas. A aprovação editorial e a publicação continuam no plano.
+Inspeção e testes locais atualizados em 20/11/2026. Este mapa registra o código do repositório, sem afirmar quais URLs foram divulgadas em campanhas externas. A aprovação editorial e a publicação continuam no plano.
 
 ## Rotas e compatibilidade
 
 | URL | Chave desligada (padrão) | ENABLE_CONSULTORIA_SITE=true |
 | --- | --- | --- |
-| `/` | Home legada | Magaly Abreu, mentoria principal e game incluído |
-| `/public/ultima-cartada` | Página existente | Mentoria A Última Cartada |
-| `/public/cartada-viva` | 308 para `/public/ultima-cartada` | Página informativa própria do game (200) |
-| `/public/consultoria` | Página existente | 308 para `/public/ultima-cartada` |
+| `/` | Home pública com redação da primeira etapa | Magaly Abreu, mentoria principal e game incluído |
+| `/public/ultima-cartada` | Mentoria A Última Cartada | Mentoria A Última Cartada |
+| `/public/cartada-viva` | Página informativa própria do game (200) | Página informativa própria do game (200) |
+| `/public/consultoria` | 308 para `/public/ultima-cartada` | 308 para `/public/ultima-cartada` |
 | `/public/herbilife` | Página comercial existente | Apresentação comercial separada, mesma grafia de URL |
 | `/login` | Acesso existente | Mesmo acesso, novo tema |
 | `/terms`, `/privacy` | Documentos existentes | Mesmas rotas e documentos, tema e marca Magaly na apresentação |
@@ -18,7 +18,7 @@ Inspeção e testes locais em 13/11/2026. Este mapa registra o código do reposi
 
 A chave ENABLE_CONSULTORIA_PREVIEW permite a prévia em ambiente apropriado, independentemente da ativação pública. A prévia usa noindex e links entre suas próprias propostas; login/termos/privacidade mantêm URLs reais. Não é área autenticada de demonstração.
 
-Os dois redirecionamentos terminam em uma página 200 e não formam ciclo em nenhum modo. APIs `/api/v1/`, Django Admin `/django-admin/` e admin Next `/admin/...` não mudaram nem foram requisitados pelo smoke público.
+O redirecionamento legado de consultoria termina na mentoria (200) e não forma ciclo em nenhum modo. APIs `/api/v1/`, Django Admin `/django-admin/` e admin Next `/admin/...` não mudaram nem foram requisitados pelo smoke público.
 
 ## Botões e âncoras da apresentação nova
 
@@ -47,6 +47,6 @@ PlayerLayout apresenta, conforme papel/produto, dashboard, game, desempenho, com
 
 ## Evidência e limites
 
-`scripts/check_consultoria_routes.py`: 24 respostas no legado, 25 na apresentação atualizada e 12 na prévia. A execução pública atualizada de 14/11/2026 registrou 83 ocorrências de links internos/fragmentos; a prévia registrou 110 após o link de ampliação (contagens incluem links repetidos em header/rodapé). Destinos externos não são acessados; fragmentos são conferidos contra IDs dos documentos consultados. O modo legado preserva os contratos de status/redirecionamento, sem validar todos os links editoriais antigos.
+`scripts/check_consultoria_routes.py`: 25 respostas no modo público padrão após a integração do game e do redirecionamento de consultoria. Destinos externos não são acessados; fragmentos são conferidos contra IDs dos documentos consultados. O smoke não substitui a revisão editorial, visual ou em aparelhos reais.
 
 Inspeção visual novamente indisponível pelo navegador integrado. Contato, teclado, celular e fluxo autenticado real continuam no roteiro de homologação em [CONSULTORIA_PREVIEW.md](CONSULTORIA_PREVIEW.md). Resultados registrados em [PROJECT_AUDIT.md](PROJECT_AUDIT.md).

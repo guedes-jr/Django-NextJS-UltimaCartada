@@ -10,8 +10,8 @@ export function ActionLink({ href, children, secondary = false, external = false
   return <Link className={secondary ? styles.secondaryButton : styles.primaryButton} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}<ArrowUpRight size={18} aria-hidden="true" /></Link>;
 }
 
-export function Hero({ eyebrow, title, description, children, image = "/landing/professional/acauamedia-130.jpg", alt = "Retrato profissional de Magaly Abreu", caption = "Magaly Abreu · Psicóloga e Mentora" }: {
-  eyebrow: string; title: ReactNode; description: string; children: ReactNode; image?: string; alt?: string; caption?: string;
+export function Hero({ eyebrow, title, description, children, image = "/landing/professional/acauamedia-130.jpg", alt = "Retrato profissional de Magaly Abreu", caption = "Magaly Abreu · Psicóloga e Mentora", footnote = "Um caminho com espaço para a vida real." }: {
+  eyebrow: string; title: ReactNode; description: string; children: ReactNode; image?: string; alt?: string; caption?: string; footnote?: string;
 }) {
   return <section className={styles.hero}>
     <div className={styles.heroCopy}>
@@ -19,7 +19,7 @@ export function Hero({ eyebrow, title, description, children, image = "/landing/
       <h1>{title}</h1>
       <p className={styles.heroDescription}>{description}</p>
       <div className={styles.actions}>{children}</div>
-      <p className={styles.heroFootnote}>Um caminho com espaço para a vida real.</p>
+      <p className={styles.heroFootnote}>{footnote}</p>
     </div>
     <figure className={styles.heroFigure}>
       <div className={styles.heroImage}><Image src={image} alt={alt} fill priority sizes="(max-width: 540px) calc(100vw - 32px), (max-width: 760px) 500px, (max-width: 1296px) 48vw, 540px" /></div>

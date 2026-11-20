@@ -6,9 +6,9 @@ import "./globals.css";
 export function generateMetadata(): Metadata {
   const enabled = isConsultoriaSiteEnabled();
   return {
-    title: enabled ? "Magaly Abreu | Psicóloga e Mentora" : "Cartada Viva | Jogo e mentoria",
+    title: enabled ? "Magaly Abreu | Psicóloga e Mentora" : "Magaly Abreu | A Última Cartada",
     description:
-      enabled ? "Mentoria A Última Cartada, de Magaly Abreu, com o Game Cartada Viva incluído." : "Jogo terapêutico de hábitos e mentoria em grupo.",
+      enabled ? "Mentoria A Última Cartada, de Magaly Abreu, com o Game Cartada Viva incluído." : "A Última Cartada, de Magaly Abreu: uma proposta para desenvolver hábitos, compreender escolhas e recuperar a confiança em si mesma.",
     manifest: "/manifest.webmanifest",
     icons: { icon: [{ url: "/cartada-viva-favicon.svg", type: "image/svg+xml" }] },
     appleWebApp: { capable: true, title: "Cartada Viva", statusBarStyle: "default" },

@@ -36,7 +36,10 @@ export default function PlayerHomePage() {
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
   const [isPlayModalOpen, setIsPlayModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadErrorMessage, setLoadErrorMessage] = useState("");
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [isLoadingCards, setIsLoadingCards] = useState(false);
+  const [cardsErrorMessage, setCardsErrorMessage] = useState("");
   const [isSubmittingPlay, setIsSubmittingPlay] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,6 +52,11 @@ export default function PlayerHomePage() {
   const [evidencePreviewUrl, setEvidencePreviewUrl] = useState("");
   const [isSubmittingEvidence, setIsSubmittingEvidence] = useState(false);
   const evidencePreviewUrlRef = useRef("");
+  const retryLoadRef = useRef(false);
+  const cardsRequestRef = useRef(0);
+  const submittingPlayRef = useRef(false);
+  const submittingEvidenceRef = useRef(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   async function loadData() {
     try {
@@ -80,8 +88,57 @@ export default function PlayerHomePage() {
   }
 
   useEffect(() => {
-    void Promise.resolve().then(loadData);
-  }, []);
+    let cancelled = false;
+
+    async function loadInitialData() {
+      try {
+        setIsLoading(true);
+        const [gamesData, roundsData, playsData, evidencesData] = await Promise.all([
+          getGames(),
+          getRounds(),
+          getPlays(),
+          getEvidences(),
+        ]);
+
+        if (cancelled) return;
+
+        setGames(gamesData);
+        setRounds(roundsData);
+        setPlays(playsData);
+        setEvidences(evidencesData);
+        setSelectedGameId((current) => current ?? gamesData[0]?.id ?? null);
+        setLoadErrorMessage("");
+
+        if (retryLoadRef.current) {
+          requestAnimationFrame(() => {
+            if (!cancelled) headingRef.current?.focus();
+          });
+        }
+      } catch {
+        if (!cancelled) {
+          setLoadErrorMessage(
+            "Não foi possível carregar seus jogos. Tente novamente em alguns instantes."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          retryLoadRef.current = false;
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void loadInitialData();
+    return () => {
+      cancelled = true;
+    };
+  }, [loadAttempt]);
+
+  function retryInitialLoad() {
+    if (retryLoadRef.current) return;
+    retryLoadRef.current = true;
+    setLoadAttempt((current) => current + 1);
+  }
 
   const selectedGame = games.find((game) => game.id === selectedGameId);
 
@@ -197,45 +254,59 @@ export default function PlayerHomePage() {
     return labels[status] ?? status;
   }
 
-  async function openPlayModal(round: Round) {
+  async function loadCards(round: Round) {
+    const request = ++cardsRequestRef.current;
     try {
-      setSelectedRound(round);
-      setSelectedCardId(null);
-      setCards([]);
-      setFeedbackMessage("");
-      setErrorMessage("");
-      setIsPlayModalOpen(true);
       setIsLoadingCards(true);
+      setCardsErrorMessage("");
 
       const cardsData = await getCards(
         round.selected_suit ? { suit: round.selected_suit } : undefined
       );
 
-      setCards(cardsData);
+      if (request === cardsRequestRef.current) setCards(cardsData);
     } catch {
-      setErrorMessage("Não foi possível carregar as cartas disponíveis.");
+      if (request === cardsRequestRef.current) {
+        setCardsErrorMessage("Não foi possível carregar as cartas disponíveis.");
+      }
     } finally {
-      setIsLoadingCards(false);
+      if (request === cardsRequestRef.current) setIsLoadingCards(false);
     }
   }
 
+  async function openPlayModal(round: Round) {
+    setSelectedRound(round);
+    setSelectedCardId(null);
+    setCards([]);
+    setCardsErrorMessage("");
+    setFeedbackMessage("");
+    setErrorMessage("");
+    setIsPlayModalOpen(true);
+    await loadCards(round);
+  }
+
   function closePlayModal() {
-    if (isSubmittingPlay) {
+    if (submittingPlayRef.current) {
       return;
     }
 
+    cardsRequestRef.current += 1;
     setIsPlayModalOpen(false);
     setSelectedRound(null);
     setSelectedCardId(null);
     setCards([]);
+    setCardsErrorMessage("");
   }
 
   async function handleSubmitPlay() {
+    if (submittingPlayRef.current) return;
+
     if (!selectedRound || !selectedCardId) {
       setErrorMessage("Selecione uma carta para jogar.");
       return;
     }
 
+    submittingPlayRef.current = true;
     try {
       setIsSubmittingPlay(true);
       setErrorMessage("");
@@ -258,6 +329,7 @@ export default function PlayerHomePage() {
         "Não foi possível jogar esta carta. Verifique se você já jogou nesta rodada ou se a carta respeita o naipe definido."
       );
     } finally {
+      submittingPlayRef.current = false;
       setIsSubmittingPlay(false);
     }
   }
@@ -273,7 +345,7 @@ export default function PlayerHomePage() {
   }
 
   function closeEvidenceModal() {
-    if (isSubmittingEvidence) {
+    if (submittingEvidenceRef.current) {
       return;
     }
 
@@ -339,7 +411,7 @@ export default function PlayerHomePage() {
   }
 
   async function handleSubmitEvidence() {
-    if (!selectedPlay) {
+    if (!selectedPlay || submittingEvidenceRef.current) {
       return;
     }
 
@@ -348,6 +420,7 @@ export default function PlayerHomePage() {
       return;
     }
 
+    submittingEvidenceRef.current = true;
     try {
       setIsSubmittingEvidence(true);
       setErrorMessage("");
@@ -370,6 +443,7 @@ export default function PlayerHomePage() {
     } catch (error) {
       setErrorMessage(getEvidenceSubmissionError(error));
     } finally {
+      submittingEvidenceRef.current = false;
       setIsSubmittingEvidence(false);
     }
   }
@@ -378,7 +452,7 @@ export default function PlayerHomePage() {
     <ProtectedRoute allowedRoles={["PLAYER"]}>
       <PlayerLayout>
         <div className={styles.header}>
-          <div><span className={styles.eyebrow}><Gamepad2 size={18} aria-hidden="true" /> Cartada Viva • Seu espaço de jogo</span><h1>Cada cartada é um novo passo.</h1><p>Escolha sua ação, viva a experiência e acompanhe o caminho que você está construindo.</p></div>
+          <div><span className={styles.eyebrow}><Gamepad2 size={18} aria-hidden="true" /> Cartada Viva • Seu espaço de jogo</span><h1 ref={headingRef} tabIndex={-1}>Cada cartada é um novo passo.</h1><p>Escolha sua ação, viva a experiência e acompanhe o caminho que você está construindo.</p></div>
           <div className={styles.heroEmblem} aria-hidden="true"><Sparkles /><span>♠</span><small>Uma escolha de cada vez</small></div>
         </div>
 
@@ -390,13 +464,23 @@ export default function PlayerHomePage() {
         <PlayerDailyJourney />
         <PlayerFlashChallenges />
 
-        {isLoading && <div role="status" className={styles.message}>Carregando jogos...</div>}
+        {isLoading && !loadErrorMessage && <div role="status" className={styles.message}>Carregando jogos...</div>}
 
-        {!isLoading && errorMessage && !isPlayModalOpen && (
-          <div role="alert" className={styles.error}>{errorMessage}</div>
+        {loadErrorMessage && !isPlayModalOpen && !isEvidenceModalOpen && (
+          <div role="alert" className={styles.error}>
+            <p>{loadErrorMessage}</p>
+            <button
+              className={styles.retryButton}
+              type="button"
+              aria-disabled={isLoading}
+              onClick={retryInitialLoad}
+            >
+              {isLoading ? "Carregando jogos..." : "Tentar novamente"}
+            </button>
+          </div>
         )}
 
-        {!isLoading && !errorMessage && games.length === 0 && (
+        {!isLoading && !loadErrorMessage && games.length === 0 && (
           <div role="status" className={styles.message}>
             Você ainda não tem um jogo vinculado ao seu grupo. A disponibilidade
             depende da matrícula na jornada, além do acesso ao game. Fale com a
@@ -404,7 +488,7 @@ export default function PlayerHomePage() {
           </div>
         )}
 
-        {!isLoading && !errorMessage && games.length > 0 && (
+        {!isLoading && !loadErrorMessage && games.length > 0 && (
           <>
             <section
               className={styles.filters}
@@ -721,7 +805,21 @@ export default function PlayerHomePage() {
               <div role="status" className={styles.message}>Carregando cartas...</div>
             )}
 
-            {!isLoadingCards && cards.length === 0 && (
+            {!isLoadingCards && cardsErrorMessage && (
+              <div role="alert" className={styles.error}>
+                <p>{cardsErrorMessage}</p>
+                <button
+                  className={styles.retryButton}
+                  type="button"
+                  aria-disabled={isLoadingCards}
+                  onClick={() => selectedRound && void loadCards(selectedRound)}
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            )}
+
+            {!isLoadingCards && !cardsErrorMessage && cards.length === 0 && (
               <div role="status" className={styles.message}>
                 Nenhuma carta disponível para esta rodada.
               </div>

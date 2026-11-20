@@ -9,14 +9,13 @@ import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./UltimaCartadaPage.module.css";
 
 const legacyMetadata: Metadata = {
-  title: "Última Cartada | Método e mentoria com Magaly Abreu",
-  description: "Conheça o Método Última Cartada, de Magaly Abreu, seus quatro pilares, as possibilidades de mentoria e a Cartada Viva, sua aplicação prática em forma de jogo.",
+  title: "A Última Cartada — Mentoria | Magaly Abreu",
+  description: "A Última Cartada, de Magaly Abreu: uma proposta para desenvolver hábitos, compreender escolhas e recuperar a confiança em si mesma.",
 };
 export function generateMetadata(): Metadata {
   return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("mentorship") : legacyMetadata;
 }
 
-const WHATSAPP_URL = "https://wa.me/5584999181607?text=Olá,%20Magaly!%20Quero%20conhecer%20a%20mentoria%20do%20Método%20Última%20Cartada.";
 function getCheckoutUrl(): string | null {
   try {
     const url = new URL(process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_URL ?? "");
@@ -47,14 +46,14 @@ const gameSteps = [
 export default function UltimaCartadaPage() {
   if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="mentorship" />;
   const checkoutUrl = getCheckoutUrl();
-  const participationUrl = checkoutUrl ?? WHATSAPP_URL;
-  const participationLabel = checkoutUrl ? "Ver condições na Hotmart" : "Quero conhecer a mentoria";
+  const participationUrl = checkoutUrl ?? "#condicoes";
+  const participationLabel = checkoutUrl ? "Ver condições na Hotmart" : "Conhecer as condições de participação";
   return (
     <main className={styles.page} id="top">
       <header className={styles.header}>
-        <Link className={styles.brand} href="/" aria-label="Última Cartada — voltar à página inicial">
+        <Link className={styles.brand} href="/" aria-label="A Última Cartada — voltar à página inicial">
           <span className={styles.brandSymbol} aria-hidden="true">♠</span>
-          <span className={styles.brandText}><strong>Última Cartada</strong><small>Metodologia de Magaly Abreu</small></span>
+          <span className={styles.brandText}><strong>A Última Cartada</strong><small>Mentoria de Magaly Abreu</small></span>
         </Link>
         <PublicNavigation id="metodo-navigation" label="Navegação da Última Cartada" className={styles.nav}>
           <a href="#ideia">A metodologia</a>
@@ -62,24 +61,24 @@ export default function UltimaCartadaPage() {
           <a href="#telas">Os pilares</a>
           <a href="#processo">Na prática</a>
           <a href="#jogo">O jogo</a>
-          <a href="#mentoria">A mentoria</a>
+          <a href="#condicoes">A mentoria</a>
         </PublicNavigation>
       </header>
 
       <section className={styles.hero} aria-labelledby="metodo-title">
         <div className={styles.heroCopy}>
-          <span className={styles.eyebrow}>Método Última Cartada</span>
+          <span className={styles.eyebrow}>A Última Cartada — Mentoria</span>
           <h1 id="metodo-title">Pequenas escolhas. Uma vida com mais intenção.</h1>
           <p>Uma metodologia para desenvolver hábitos, ampliar o autoconhecimento e cultivar autonomia nas escolhas do cotidiano.</p>
           <p>Corpo, nutrição, mentalidade e comunidade se encontram em um caminho de reflexão e prática, com respeito ao seu ritmo.</p>
           <div className={styles.actions}>
-            <a className={styles.primaryButton} href="#mentoria">Conhecer a mentoria <ChevronRight aria-hidden="true" /></a>
+            <a className={styles.primaryButton} href="#condicoes">Conhecer a mentoria <ChevronRight aria-hidden="true" /></a>
             <a className={styles.secondaryButton} href="#ideia">Explorar a metodologia</a>
           </div>
         </div>
         <div className={styles.heroScreen}>
-          <Image className={styles.founderImage} src="/landing/professional/acauamedia-130.jpg" alt="Magaly Abreu, criadora do Método Última Cartada, em retrato com fundo escuro" width={1200} height={1800} priority sizes="(max-width: 980px) 100vw, 50vw" />
-          <p className={styles.photoCaption}>Magaly Abreu • Criadora do Método Última Cartada</p>
+          <Image className={styles.founderImage} src="/landing/professional/acauamedia-130.jpg" alt="Magaly Abreu, criadora de A Última Cartada, em retrato com fundo escuro" width={1200} height={1800} priority sizes="(max-width: 980px) 100vw, 50vw" />
+          <p className={styles.photoCaption}>Magaly Abreu • Criadora de A Última Cartada</p>
         </div>
       </section>
 
@@ -87,7 +86,7 @@ export default function UltimaCartadaPage() {
         <div>
           <span className={styles.eyebrow}>01 / A metodologia</span>
           <h2 id="idea-title">Transformar intenção em uma prática possível.</h2>
-          <p className={styles.methodDescription}>O Método Última Cartada propõe aproximar o que você deseja para a sua vida das escolhas que consegue fazer hoje. Reflexão, pequenas ações e aprendizado se conectam nos quatro pilares.</p>
+          <p className={styles.methodDescription}>A Última Cartada aproxima o que você deseja para a sua vida das escolhas que consegue fazer hoje. Reflexão, pequenas ações e aprendizado se conectam nos quatro pilares.</p>
           <p className={styles.methodDescription}>Observar o contexto, experimentar e ajustar a prática ajudam a construir um caminho próprio. Retomar também faz parte desse processo.</p>
         </div>
         <div className={styles.principles}>{principles.map((principle) => <article key={principle}><CheckCircle2 aria-hidden="true" /><p>{principle}</p></article>)}</div>
@@ -142,9 +141,9 @@ export default function UltimaCartadaPage() {
         <div className={styles.sectionHeader}>
           <Gamepad2 aria-hidden="true" />
           <span className={styles.gameEyebrow}>04 / Uma aplicação prática da metodologia</span>
-          <h2 id="game-title">Cartada Viva: o método em forma de jogo.</h2>
-          <p className={styles.gameDescription}>A Cartada Viva é a experiência educacional e gamificada do Método Última Cartada. Cartas convidam a pequenas ações que incentivam boas práticas do cotidiano nos quatro pilares.</p>
-          <p className={styles.gameDescription}>A jornada é organizada em três jogos de 21 dias, combinando intenção, prática, registro e convivência em grupo. O jogo é uma forma de vivenciar a metodologia.</p>
+          <h2 id="game-title">Cartada Viva: a prática em forma de jogo.</h2>
+          <p className={styles.gameDescription}>A Cartada Viva é a experiência educacional e gamificada que aplica a metodologia de A Última Cartada. Cartas convidam a pequenas ações que incentivam boas práticas do cotidiano nos quatro pilares.</p>
+          <p className={styles.gameDescription}>A experiência combina intenção, prática, registro e convivência em grupo. A organização de cada jornada é apresentada nas condições de participação.</p>
         </div>
         <div className={styles.playerShowcase}>
           <div className={styles.playerCopy}><span className={styles.gameEyebrow}>Dentro da experiência</span><h3>Seu dia, sua cartada<br />e o seu percurso.</h3><p>A área do jogador reúne a jornada, a proposta do dia e os próximos passos. Você encontra espaço para registrar uma intenção e a experiência vivida.</p><p>O acompanhamento por pilar e o histórico ajudam a perceber o próprio progresso, preservando o que já foi construído.</p></div>
@@ -158,7 +157,7 @@ export default function UltimaCartadaPage() {
           </div>
         </div>
         <div className={styles.journeyTimeline} aria-label="Estrutura da jornada">
-          <div><strong>3 jogos</strong><span>Etapas de uma mesma jornada</span></div><div><strong>21 dias por jogo</strong><span>Espaço para prática e aprendizado</span></div><div><strong>4 pilares</strong><span>Um olhar integrado para a rotina</span></div>
+          <div><strong>Jornadas</strong><span>Prática e aprendizado no cotidiano</span></div><div><strong>Cartadas</strong><span>Convites para experimentar e registrar</span></div><div><strong>4 pilares</strong><span>Um olhar integrado para a rotina</span></div>
         </div>
         <div id="funciona" className={styles.featureGrid}>{gameSteps.map((step) => {
           const Icon = step.icon;
@@ -166,51 +165,54 @@ export default function UltimaCartadaPage() {
         })}</div>
         <div className={styles.actions}>
           <Link className={styles.gameButton} href="/login">Já participo: acessar o jogo <ChevronRight aria-hidden="true" /></Link>
-          <a className={styles.gameButton} href={WHATSAPP_URL} target="_blank" rel="noreferrer">Saber como participar</a>
+          <a className={styles.gameButton} href="#condicoes">Conhecer as condições de participação</a>
         </div>
       </section>
 
       <section className={styles.founder} id="magaly" aria-labelledby="founder-title">
-        <figure><Image src="/landing/professional/acauamedia-117.jpg" alt="Magaly Abreu em retrato sentada, com a mão próxima ao rosto" width={1800} height={1200} sizes="(max-width: 980px) 100vw, 45vw" /><figcaption>Magaly Abreu • Criadora do Método Última Cartada</figcaption></figure>
+        <figure><Image src="/landing/professional/acauamedia-117.jpg" alt="Magaly Abreu em retrato sentada, com a mão próxima ao rosto" width={1800} height={1200} sizes="(max-width: 980px) 100vw, 45vw" /><figcaption>Magaly Abreu • Criadora de A Última Cartada</figcaption></figure>
         <div>
-          <span className={styles.eyebrow}>Quem dá direção à proposta</span>
-          <h2 id="founder-title">Magaly Abreu.<br />Um olhar para a pessoa<br />e para o seu contexto.</h2>
-          <p>Criadora do Método Última Cartada, Magaly reúne na proposta o desenvolvimento de hábitos, o autoconhecimento e a autonomia nas escolhas cotidianas.</p>
-          <p>Na Cartada Viva, essa direção se traduz em propostas práticas e em uma experiência acompanhada por uma facilitadora. As cartas são um ponto de encontro entre reflexão, ação e aprendizado.</p>
-          <p>Uma conversa inicial ajuda a conhecer a metodologia, esclarecer a dinâmica das jornadas e entender as possibilidades de participação.</p>
-          <a className={styles.secondaryButton} href={WHATSAPP_URL} target="_blank" rel="noreferrer">Conversar com Magaly <ChevronRight aria-hidden="true" /></a>
+          <span className={styles.eyebrow}>Conheça Magaly Abreu</span>
+          <h2 id="founder-title">Uma trajetória de cuidado,<br />autonomia e consciência.</h2>
+          <p>Sou Magaly Abreu, psicóloga, com formação original em Fisioterapia e uma trajetória de mais de 30 anos no trabalho com saúde, bem-estar, orientação de pessoas e empreendedorismo.</p>
+          <p>Ao longo dessa caminhada, compreendi que cuidar do corpo envolve muito mais do que conhecer regras e recomendações. Pensamentos, emoções, hábitos, vínculos e a maneira como nos tratamos também influenciam nossas escolhas.</p>
+          <p>Depois de muitos anos de experiência profissional, decidi aprofundar esses conhecimentos por meio da Psicologia.</p>
+          <p>Hoje, meu propósito é compartilhar essa experiência para ajudar mulheres a desenvolverem hábitos possíveis, fortalecerem sua autonomia e construírem uma relação mais consciente consigo mesmas.</p>
+          <p>Acredito que cuidar de si não deve significar viver em guerra com o próprio corpo.</p>
+          <p><strong>Magaly Abreu · Psicóloga · CRP 17/5894</strong></p>
+          <a className={styles.secondaryButton} href="#condicoes">Conhecer as condições <ChevronRight aria-hidden="true" /></a>
         </div>
       </section>
 
-      <section className={styles.mentorship} id="mentoria" aria-labelledby="mentorship-title">
+      <section className={styles.mentorship} id="condicoes" aria-labelledby="mentorship-title">
         <div>
           <span className={styles.eyebrow}>Seu próximo passo</span>
-          <h2 id="mentorship-title">Conheça a mentoria<br />do Método Última Cartada.</h2>
-          <p>Você se reconheceu na proposta? Conheça as possibilidades de mentoria com Magaly e entenda como o método pode fazer parte do seu momento.</p>
-          <p>A Cartada Viva é uma aplicação prática da metodologia. Sua participação no jogo deve ser confirmada nas condições da modalidade escolhida.</p>
+          <h2 id="mentorship-title">Conheça a mentoria<br />A Última Cartada.</h2>
+          <p>Você se reconheceu na proposta? Conheça a mentoria com Magaly e entenda como essa experiência pode fazer parte do seu momento.</p>
+          <p>Quem participa da mentoria tem direito a participar do Game Cartada Viva, uma aplicação prática da metodologia.</p>
         </div>
         <div className={styles.participationCard}>
           <h3>Uma escolha com clareza.</h3>
           <p>Antes de decidir, conheça o formato dos encontros, o período de acompanhamento, os materiais, o investimento e as condições de participação.</p>
-          <a className={styles.primaryButton} href={participationUrl} target="_blank" rel="noopener noreferrer">{participationLabel} <ChevronRight aria-hidden="true" /></a>
-          <p className={styles.participationNote}>{checkoutUrl ? "Consulte a oferta e suas condições antes de concluir a compra na Hotmart." : "Converse pelo WhatsApp para esclarecer suas dúvidas e conhecer as possibilidades de participação."}</p>
+          <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
+          <p className={styles.participationNote}>{checkoutUrl ? "Consulte a oferta e suas condições antes de concluir a compra na Hotmart." : "As condições de participação são apresentadas antes de qualquer decisão."}</p>
         </div>
       </section>
 
       <section className={styles.questions} aria-labelledby="questions-title">
         <div className={styles.sectionHeader}><span className={styles.eyebrow}>Antes de começar</span><h2 id="questions-title">Para conhecer melhor<br />a proposta.</h2></div>
         <div className={styles.questionList}>
-          <details><summary>Qual é a relação entre Última Cartada e Cartada Viva?</summary><p>Última Cartada é a metodologia. Cartada Viva é sua aplicação educacional em forma de jogo, com propostas diárias e uma experiência em grupo.</p></details>
+          <details><summary>Qual é a relação entre A Última Cartada e Cartada Viva?</summary><p>A Última Cartada é a mentoria e o nome de sua metodologia. Cartada Viva é a experiência educacional em forma de jogo que aplica essa proposta no cotidiano.</p></details>
           <details><summary>Preciso manter uma rotina perfeita?</summary><p>A proposta considera a vida real e as possibilidades de cada pessoa. Observar, ajustar e retomar fazem parte do caminho.</p></details>
-          <details><summary>O jogo está incluído na mentoria?</summary><p>A Cartada Viva é uma aplicação do método. A inclusão do jogo, o acesso à plataforma e os materiais dependem da modalidade contratada. Confirme esses itens antes de participar.</p></details>
-          <details><summary>Como funcionam os encontros e o investimento?</summary><p>Consulte o formato, a agenda, o período de acompanhamento, o investimento e as condições da oferta com Magaly antes de tomar sua decisão.</p></details>
-          <details><summary>Como conhecer as possibilidades de participação?</summary><p>Converse com Magaly para entender a proposta, as jornadas e as condições de participação. Quem já participa acessa a plataforma pelo botão do jogo.</p></details>
+          <details><summary>O jogo está incluído na mentoria?</summary><p>Sim. Quem participa da mentoria tem direito a participar do Game Cartada Viva. Consulte as condições de acesso à plataforma e aos materiais antes de participar.</p></details>
+          <details><summary>Como funcionam os encontros e o investimento?</summary><p>As condições da oferta devem apresentar formato, agenda, período de acompanhamento e investimento antes da decisão. Esses detalhes ainda precisam de confirmação final.</p></details>
+          <details><summary>Como conhecer as possibilidades de participação?</summary><p>Consulte as condições da mentoria antes de decidir. Quem já participa acessa a plataforma pelo botão do jogo.</p></details>
         </div>
       </section>
 
       <section className={styles.finalCta} id="contato">
-        <div><h2>Qual cuidado você quer trazer para o seu cotidiano?</h2><p>Conheça a mentoria do Método Última Cartada e esclareça as condições para começar com uma escolha consciente.</p></div>
-        <a className={styles.primaryButton} href={participationUrl} target="_blank" rel="noopener noreferrer">{participationLabel} <ChevronRight aria-hidden="true" /></a>
+        <div><h2>Qual cuidado você quer trazer para o seu cotidiano?</h2><p>Conheça a mentoria A Última Cartada e as condições apresentadas antes da participação.</p></div>
+        <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
       </section>
       <footer className={styles.methodFooter}>
         <Link href="/">Voltar à página inicial</Link>

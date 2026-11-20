@@ -10,7 +10,7 @@ Arquivado em 12/10/2026 após comparação estática com o código. Estes arquiv
 
 Não reaplicar fases completas a partir destes documentos. Antes de recuperar um requisito, comparar com código, testes e backlog. Requisitos sem confirmação permanecem no histórico para triagem; arquivar não significa cancelar nem aprovar sua implementação.
 
-Os materiais originais em `../../../doc/` e a análise de aderência foram preservados por conterem requisitos editoriais e de produto ainda relevantes.
+Os materiais originais em `../../requisitos-originais/` e a análise de aderência foram preservados por conterem requisitos editoriais e de produto ainda relevantes.
 
 ## Encerramento de 13/11/2026
 

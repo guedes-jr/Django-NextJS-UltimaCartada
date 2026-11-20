@@ -1,6 +1,7 @@
 import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
 import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
 import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
+import { getHerbalifeContact } from "@/components/consultoria/content";
 import Image from "next/image";
 import Link from "next/link";
 import PublicNavigation from "@/components/landing/PublicNavigation";
@@ -20,15 +21,6 @@ export function generateMetadata(): Metadata {
 const OFFICIAL_URL = "https://www.herbalife.com/pt-br";
 const registrationCandidate = process.env.NEXT_PUBLIC_HERBALIFE_REGISTRATION_URL?.trim();
 const REGISTRATION_URL = registrationCandidate?.startsWith("https://") ? registrationCandidate : null;
-const WHATSAPP_NUMBER = "5584999181607";
-
-function whatsappUrl(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
-
-const NEW_CUSTOMER_URL = whatsappUrl("Olá, Magaly! Quero entender como fazer meu cadastro para comprar produtos Herbalife e verificar as condições disponíveis.");
-const EXISTING_CUSTOMER_URL = whatsappUrl("Olá, Magaly! Já tenho cadastro Herbalife e preciso de ajuda para acessar minha conta ou entender as condições de compra.");
-
 const steps = [
   {
     number: "01",
@@ -62,6 +54,8 @@ const faqs = [
 
 export default function HerbilifePage() {
   if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="herbalife" />;
+  const newCustomerUrl = getHerbalifeContact();
+  const existingCustomerUrl = getHerbalifeContact(true);
   return <main className={styles.page}>
     <header className={styles.header}>
       <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-mark.png" width={58} height={58} alt="" /><span>Cartada Viva</span></Link>
@@ -73,15 +67,15 @@ export default function HerbilifePage() {
         <span className={styles.eyebrow}>Guia de cadastro e compra</span>
         <h1 id="hero-title">Seu próximo passo, sem confundir cadastro com compra.</h1>
         <p>Veja como solicitar seu cadastro, acessar o canal indicado e conferir as condições disponíveis antes de adquirir produtos Herbalife.</p>
-        <div className={styles.actions}><a className={styles.primary} href="#passos">Ver o passo a passo</a><a className={styles.secondary} href={NEW_CUSTOMER_URL} target="_blank" rel="noopener noreferrer">Pedir ajuda à Magaly</a></div>
-        <p className={styles.disclosure}>Esta é uma página de orientação da consultora independente Magaly Abreu, não o site oficial da Herbalife. Cadastro, preços e condições são definidos nos canais responsáveis.</p>
+        <div className={styles.actions}><a className={styles.primary} href="#passos">Ver o passo a passo</a>{newCustomerUrl && <a className={styles.secondary} href={newCustomerUrl} target="_blank" rel="noopener noreferrer">Pedir orientação à Magaly</a>}</div>
+        <p className={styles.disclosure}>Esta é uma página de orientação da consultora independente Magaly Abreu, não o site oficial da Herbalife. Cadastro, preços e condições são definidos nos canais responsáveis. O contato comercial é exibido somente quando configurado e confirmado.</p>
       </div>
       <div className={styles.heroVisual}><Image src="/landing/professional/acauamedia-114.jpg" alt="Magaly Abreu" width={620} height={780} priority /><div className={styles.visualNote}><strong>Cadastro → acesso → pedido</strong><span>Confira cada etapa antes de prosseguir.</span></div></div>
     </section>
 
     <section className={styles.quickChoice} aria-label="Escolha seu ponto de partida">
-      <article><span>Começando agora</span><h2>Ainda não tenho cadastro</h2><p>Peça a orientação e o endereço de inscrição adequado antes de preencher seus dados.</p><a href={NEW_CUSTOMER_URL} target="_blank" rel="noopener noreferrer">Solicitar orientação <span aria-hidden="true">↗</span></a></article>
-      <article><span>Já tenho conta</span><h2>Preciso acessar ou comprar</h2><p>Use seu acesso existente. Se esqueceu a senha ou não sabe sua modalidade, peça ajuda.</p><a href={EXISTING_CUSTOMER_URL} target="_blank" rel="noopener noreferrer">Receber ajuda <span aria-hidden="true">↗</span></a></article>
+      <article><span>Começando agora</span><h2>Ainda não tenho cadastro</h2><p>Peça a orientação e o endereço de inscrição adequado antes de preencher seus dados.</p>{newCustomerUrl ? <a href={newCustomerUrl} target="_blank" rel="noopener noreferrer">Solicitar orientação <span aria-hidden="true">↗</span></a> : <a href="#passos">Ver o passo a passo</a>}</article>
+      <article><span>Já tenho conta</span><h2>Preciso acessar ou comprar</h2><p>Use seu acesso existente. Se esqueceu a senha ou não sabe sua modalidade, peça ajuda.</p>{existingCustomerUrl ? <a href={existingCustomerUrl} target="_blank" rel="noopener noreferrer">Receber orientação <span aria-hidden="true">↗</span></a> : <a href="#duvidas">Ver dúvidas frequentes</a>}</article>
     </section>
 
     <section className={styles.section} id="passos"><div className={styles.sectionIntro}><span className={styles.eyebrow}>Do início ao pedido</span><h2>O caminho em quatro passos</h2><p>As telas podem mudar conforme o canal de cadastro. Siga sempre as instruções exibidas no endereço confirmado.</p></div><ol className={styles.steps}>{steps.map(step => <li key={step.number}><span className={styles.stepNumber}>{step.number}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></li>)}</ol></section>
@@ -92,7 +86,7 @@ export default function HerbilifePage() {
 
     <section className={styles.section} id="duvidas"><div className={styles.sectionIntro}><span className={styles.eyebrow}>Perguntas frequentes</span><h2>Dúvidas antes de avançar?</h2></div><div className={styles.faq}>{faqs.map(item => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section>
 
-    <section className={styles.finalCta}><div><span className={styles.eyebrow}>Precisa de uma mão?</span><h2>Confirme o caminho certo para você.</h2><p>Magaly pode orientar sobre o cadastro e esclarecer dúvidas antes de você concluir uma compra.</p></div><a href={NEW_CUSTOMER_URL} target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp <span aria-hidden="true">↗</span></a></section>
+    <section className={styles.finalCta}><div><span className={styles.eyebrow}>Precisa de uma mão?</span><h2>Confirme o caminho certo para você.</h2><p>Use o canal oficial e confira as condições antes de concluir uma compra.</p></div>{newCustomerUrl ? <a href={newCustomerUrl} target="_blank" rel="noopener noreferrer">Pedir orientação <span aria-hidden="true">↗</span></a> : <a href="#passos">Ver o passo a passo</a>}</section>
 
     <footer className={styles.footer}><Link href="/">A Última Cartada</Link><span>Orientação de consultora independente; não é página oficial da Herbalife.</span><nav aria-label="Links legais"><Link href="/terms">Termos de Uso</Link><Link href="/privacy">Privacidade</Link></nav></footer>
   </main>;

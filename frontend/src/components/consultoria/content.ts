@@ -27,6 +27,7 @@ export const consultoriaPendingDetails = [
   { label: "WhatsApp oficial", value: getConsultoriaContact() ? "Configurado; validar destino na revisão final" : "A confirmar" },
   { label: "Instagram oficial", value: getConsultoriaInstagram()?.username ?? "A confirmar" },
   { label: "Contato comercial Herbalife", value: getHerbalifeContact() ? "Configurado; validar destino na revisão final" : "A confirmar" },
+  { label: "Instagram comercial Bistrô Slim", value: "A confirmar; não publicar destino sem confirmação" },
   { label: "Identificação e registro profissional", value: getConsultoriaProfessionalIdentity() ?? "A confirmar" },
 ] as const;
 

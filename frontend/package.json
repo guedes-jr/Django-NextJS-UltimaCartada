@@ -20,6 +20,7 @@
     "test:community-feed": "node --test scripts/community-feed.test.mjs",
     "test:performance-recovery": "node --test scripts/performance-recovery.test.mjs",
     "test:ranking-recovery": "node --test scripts/ranking-recovery.test.mjs",
+    "test:player-home-recovery": "node --test scripts/player-home-recovery.test.mjs",
     "test:change-password": "node --test scripts/change-password.test.mjs",
     "test:legal-recovery": "node --test scripts/legal-recovery.test.mjs"
   },

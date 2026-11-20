@@ -127,6 +127,11 @@ def verify(base_url, mode):
         if any(node.tag.rsplit("}", 1)[-1] in ("script", "image", "foreignObject") for node in root.iter()):
             raise AssertionError("Ilustração deve ser vetorial e autossuficiente")
 
+    def verify_local_anchors(path, document):
+        for href in document.links:
+            if href.startswith("#") and href[1:] not in document.ids:
+                raise AssertionError(f"{path}: âncora sem destino: {href}")
+
     previews = (
         "/preview/consultoria", "/preview/consultoria/mentoria", "/preview/consultoria/game",
         "/preview/consultoria/herbalife", "/preview/consultoria/guia-visual", "/preview/consultoria/revisao",
@@ -168,13 +173,23 @@ def verify(base_url, mode):
     if mode == "legacy":
         _, home = request("/", 200)
         documents["/"] = Document(home)
-        if "Consultoria" not in " ".join(Document(home).text):
-            raise AssertionError("A home legada deixou de ser a apresentação padrão")
-        request("/public/consultoria", 200)
-        request("/public/ultima-cartada", 200)
-        headers, _ = request("/public/cartada-viva", 308)
+        verify_local_anchors("/", documents["/"])
+        if "Você não precisa se culpar para voltar a cuidar de si." not in " ".join(documents["/"].text):
+            raise AssertionError("A home pública não contém o texto editorial aprovado")
+        headers, _ = request("/public/consultoria", 308)
         if urlsplit(headers.get("Location", "")).path != "/public/ultima-cartada":
-            raise AssertionError("O redirecionamento legado do game mudou")
+            raise AssertionError("Consultoria não redireciona à mentoria")
+        _, mentorship = request("/public/ultima-cartada", 200)
+        mentorship_document = Document(mentorship)
+        verify_local_anchors("/public/ultima-cartada", mentorship_document)
+        _, game = request("/public/cartada-viva", 200)
+        game_document = Document(game)
+        verify_local_anchors("/public/cartada-viva", game_document)
+        game_text = " ".join(game_document.text)
+        if game_document.h1_count != 1 or "sem precisar adquirir o game novamente" not in game_text:
+            raise AssertionError("A página informativa pública do game está incompleta")
+        if "5584999181607" in game or "/preview/" in " ".join(game_document.links):
+            raise AssertionError("A página pública do game expõe destino legado ou prévia")
     else:
         verify_illustration()
         paths = ("/", "/public/ultima-cartada", "/public/cartada-viva")
@@ -221,6 +236,8 @@ def verify(base_url, mode):
     for path in ("/login", "/terms", "/privacy", "/public/herbilife"):
         _, body = request(path, 200)
         document = Document(body)
+        if mode == "legacy" and path == "/public/herbilife":
+            verify_local_anchors(path, document)
         if mode == "updated":
             documents[path] = document
         text = " ".join(document.text)

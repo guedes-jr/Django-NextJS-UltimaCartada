@@ -17,7 +17,7 @@ Abra a URL local informada pelo Next.js e os caminhos:
 - `/preview/consultoria/mentoria`: Mentoria A Última Cartada.
 - `/preview/consultoria/game`: Game Cartada Viva.
 
-Por padrão, as páginas existentes `/`, `/public/consultoria`, `/public/ultima-cartada` e o redirecionamento de `/public/cartada-viva` são preservados. A nova versão está integrada às URLs definitivas atrás de uma configuração desativada, para homologação e futura ativação após aprovação.
+Por padrão, a nova apresentação estrutural segue condicionada à configuração desativada. Em 20/11/2026, o responsável autorizou substituir os textos legados pelo contexto da primeira etapa: `/`, `/public/consultoria` e `/public/ultima-cartada` receberam a redação atual sem alterar rotas, fluxos ou ativar a nova apresentação.
 
 ## O que está disponível
 
@@ -37,7 +37,7 @@ As variáveis estão documentadas em `frontend/.env.example`, sem segredos:
 - `ENABLE_CONSULTORIA_PREVIEW`: desenvolvimento permite a prévia. Builds de produção só a disponibilizam com o valor exato `true`; por padrão as três páginas respondem 404. Use apenas em homologação apropriada, mediante decisão do responsável; mudar exige rebuild. Essa chave e `noindex` não são autenticação nem devem proteger dados confidenciais.
 - `CONSULTORIA_WHATSAPP_NUMBER`: número oficial confirmado, somente dígitos com código de país. Sem número válido não há link externo de contato; a prévia informa que o canal aguarda confirmação. Com o valor configurado, o link abre a conversa com texto da mentoria ou do game, sem enviar mensagem automaticamente. Não copiar números da versão antiga sem confirmar.
 
-Não habilitar a prévia na produção pública nem substituir as páginas atuais sem a aprovação prevista no briefing e autorização expressa de publicação. Os metadados usam `noindex, nofollow`; não houve publicação nesta entrega.
+Não habilitar a prévia na produção pública nem publicar a nova apresentação estrutural sem a aprovação prevista no briefing e autorização expressa de publicação. A autorização de redação legada não equivale a deploy; os metadados de prévia usam `noindex, nofollow`; não houve publicação nesta entrega.
 
 ## Dados provisórios autorizados
 
@@ -729,3 +729,151 @@ Três testes novos em scripts/change-password.test.mjs cobrem cada validação, 
 Arquivos: ChangePasswordForm.tsx, scripts/change-password.test.mjs e plano/roteiro/auditoria. CONS-04.6b/12.3 permanecem abertos para integração e homologação visual. Sem servidor/banco iniciado, dados reais, nova dependência, alteração de processos, commit, push ou deploy. Suíte Django não repetida por ausência de mudança no servidor.
 
 Encerramento executado: sete testes de senha aprovados; lint sem erros/oito avisos legados; builds atualizado e padrão com prévia false aprovados; TypeScript aprovado após restauração de next-env ao caminho anterior. git diff --check e caminhos locais afetados conferidos.
+
+## Consultoria — recuperação da leitura inicial da home do game — 20/11/2026
+
+Recorte de CONS-04.6b. A home por rodadas usava o mesmo estado de erro para a leitura inicial e para ações em modais; uma falha inicial podia não oferecer recuperação e não havia proteção contra retorno após sair da tela. A leitura inicial agora possui estado próprio, nova tentativa com guarda síncrona e botão que permanece focável durante a consulta. Falha não é apresentada como ausência de jogos. Após sucesso da nova tentativa, o foco retorna ao título principal; cleanup do efeito descarta atualizações de sucesso, falha e finalização após desmontagem. O carregamento posterior às ações de jogar carta/enviar evidência não teve seu contrato alterado.
+
+Adicionado `frontend/scripts/player-home-recovery.test.mjs` e comando `test:player-home-recovery`: quatro cenários aprovados com o componente real transpilado, hooks/serviços simulados — falha versus ausência legítima com bloqueio de repetição/foco, sucesso ou falha após saída, erro de cartas separado de ausência no modal e confirmação repetida de jogada com uma única chamada. O teste não exercita DOM, API, browser, autorização, envio de jogada/evidência ou homologação visual.
+
+Arquivos de aplicação: `frontend/src/app/player/home/page.tsx` e `PlayerHomePage.module.css`; `frontend/package.json` recebeu apenas o comando do teste. Validações executadas: `npm run test:player-home-recovery` (quatro cenários aprovados), `npm run lint` (zero erros e oito avisos legados), `npx tsc --noEmit`, `npm run build` e `git diff --check`, todos aprovados. O build alterou temporariamente a referência gerada em `next-env.d.ts`, restaurada ao estado de desenvolvimento após a validação. Não houve alteração de backend, contratos, autorização, regra de pontuação, dados reais, dependências, commit, push ou deploy. CONS-04.6b e CONS-12.3 permanecem abertos para integração e homologação visual/autenticada.
+
+## Consultoria — recuperação dos desafios-relâmpago — 20/11/2026
+
+Continuidade de CONS-04.6b. A consulta inicial de desafios-relâmpago ocultava a área quando falhava e não descartava respostas depois da saída da participante. A leitura agora tem nova tentativa com guarda síncrona, mantém o botão focável enquanto carrega, devolve foco ao título após recuperar e ignora atualizações tardias após desmontagem. Recarregamento posterior ao envio continua usando o mesmo serviço e payload; não foram modificados ranking, pontuação, regras de participação, contratos ou autorização.
+
+Validações executadas: `npm run build` e `npm run lint` (zero erros/oito avisos legados) aprovados. `npx tsc --noEmit`, executado após o build, encontrou falha preexistente em `.next/types/validator.ts` relacionada aos tipos de rotas gerados (`Route`/`LayoutRoutes`); o build do Next concluiu sua própria etapa de TypeScript sem erros. A referência de desenvolvimento em `next-env.d.ts` foi restaurada após o build. Não houve API, dados reais, dependência, commit, push ou deploy. CONS-04.6b e CONS-12.3 continuam abertos para testes de integração e homologação visual/autenticada.
+
+## Consultoria — leitura segura da jornada diária — 20/11/2026
+
+Continuidade de CONS-04.6b. A jornada diária já oferecia nova tentativa, mas consultas concorrentes do foco da janela/temporizador poderiam atualizar estado fora de ordem e retornos posteriores à saída não eram descartados. A leitura passou a ter geração de requisição, guarda para repetição manual e foco no título da jornada após recuperação. Ações de intenção/evidência, seus payloads, validações, pontos, histórico e download não foram alterados.
+
+Validações executadas: `npm run lint` (zero erros/oito avisos legados), `npm run build` e `git diff --check` aprovados. O build concluiu a etapa TypeScript do Next sem erros; `next-env.d.ts` foi restaurado à referência de desenvolvimento depois da geração. Sem API, backend, dados reais, dependências, commit, push ou deploy. CONS-04.6b e CONS-12.3 permanecem abertos para integração e homologação visual/autenticada.
+
+## Consultoria — recuperação de cartas no modal de jogada — 20/11/2026
+
+Continuidade de CONS-04.6b. A falha ao consultar cartas no modal era apresentada junto da ausência legítima de cartas. O carregamento agora tem estado de erro próprio, nova tentativa sem fechar o modal e contador de requisição que descarta retorno após fechamento ou tentativa posterior. Não foram alterados seleção, regras de naipe, criação de jogada, evidências, pontos, API ou autorização.
+
+Validações executadas: `npm run lint` (zero erros/oito avisos legados), `npm run build` e `git diff --check` aprovados; a etapa TypeScript interna do build concluiu sem erros. A referência de desenvolvimento em `next-env.d.ts` foi restaurada após a geração. CONS-04.6b e CONS-12.3 seguem abertos para teste de integração/homologação visual.
+
+## Consultoria — bloqueio síncrono de jogada e evidência — 20/11/2026
+
+Continuidade de CONS-04.6b. Os botões já eram desabilitados pelo estado React, mas um segundo clique antes do re-render ainda poderia iniciar envio duplicado. Adicionados guardas síncronos independentes para jogar carta e enviar evidência, também usados ao fechar cada modal. As rotas, payloads, validações do servidor, pontuação e tratamento de erro foram preservados.
+
+Validações executadas: `npm run lint` (zero erros/oito avisos legados), `npm run build` e `git diff --check` aprovados; TypeScript interno do build sem erros. `next-env.d.ts` restaurado à referência de desenvolvimento após o build. Sem API, backend, dados reais, dependências, commit, push ou deploy.
+
+## Consultoria — validações reproduzíveis sem navegador — 20/11/2026
+
+O host de navegador não estava disponível para ampliar a homologação visual. Foram executados, sem iniciar aplicação nem alterar dados: `npm run test:consultoria-content`, `npm run check:contrast`, `npm run test:public-navigation`, `npm run test:player-home-recovery` e `git diff --check`, todos aprovados. A matriz de 16 pares sólidos passou; rosé/marfim e dourado/marfim permanecem restritos a uso decorativo. Esses resultados não substituem os ensaios de teclado, toque, foco real, DOM, aparelhos ou contraste sobre imagens previstos em CONS-04.4b/12.3.
+
+O smoke local `npm run test:local-preview` também foi executado e aprovado. Ele é uma verificação automatizada do ambiente/documentação de prévia, não uma inspeção HTTP servida ou homologação visual.
+
+Regressão adicional aprovada em 20/11/2026: `npm run test:pwa`, `npm run test:pwa-install`, `npm run test:legal-recovery`, `npm run test:support-recovery`, `npm run test:support-attachments` e `npm run test:change-password`. São harnesses de componente/worker e não substituem teste de instalação, navegador, dispositivo, leitor de tela, autorização ou API reais.
+
+Também aprovados em 20/11/2026: `npm run test:community-feed`, `npm run test:performance-recovery`, `npm run test:ranking-recovery` e `npm run test:ui-utils`, além de `git diff --check`. Esses testes cobrem estados e respostas simuladas das telas; CONS-04.6b/12.3 continuam abertos para integração e homologação visual/autenticada.
+
+Validação backend tentada em 20/11/2026: a configuração local continha `DEBUG=release`, valor inválido para o parser; usando apenas `DEBUG=false` no processo, `python manage.py check` passou sem problemas e `makemigrations --check --dry-run` não encontrou alterações. `python manage.py test apps.accounts` não iniciou porque o PostgreSQL local não estava acessível para criar o banco de teste (`django.db.utils.OperationalError`). Nenhum `.env`, dado ou configuração persistente foi alterado.
+
+## Consultoria — triagem do material “Primeira etapa” — 20/11/2026
+
+Lido `docs/consultoria/Primeira_etapa.md`, material fornecido pela consultoria. Ele reforça requisitos já previstos de apresentação das marcas, textos da home, depoimentos autorizados, separação Herbalife, revisão móvel/links/metadados e definição comercial posterior. Foram identificados e priorizados no backlog como CONS-P0.1 a CONS-P0.4: texto específico e identificação profissional proposta para a prévia; exclusão de Magaly Rica e tratamento de Bistrô Slim como Instagram comercial sem site/destino inventado; identificação de consultoria independente Herbalife e separação entre compra/distribuição; inventário das menções conflitantes sobre duração/inclusão do game. O material não confirma preço, duração, encontros, elegibilidade, checkout, Instagram/WhatsApp reais, ativos visuais ou autorização de publicação; esses bloqueios permanecem ativos.
+
+Implementação da prioridade P0: a home condicionada à chave da consultoria recebeu hero, CTA, frase secundária e apresentação profissional conforme o material; a página Herbalife passou a explicitar consultoria independente e a diferença entre cadastro para compra e oportunidade de distribuição. Magaly Rica não aparece no código inspecionado; Bistrô Slim foi registrado somente como destino comercial pendente no painel de revisão, sem URL ou navegação criada. Criado `docs/consultoria/MENCOES_DURACAO_E_GAME.md` com o inventário revisável de duração/inclusão. Validações executadas: `npm run test:consultoria-content`, `npm run lint` (zero erros/oito avisos legados) e `npm run build`, aprovados. A geração do build alterou temporariamente `next-env.d.ts`, restaurado ao caminho de desenvolvimento. Não houve publicação, alteração de API, dados, dependências, commit, push ou deploy.
+
+O inventário foi detalhado com os locais exatos da divergência: a home legada anunciava bônus de 21 dias, enquanto a página legada da mentoria descrevia três jogos de 21 dias; a apresentação condicionada à chave mantém duração como “A confirmar”.
+
+## Consultoria — substituição de redação pública legada — 20/11/2026
+
+Após autorização expressa do responsável, `/`, `/public/consultoria` e `/public/ultima-cartada` tiveram a redação legada atualizada para a primeira etapa. O hero público passa a usar o título, subtítulo, CTA e frase secundária fornecidos; foram removidas promessas de seis meses, bônus e jornadas de 21 dias, além dos trechos editoriais substituídos pela consultoria. A página da mentoria agora informa o direito de participantes da mentoria ao Game Cartada Viva, sem generalizá-lo para outras modalidades. Metadados e manifesto também deixaram de usar “jogo terapêutico”.
+
+Não foram definidos nem publicados duração, preço, encontros, inscrição, checkout, WhatsApp/Instagram ou acesso independente ao game. Validações executadas: busca estática das expressões substituídas nas superfícies públicas, `npm run lint` (zero erros; oito avisos existentes de `<img>`), `npm run build` (TypeScript interno aprovado) e `git diff --check`. O build alterou temporariamente `frontend/next-env.d.ts`; o arquivo foi restaurado à referência de desenvolvimento. Não houve deploy, commit, push, dados reais, mudança de backend ou alteração de contrato.
+
+## Consultoria — destinos públicos não confirmados — 20/11/2026
+
+As rotas legadas ainda continham o WhatsApp e o Instagram genéricos/antigos, apesar de `CONS-01.4` manter esses destinos pendentes. A home e a página de consultoria agora levam para as condições informativas da mentoria; a página da mentoria direciona ao mesmo conteúdo quando não há checkout configurado. Um checkout Hotmart só é exibido se `NEXT_PUBLIC_HOTMART_CHECKOUT_URL` já contiver URL HTTPS autorizada. Não foi configurado contato, checkout ou rede social novos.
+
+Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — otimização das imagens da home pública — 20/11/2026
+
+As quatro fotografias da home legada foram migradas de `<img>` para `next/image`, com dimensões intrínsecas verificadas, `sizes` responsivos e prioridade somente na imagem principal. Os seletores existentes do CSS Module continuam aplicáveis ao elemento renderizado; fontes, arquivos, textos alternativos, conteúdo e rotas não mudaram. A revisão visual em navegador/aparelhos continua pendente.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora desta home), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — rota pública informativa do Game — 20/11/2026
+
+`/public/cartada-viva` deixou de redirecionar para a mentoria e passou a apresentar a página informativa já implementada para o Game Cartada Viva. A rota mantém o vínculo explícito com a mentoria, não disponibiliza compra/acesso independente e preserva `/login` somente para participantes. Metadados próprios do game passaram a ser usados também no modo público padrão. O redirecionamento de `/public/consultoria` não foi alterado neste recorte.
+
+O verificador `scripts/check_consultoria_routes.py` foi atualizado para exigir a resposta 200 da rota do game, um único H1, texto de inclusão e ausência de destino legado/prévia. Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3002` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — redirecionamento da rota de consultoria — 20/11/2026
+
+`/public/consultoria` passou a redirecionar permanentemente para `/public/ultima-cartada` também no modo público padrão. A URL antiga foi preservada para links existentes, enquanto a mentoria tornou-se a apresentação única da oferta principal. A página informativa do Game permanece em `/public/cartada-viva`; não houve mudança em login, acesso ao game, checkout ou condições comerciais.
+
+O roteiro de smoke foi atualizado para exigir esse redirecionamento no modo padrão. Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3003` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — remoção de apresentação legada inacessível — 20/11/2026
+
+Após consolidar o redirecionamento de `/public/consultoria`, o arquivo da rota foi reduzido ao `permanentRedirect` para a mentoria. A rota, o status HTTP e o destino foram preservados; foram removidos somente componentes, textos e imports que já não podiam ser exibidos. Isso evita manter uma segunda apresentação editorial desatualizada no código.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — âncoras da mentoria pública — 20/11/2026
+
+A navegação e o CTA “Conhecer a mentoria” em `/public/ultima-cartada` ainda apontavam para `#mentoria`, ID removido quando a seção foi consolidada em `#condicoes`. Ambos passaram a usar o destino existente. O smoke público padrão agora confere todas as âncoras da página da mentoria contra IDs presentes no HTML.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3004` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — cobertura de âncoras públicas no smoke — 20/11/2026
+
+O roteiro de smoke passou a validar âncoras internas da home, mentoria, Game e página comercial Herbalife no modo público padrão. A regra compara cada fragmento local aos IDs presentes no HTML da própria página e interrompe a validação se houver destino ausente. A execução atual confirmou os quatro conjuntos de âncoras, além dos contratos existentes de status, rotas autenticadas e PWA.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3004` (25 respostas e contratos aprovados) e `git diff --check`. O servidor Next já iniciado localmente foi usado apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — inclusão do Game na home pública — 20/11/2026
+
+O card do Cartada Viva na home pública passou a informar que quem participa da Mentoria A Última Cartada tem direito de participar do Game. A redação preserva a natureza educacional da experiência e não acrescenta duração, preço, checkout, modalidade independente ou direito de acesso além do confirmado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — identidades da mentoria e do Game — 20/11/2026
+
+A página pública da mentoria passou a identificar a oferta como “A Última Cartada — Mentoria” e a experiência complementar como “Cartada Viva — Game” em título, cabeçalho, legendas, seção do game e FAQ. “Metodologia” permanece somente como explicação da abordagem vinculada à mentoria, sem ser apresentada como produto autônomo. Símbolos, regras de acesso, condições comerciais e conteúdo de jogo não foram alterados.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — sincronização do mapa público na documentação — 20/11/2026
+
+Atualizados `docs/CONSULTORIA_NAVEGACAO.md`, `PROJECT_CONTEXT.md`, `IMPLEMENTATION_PLAN.md`, `README.md` e `frontend/.env.example` para registrar o estado atual: game público informativo, consultoria redirecionada à mentoria e chave de apresentação ainda limitada às superfícies condicionadas. A documentação não declara aprovação visual, publicação ou confirmação de condições comerciais.
+
+Validação executada: `git diff --check` e conferência dos caminhos locais referidos. Não houve mudança de código executável, deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — navegação direta para a mentoria — 20/11/2026
+
+Os links remanescentes da home pública que ainda usavam a denominação “Consultoria” passaram a apontar diretamente para `/public/ultima-cartada`, com o rótulo “A Última Cartada”. A alteração evita navegação por redirecionamento e reforça a hierarquia de marca definida pela primeira etapa. Não foram modificados login, condições comerciais, contatos ou rotas autenticadas.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — revisão de linguagem e separação comercial na home — 20/11/2026
+
+A home pública legada ainda continha expressões de culpabilização, “sabotagem”, emagrecimento e resultado permanente. Elas foram substituídas por linguagem de contexto, escolhas possíveis, aprendizado e continuidade, coerente com a primeira etapa. A chamada da Herbalife passou a identificá-la como atividade comercial separada, sem sugerir compra ou uso de produto como parte exigida da mentoria ou do game.
+
+Validações executadas: busca estática nas superfícies públicas revisadas, `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — apresentação profissional na mentoria pública — 20/11/2026
+
+A seção de apresentação em `/public/ultima-cartada` passou a usar o texto fornecido em `docs/consultoria/Primeira_etapa.md`: formação original em Fisioterapia, trajetória profissional, aprofundamento em Psicologia, propósito e identificação “Magaly Abreu · Psicóloga · CRP 17/5894”. A fotografia profissional existente foi preservada. Não foram acrescentados títulos, especialidades, contatos ou condições comerciais além do material fornecido.
+
+Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — contato comercial Herbalife condicionado — 20/11/2026
+
+A página pública legada da Herbalife deixava o número comercial antigo fixado no código. Ela passou a reutilizar `getHerbalifeContact`, que só constrói link de WhatsApp quando `CONSULTORIA_HERBALIFE_WHATSAPP_NUMBER` estiver configurado com número válido e confirmado. Sem esse valor, os CTAs permanecem no passo a passo e nas dúvidas da própria página. A URL oficial da Herbalife e o link de cadastro HTTPS configurável foram preservados; compra, distribuição e mentoria continuam separados.
+
+Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — suspensão preventiva de depoimentos públicos — 20/11/2026
+
+Em atenção à primeira etapa da consultoria e enquanto `CONS-01.7` permanece pendente, os dois vídeos de depoimentos foram removidos da home pública legada, assim como o item de navegação correspondente. Os arquivos e o componente foram preservados no repositório; nenhum relato foi apagado, alterado ou atribuído a Magaly. A eventual reativação exige conferência de identidade, vínculo e autorização de divulgação.
+
+Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.

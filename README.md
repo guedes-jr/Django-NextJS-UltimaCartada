@@ -12,7 +12,7 @@ Prévia local integrada: com Django em `127.0.0.1:8000`, execute `cd frontend &&
 
 ## Visão do sistema
 
-Somente a página dedicada, agora em `/public/ultima-cartada` (com redirecionamento de `/public/cartada-viva`), foi reformulada para apresentar sua relação com o **Método Última Cartada**. A landing principal mantém a apresentação anterior. A captura da página dedicada abaixo é anterior à reformulação; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
+As páginas públicas apresentam Magaly Abreu, A Última Cartada e Cartada Viva conforme a primeira etapa da consultoria. `/public/ultima-cartada` apresenta a mentoria, `/public/cartada-viva` é a página informativa do game e `/public/consultoria` redireciona para a mentoria. As capturas abaixo são históricas e não substituem a revisão visual pendente; consulte [o contexto da mudança](docs/LANDING_POSITIONING.md).
 
 As imagens abaixo foram atualizadas após a adoção da identidade Cartada Viva em preto, dourado e branco e capturadas do frontend em execução. A tela “Cartada Viva” é uma **prévia pública** da proposta do jogo; áreas administrativas e de jogadores exigem autenticação e não estão representadas por dados fictícios nestas capturas.
 
@@ -54,7 +54,9 @@ frontend/
   src/components/    # layouts e componentes compartilhados
   src/services/      # acesso à API
   public/            # assets e service worker
-docs/                # guias e capturas de tela
+docs/                # guias, capturas de tela e documentação organizada
+  consultoria/        # materiais da consultoria
+  requisitos-originais/ # fontes históricas de produto
 ```
 
 O frontend consome a API por `frontend/src/lib/api.ts`. O Django Admin usa `/django-admin/` para não conflitar com o painel Next.js em `/admin/...`.

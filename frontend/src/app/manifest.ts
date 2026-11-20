@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Cartada Viva",
     short_name: "Cartada Viva",
-    description: enabled ? "Cartada Viva — Game de hábitos incluído na Mentoria A Última Cartada, de Magaly Abreu." : "Jogo terapêutico e mentoria em grupo.",
+    description: enabled ? "Cartada Viva — Game de hábitos incluído na Mentoria A Última Cartada, de Magaly Abreu." : "Cartada Viva — uma aplicação educacional da proposta A Última Cartada, de Magaly Abreu.",
     start_url: "/dashboard",
     scope: "/",
     display: "standalone",

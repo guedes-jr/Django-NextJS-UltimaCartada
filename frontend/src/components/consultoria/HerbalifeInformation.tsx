@@ -6,7 +6,7 @@ import styles from "./Consultoria.module.css";
 
 const officialUrl = "https://www.herbalife.com/pt-br";
 const steps = [
-  { title: "Confirme a modalidade", text: "Solicite orientação sobre o cadastro adequado e suas condições. Cadastro de cliente e de distribuidor são modalidades diferentes." },
+  { title: "Confirme a modalidade", text: "Solicite orientação sobre o cadastro adequado e suas condições. Cadastro para compra de produtos e oportunidade de distribuição são modalidades diferentes." },
   { title: "Confira o endereço", text: "Preencha seus dados apenas no canal de inscrição confirmado. Leia as condições antes de concluir e não compartilhe senhas ou códigos de acesso." },
   { title: "Acesse sua conta", text: "Se já tem cadastro, confira a conta existente e os meios de recuperação de acesso antes de criar outro registro." },
   { title: "Revise o pedido", text: "Antes de pagar, confira os produtos, preço final, desconto aplicável, frete, entrega, troca e cancelamento no canal responsável." },
@@ -20,7 +20,7 @@ export function HerbalifeInformation({ routes = previewRoutes }: { routes?: Cons
     <section className={`${styles.section} ${styles.commercialHero}`}>
       <p className={styles.eyebrow}>Atividade comercial separada</p>
       <h1>Herbalife.<br />Informação antes da compra.</h1>
-      <p>Orientações de Magaly Abreu sobre cadastro, acesso e compra de produtos Herbalife. Esta é uma atividade comercial distinta da Mentoria A Última Cartada e do Game Cartada Viva.</p>
+      <p>Orientações da consultora independente Magaly Abreu sobre cadastro, acesso e compra de produtos Herbalife. Esta é uma atividade comercial distinta da Mentoria A Última Cartada e do Game Cartada Viva.</p>
       <p>A compra de produtos não é apresentada neste site como requisito para conhecer a mentoria ou o game. As condições de cada atividade são tratadas separadamente.</p>
       <div className={styles.actions}><ActionLink href="#orientacoes">Entender o cadastro e a compra</ActionLink>{contact && <ActionLink secondary href={contact} external>Solicitar orientação comercial</ActionLink>}</div>
       <p className={styles.heroFootnote}>Página de orientação de consultora independente. Não é o site oficial da Herbalife.</p>

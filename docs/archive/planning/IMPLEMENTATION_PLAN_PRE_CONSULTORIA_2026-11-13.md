@@ -30,7 +30,7 @@ Referências operacionais: `docs/DEPLOYMENT.md`, `docs/PRODUCTION_CHECKLIST.md`,
 
 ## Evolução de produto a confirmar
 
-Origem: materiais em `doc/` e `doc/ANALISE_DE_ADERENCIA.md`. A auditoria de setembro contém ausências superadas (jornadas, notificações, consentimento e desafios já têm código); revalidar requisito por requisito antes de dimensionar implementação.
+Origem: materiais em `docs/requisitos-originais/` e `docs/requisitos-originais/ANALISE_DE_ADERENCIA.md`. A auditoria de setembro contém ausências superadas (jornadas, notificações, consentimento e desafios já têm código); revalidar requisito por requisito antes de dimensionar implementação.
 
 | ID | Recorte pendente | Critério de aceite / decisão necessária |
 | --- | --- | --- |

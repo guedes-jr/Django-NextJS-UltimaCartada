@@ -214,6 +214,24 @@
   font-weight: 800;
 }
 
+.retryButton {
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.retryButton:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
 .playModalContent {
   display: grid;
   gap: 18px;
@@ -703,4 +721,5 @@
 :global([data-consultoria-access-theme="true"]) .quickLinks a { background: var(--brand-ivory); color: var(--brand-wine); border-color: var(--color-border); min-height: 48px; font-size: 1rem; }
 :global([data-consultoria-access-theme="true"]) .quickLinks a:hover { background: var(--brand-nude); }
 :global([data-consultoria-access-theme="true"]) :is(.quickLinks a,.actionButton,.cardOption):focus-visible { outline-color: var(--brand-wine); }
+:global([data-consultoria-access-theme="true"]) .retryButton { background: var(--brand-wine); border-color: var(--brand-wine); color: var(--brand-ivory); font: 600 1rem var(--font-sans); }
 .playCardHeader strong,.roundSummary strong { overflow-wrap: anywhere; }
