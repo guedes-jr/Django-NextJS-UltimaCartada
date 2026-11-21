@@ -830,6 +830,12 @@ O roteiro de smoke passou a validar âncoras internas da home, mentoria, Game e 
 
 Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3004` (25 respostas e contratos aprovados) e `git diff --check`. O servidor Next já iniciado localmente foi usado apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
 
+## Consultoria — consolidação de critérios técnicos no plano — 20/11/2026
+
+Após revisão das entregas e dos critérios verificáveis, quatro itens foram concluídos no backlog: `CONS-06.2` (hero público), `CONS-07.4` (FAQ da mentoria), `CONS-08.1` (identidade e vínculo do Game) e `CONS-08.3` (duração/etapas sem promessa comercial). A home também passou a anunciar a marca principal com rótulo acessível “Magaly Abreu — início”. Esses encerramentos não incluem aceite visual, ativos originais, contatos, preços, duração confirmada ou autorização de publicação; tais dependências permanecem nos itens abertos correspondentes.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
 ## Consultoria — inclusão do Game na home pública — 20/11/2026
 
 O card do Cartada Viva na home pública passou a informar que quem participa da Mentoria A Última Cartada tem direito de participar do Game. A redação preserva a natureza educacional da experiência e não acrescenta duração, preço, checkout, modalidade independente ou direito de acesso além do confirmado.
@@ -877,3 +883,141 @@ Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `n
 Em atenção à primeira etapa da consultoria e enquanto `CONS-01.7` permanece pendente, os dois vídeos de depoimentos foram removidos da home pública legada, assim como o item de navegação correspondente. Os arquivos e o componente foram preservados no repositório; nenhum relato foi apagado, alterado ou atribuído a Magaly. A eventual reativação exige conferência de identidade, vínculo e autorização de divulgação.
 
 Validações executadas: `npm run lint` (zero erros; oito avisos existentes), `npm run build` (incluindo TypeScript interno) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — rótulo acessível da marca no rodapé público — 20/11/2026
+
+O rodapé compartilhado das páginas públicas da apresentação passou a anunciar o link da marca como “Magaly Abreu — início”, alinhado ao cabeçalho e à home. O smoke da rota do Game agora exige os dois rótulos — cabeçalho e rodapé — além de continuar validando seus destinos e âncoras. Não houve mudança de conteúdo, contato, acesso, dados ou contrato de rota.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3005` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — identificação profissional no rodapé do Game — 20/11/2026
+
+O layout público compartilhado passou a usar como padrão a identificação literal fornecida pela consultoria: “Magaly Abreu · Psicóloga · CRP 17/5894”. Assim, a página do Game não deixa de exibir o registro profissional quando a variável complementar estiver vazia. A variável permanece disponível somente para texto adicional aprovado, sem HTML. O item de confirmação formal da identificação completa continua aberto, bem como a revisão integral de todas as superfícies.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3006` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — metadados públicos consistentes — 20/11/2026
+
+A home, a mentoria e a página informativa da Herbalife passaram a usar o mesmo gerador de metadados já utilizado pelo Game, também quando a apresentação visual condicionada está desligada. Cada uma fornece título, descrição, canonical, Open Graph e Twitter coerentes com sua URL; o redirecionamento de `/public/consultoria` não foi alterado. O smoke agora exige canonical HTTPS e `og:site_name` “Magaly Abreu” nas quatro rotas públicas. Imagens de compartilhamento e ícones aprovados continuam pendentes.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3007` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — marca principal sem símbolo indevido — 20/11/2026
+
+A home pública usava o arquivo visual do Cartada Viva ao lado da marca “Magaly Abreu”, inclusive no rodapé. Como o monograma e a assinatura originais de Magaly não estão disponíveis no repositório, o ativo foi removido dessas duas posições e a marca textual permanece visível também em tela estreita. O símbolo do Game continua restrito às suas próprias apresentações. A aplicação do monograma/assinatura originais continua pendente do arquivo aprovado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3008` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — CTA e promessa da home pública — 20/11/2026
+
+O card do Cartada Viva na home agora leva diretamente à página informativa do Game, em vez de redirecionar a interessada para a mentoria. A legenda do CTA foi ajustada para identificar o destino. Também foi removida a promessa de “grandes transformações”: o texto agora fala em experimentar mudanças possíveis no cotidiano. Nenhuma condição comercial, acesso independente ou destino de contato foi criado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3009` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — apresentação profissional na home pública — 20/11/2026
+
+A home passou a incluir uma seção própria “Conheça Magaly Abreu”, com fotografia profissional existente, o texto fornecido na primeira etapa e a identificação “Magaly Abreu · Psicóloga · CRP 17/5894”. O único CTA leva às condições informativas da mentoria. Depoimentos continuam suspensos e nenhum contato externo, especialidade, condição comercial ou promessa foi acrescentado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3010` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — rodapé público sem suporte autenticado — 20/11/2026
+
+O link “Suporte” do rodapé da home apontava para `/player/support`, uma área da participante. Ele foi removido; o rodapé conserva “Contato” para a seção pública e não simula um canal de atendimento ainda não confirmado. O smoke passou a falhar se a home voltar a expor esse destino autenticado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo TypeScript interno), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3011` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — navegação para a apresentação profissional — 20/11/2026
+
+Os links “Sobre” do cabeçalho e rodapé da home foram renomeados para “Sobre Magaly” e passam a apontar à seção de apresentação profissional recém-inserida. O ID histórico `#sobre` da primeira dobra foi preservado para URLs externas já existentes. Nenhuma rota, contato ou conteúdo comercial foi alterado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada) e `git diff --check`, além de `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3012` (25 respostas e contratos aprovados). O `npx tsc --noEmit` isolado falha nos validadores gerados pelo Next 16 em `.next` e `.next-consultoria-preview` (`LayoutRoutes`/`"/"`), embora o build integrado passe; esse problema não foi alterado neste recorte. O servidor Next foi iniciado localmente apenas para a verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — CTA principal direto para a mentoria — 20/11/2026
+
+O botão principal “Conhecer A Última Cartada” da hero da home deixou de apenas rolar até os cards e passou a abrir diretamente `/public/ultima-cartada`, a página pública da mentoria. O CTA secundário de entrada permanece em `/login`; nenhuma condição, checkout ou contato foi criado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3013` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — cabeçalho da mentoria sem logo improvisada — 20/11/2026
+
+O cabeçalho de `/public/ultima-cartada` usava o naipe “♠” como marca visual. Como esse caractere não é a logo original aprovada da mentoria, foi removido. O nome “A Última Cartada” e a identificação “Mentoria de Magaly Abreu” continuam visíveis; os naipes usados nos pilares do conteúdo do Game não foram alterados. A aplicação da logo oficial aguarda o arquivo original.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3014` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — marca separada na página Herbalife — 20/11/2026
+
+O cabeçalho comercial usava o símbolo e o nome do Cartada Viva, enquanto o rodapé chamava a mentoria. Ambos passaram a identificar somente “Magaly Abreu”. A declaração de consultora independente, a distinção entre cadastro e compra e a página própria foram preservadas. Não foi incluído logo da Herbalife, contato novo, compra, desconto ou vínculo com a mentoria/game.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3016` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. A porta 3015 já estava ocupada e não foi alterada; a validação usou a porta 3016. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — acesso ao Game no rodapé da home — 20/11/2026
+
+O rodapé da home passou a incluir “Cartada Viva”, com destino direto para a página informativa do Game. A navegação reforça que ele é uma experiência relacionada à mentoria, sem criar inscrição, compra ou acesso independente.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3017` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — nomenclatura das ofertas na home — 20/11/2026
+
+O título da seção de ofertas da home agora identifica explicitamente “Mentoria A Última Cartada” e “Game Cartada Viva”. O texto alternativo da fotografia comercial foi substituído por “Magaly Abreu em retrato profissional”, removendo a denominação ambígua “consultoria”. Não houve mudança de imagem, contato, condição comercial ou acesso.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte) e `git diff --check`. O build completo foi aprovado no recorte imediatamente anterior; esta alteração foi apenas textual, sem mudanças de estrutura, tipos ou rotas. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — frases centrais na home pública — 20/11/2026
+
+A mensagem “Consciência para mudar. Hábitos para continuar.” passou a integrar o hero da home pública. A frase simbólica “Foi uma carta, não foi o jogo.” foi inserida no card do Cartada Viva, junto à explicação de sua inclusão na mentoria. Ambas já existiam na apresentação compartilhada; esta alteração alinha também a home legada, sem criar promessa, oferta ou condição comercial.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3018` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — contratos dos CTAs da home — 21/11/2026
+
+O smoke HTTP passou a extrair o texto visível de links e a exigir dois contratos da home: “Conhecer A Última Cartada” deve levar à página da mentoria e “Conhecer o Game Cartada Viva” à página informativa do Game. A regra complementa a verificação genérica de links e fragmentos, prevenindo trocas acidentais entre os destinos das duas experiências.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3020` (25 respostas e contratos aprovados) e `git diff --check`. O servidor Next foi iniciado localmente apenas para essa verificação. O build associado ao conteúdo e aos destinos dos CTAs foi aprovado no recorte anterior; este recorte adicionou somente a asserção ao smoke. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — textos alternativos neutros na home — 21/11/2026
+
+As duas fotografias da home que ainda tinham texto alternativo genérico ou indicavam “atendimento” passaram a usar “Magaly Abreu em retrato profissional”. A alteração melhora a descrição para leitoras de tela e evita sugerir uma modalidade de serviço que não está sendo apresentada naquela imagem. Arquivos, direitos de uso e revisão visual continuam pendentes.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte) e `git diff --check`. O build completo foi aprovado no recorte anterior; esta alteração foi apenas textual, sem mudanças de estrutura, tipos ou rotas. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — contrato de acessibilidade das imagens da home — 21/11/2026
+
+O smoke HTTP passou a inspecionar as imagens renderizadas na home. Ele exige texto alternativo não vazio em todas as imagens informativas e ao menos três ocorrências de “Magaly Abreu em retrato profissional”, protegendo as fotografias usadas no hero, na apresentação e no CTA final.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3021` (25 respostas e contratos aprovados). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — marca principal em metadados e páginas legais — 21/11/2026
+
+O fallback global de título/descrição e os Termos/Privacidade passaram a identificar Magaly Abreu também com a chave visual desligada. A chave permanece responsável apenas pelo tema, cor e apresentação do PWA; textos jurídicos, chamadas de API e regras de dados não foram alterados.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada) e `git diff --check`, além de `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3022` (25 respostas e contratos aprovados). Após o build, foi removida uma variável local sem uso, sem efeito na saída; o lint foi reexecutado e voltou aos quatro avisos legados. O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — padronização das identidades no frontend — 21/11/2026
+
+Concluída a padronização técnica das denominações “A Última Cartada — Mentoria” e “Cartada Viva — Game” em superfícies públicas, legais e autenticadas. A busca estática em `frontend/src` e `frontend/public` não encontrou “Jogo terapêutico e mentoria em grupo”, “Jogo terapêutico”, “Mentoria em grupo” ou “Magaly Rica”; identificou 21 referências às denominações oficiais. Esta evidência encerra `CONS-05.3`; logos/ativos e aprovações visuais permanecem em seus itens específicos.
+
+Validações executadas: busca estática e `git diff --check`. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — inclusão do Game nas superfícies do frontend — 21/11/2026
+
+Concluída a revisão técnica das menções de inclusão do Game. Páginas públicas, metadados, dashboard e portal autenticado identificam o Cartada Viva como incluído na Mentoria A Última Cartada. A busca estática não encontrou convite para compra adicional, inscrição autônoma ou acesso independente disponível; as referências localizadas são negativas/informativas ou tratam da Herbalife em área comercial separada. Esta evidência encerra `CONS-05.4`; qualquer modalidade futura permanece condicionada à fase 14.
+
+Validações executadas: busca estática e `git diff --check`. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — links internos públicos no modo padrão — 21/11/2026
+
+O smoke HTTP do modo padrão passou a cruzar os links internos da home, mentoria, Game, Herbalife, login, Termos e Privacidade. Antes, esse cruzamento completo ocorria apenas nos modos de prévia/atualizado; agora destinos e fragmentos públicos também precisam estar entre os documentos consultados no modo legado. Contato real, sessão e contas com produtos continuam fora desse recorte.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3022` (25 respostas/contratos aprovados e 76 links internos/fragmentos públicos conferidos) e `git diff --check`. As duas primeiras execuções revelaram lacunas no próprio roteiro — documentos públicos não registrados e assets estáticos tratados como páginas — corrigidas neste recorte antes da execução final aprovada. O servidor Next foi iniciado localmente apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — verificação de assets vinculados nas páginas públicas — 21/11/2026
+
+O smoke passou a requisitar uma vez cada asset local vinculado por link — como as imagens e ilustrações abertas em nova aba — exigindo resposta HTTP 200. Esses assets não são tratados como páginas para a verificação de âncoras, mas deixam de ficar fora da checagem de destino. Links externos continuam fora do alcance do smoke local.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3022` (28 respostas/contratos aprovados, incluindo três assets vinculados, e 76 links internos/fragmentos conferidos) e `git diff --check`. A primeira execução revelou que o roteiro tentava decodificar PNG como UTF-8; a leitura foi tornada tolerante a binários antes da execução final aprovada. O servidor Next foi iniciado localmente apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — limites das experiências na home pública — 21/11/2026
+
+O rodapé da home passou a informar que a Mentoria A Última Cartada e o Game Cartada Viva não substituem atendimento psicológico, nutricional ou médico. O aviso alinha a home às páginas próprias, sem afirmar diagnóstico, tratamento, especialidade ou condição comercial.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3023` (28 respostas/contratos aprovados e 76 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.

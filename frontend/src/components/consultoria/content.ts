@@ -9,6 +9,9 @@ export const consultoria = {
   inclusion: "Quem participa da Mentoria A Última Cartada tem direito de participar do Game Cartada Viva, sem precisar adquirir o game novamente.",
 } as const;
 
+/** Identificação literal fornecida pela consultoria para as superfícies públicas. */
+const confirmedProfessionalIdentity = "Magaly Abreu · Psicóloga · CRP 17/5894";
+
 /** Dados provisórios autorizados. Uma fonte para páginas, FAQ e painel de revisão. */
 export const consultoriaOfferDetails = {
   mentorshipDuration: process.env.CONSULTORIA_MENTORSHIP_DURATION?.trim() || "A confirmar",
@@ -105,9 +108,12 @@ export function getHerbalifeRegistrationUrl() {
   }
 }
 
-/** Texto literal confirmado pela titular; renderizado pelo React, sem HTML. */
+/**
+ * A variável permite complementar a identificação após nova aprovação, sem
+ * ocultar o registro profissional já fornecido para o rodapé público.
+ */
 export function getConsultoriaProfessionalIdentity() {
-  return process.env.CONSULTORIA_PROFESSIONAL_IDENTITY?.trim() || null;
+  return process.env.CONSULTORIA_PROFESSIONAL_IDENTITY?.trim() || confirmedProfessionalIdentity;
 }
 
 /** Recebe somente o nome de usuário, evitando destinos externos arbitrários. */

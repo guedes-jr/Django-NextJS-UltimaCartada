@@ -9,13 +9,8 @@ import type { Metadata } from "next";
 
 import styles from "./HerbilifePage.module.css";
 
-const legacyMetadata: Metadata = {
-  title: "Como se cadastrar e comprar | Herbalife com Magaly Abreu",
-  description: "Guia para solicitar orientação de cadastro, acessar o canal oficial e conferir as condições de compra de produtos Herbalife.",
-};
-
 export function generateMetadata(): Metadata {
-  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("herbalife") : legacyMetadata;
+  return getConsultoriaMetadata("herbalife");
 }
 
 const OFFICIAL_URL = "https://www.herbalife.com/pt-br";
@@ -58,7 +53,7 @@ export default function HerbilifePage() {
   const existingCustomerUrl = getHerbalifeContact(true);
   return <main className={styles.page}>
     <header className={styles.header}>
-      <Link className={styles.brand} href="/" aria-label="Cartada Viva — início"><Image src="/cartada-viva-mark.png" width={58} height={58} alt="" /><span>Cartada Viva</span></Link>
+      <Link className={styles.brand} href="/" aria-label="Magaly Abreu — início"><span>Magaly Abreu</span></Link>
       <PublicNavigation id="herbalife-navigation" label="Navegação desta página"><a href="#passos">Passo a passo</a><a href="#duvidas">Dúvidas</a><Link href="/">Voltar ao site</Link></PublicNavigation>
     </header>
 
@@ -88,6 +83,6 @@ export default function HerbilifePage() {
 
     <section className={styles.finalCta}><div><span className={styles.eyebrow}>Precisa de uma mão?</span><h2>Confirme o caminho certo para você.</h2><p>Use o canal oficial e confira as condições antes de concluir uma compra.</p></div>{newCustomerUrl ? <a href={newCustomerUrl} target="_blank" rel="noopener noreferrer">Pedir orientação <span aria-hidden="true">↗</span></a> : <a href="#passos">Ver o passo a passo</a>}</section>
 
-    <footer className={styles.footer}><Link href="/">A Última Cartada</Link><span>Orientação de consultora independente; não é página oficial da Herbalife.</span><nav aria-label="Links legais"><Link href="/terms">Termos de Uso</Link><Link href="/privacy">Privacidade</Link></nav></footer>
+    <footer className={styles.footer}><Link href="/">Magaly Abreu</Link><span>Orientação de consultora independente; não é página oficial da Herbalife.</span><nav aria-label="Links legais"><Link href="/terms">Termos de Uso</Link><Link href="/privacy">Privacidade</Link></nav></footer>
   </main>;
 }

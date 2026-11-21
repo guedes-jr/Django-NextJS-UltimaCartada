@@ -39,7 +39,7 @@ export function ConsultoriaShell({ children, routes = previewRoutes, preview = t
       <main id="conteudo" tabIndex={-1}>{children}</main>
       <footer className={styles.footer}>
         <div className={styles.footerTop}>
-          <Link className={styles.brand} href={routes.home}>
+          <Link className={styles.brand} href={routes.home} aria-label="Magaly Abreu — início">
             <strong>{consultoria.name}</strong><span>{consultoria.role}</span>
           </Link>
           <p>{consultoria.message}</p>

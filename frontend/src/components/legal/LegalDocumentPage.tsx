@@ -8,7 +8,7 @@ import { LegalDocument, LegalKind } from "@/types/legal";
 
 import styles from "./LegalDocumentPage.module.css";
 
-export function LegalDocumentPage({ kind, brandName = "A Última Cartada" }: { kind: LegalKind; brandName?: string }) {
+export function LegalDocumentPage({ kind, brandName = "Magaly Abreu" }: { kind: LegalKind; brandName?: string }) {
   const [document, setDocument] = useState<LegalDocument | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

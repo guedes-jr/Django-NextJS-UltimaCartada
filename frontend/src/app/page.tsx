@@ -18,14 +18,8 @@ import type { Metadata } from "next";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./page.module.css";
 
-const legacyMetadata: Metadata = {
-  title: "Magaly Abreu | A Última Cartada",
-  description:
-    "Uma proposta para mulheres cansadas de tantas tentativas de mudança, que desejam desenvolver hábitos saudáveis, compreender suas escolhas e recuperar a confiança em si mesmas.",
-};
-
 export function generateMetadata(): Metadata {
-  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("home") : legacyMetadata;
+  return getConsultoriaMetadata("home");
 }
 
 const attempts = [
@@ -65,7 +59,7 @@ const pillars = [
     icon: CalendarDays,
     title: "Rotina e hábitos",
     description:
-      "Pequenas ações diárias que geram grandes transformações ao longo do tempo.",
+      "Pequenas ações diárias para experimentar mudanças possíveis no cotidiano.",
   },
   {
     icon: Sparkles,
@@ -80,19 +74,12 @@ export default function HomePage() {
   return (
     <main className={styles.page} id="top">
       <header className={styles.header}>
-        <a className={styles.brand} href="#top" aria-label="Cartada Viva">
-          <Image
-            src="/cartada-viva-mark.png"
-            alt=""
-            width={56}
-            height={56}
-            priority
-          />
+        <a className={styles.brand} href="#top" aria-label="Magaly Abreu — início">
           <span className={styles.brandName}>Magaly Abreu</span>
         </a>
 
         <PublicNavigation id="landing-navigation" label="Navegação principal" className={styles.nav}>
-          <a href="#sobre">Sobre</a>
+          <a href="#magaly">Sobre Magaly</a>
           <Link href="/public/ultima-cartada">A Última Cartada</Link>
           <Link href="/public/cartada-viva">Cartada Viva</Link>
           <Link href="/public/herbilife">Herbalife</Link>
@@ -115,6 +102,7 @@ export default function HomePage() {
             que desejam desenvolver hábitos saudáveis, compreender suas escolhas
             e recuperar a confiança em si mesmas.
           </p>
+          <p className={styles.heroMessage}>Consciência para mudar. Hábitos para continuar.</p>
 
           <div className={styles.heroBenefits}>
             <article>
@@ -145,16 +133,16 @@ export default function HomePage() {
             </article>
           </div>
 
-          <a className={styles.primaryButton} href="#mentoria">
+          <Link className={styles.primaryButton} href="/public/ultima-cartada">
             Conhecer A Última Cartada
             <ChevronRight aria-hidden="true" />
-          </a>
+          </Link>
         </div>
 
         <div className={styles.heroVisual}>
           <Image
             src="/landing/professional/acauamedia-131.jpg"
-            alt="Magaly Abreu"
+            alt="Magaly Abreu em retrato profissional"
             width={1800}
             height={1200}
             priority
@@ -233,8 +221,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className={styles.about} id="magaly" aria-labelledby="magaly-title">
+        <Image
+          src="/landing/professional/acauamedia-117.jpg"
+          alt="Magaly Abreu em retrato profissional"
+          width={1800}
+          height={1200}
+          sizes="(max-width: 900px) 100vw, 45vw"
+        />
+        <div>
+          <span>Conheça Magaly Abreu</span>
+          <h2 id="magaly-title">Uma trajetória de cuidado, autonomia e consciência.</h2>
+          <p>Sou Magaly Abreu, psicóloga, com formação original em Fisioterapia e uma trajetória de mais de 30 anos no trabalho com saúde, bem-estar, orientação de pessoas e empreendedorismo.</p>
+          <p>Ao longo dessa caminhada, compreendi que cuidar do corpo envolve muito mais do que conhecer regras e recomendações. Pensamentos, emoções, hábitos, vínculos e a maneira como nos tratamos também influenciam nossas escolhas.</p>
+          <p>Depois de muitos anos de experiência profissional, decidi aprofundar esses conhecimentos por meio da Psicologia.</p>
+          <p>Hoje, meu propósito é compartilhar essa experiência para ajudar mulheres a desenvolverem hábitos possíveis, fortalecerem sua autonomia e construírem uma relação mais consciente consigo mesmas.</p>
+          <p>Acredito que cuidar de si não deve significar viver em guerra com o próprio corpo.</p>
+          <p className={styles.professionalIdentity}>Magaly Abreu · Psicóloga · CRP 17/5894</p>
+          <Link className={styles.secondaryButton} href="/public/ultima-cartada#condicoes">
+            Conhecer as condições de participação
+            <ChevronRight aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
       <section className={styles.programs} id="mentoria">
-        <h2>Conheça A Última Cartada e a Cartada Viva.</h2>
+        <h2>Conheça a Mentoria A Última Cartada e o Game Cartada Viva.</h2>
 
         <div className={styles.programGrid}>
           <article>
@@ -262,8 +274,9 @@ export default function HomePage() {
               participar do Game Cartada Viva, com cartadas, reflexões e
               pequenas ações no cotidiano.
             </strong>
-            <Link className={styles.programLink} href="/public/ultima-cartada">
-              Conhecer o método e o jogo
+            <span className={styles.gamePhrase}>Foi uma carta, não foi o jogo.</span>
+            <Link className={styles.programLink} href="/public/cartada-viva">
+              Conhecer o Game Cartada Viva
               <ChevronRight aria-hidden="true" />
             </Link>
           </article>
@@ -288,7 +301,7 @@ export default function HomePage() {
 
         <Image
           src="/landing/professional/acauamedia-114.jpg"
-          alt="Magaly Abreu em consultoria sobre bem-estar"
+          alt="Magaly Abreu em retrato profissional"
           width={1800}
           height={1200}
           sizes="(max-width: 900px) 100vw, 45vw"
@@ -298,7 +311,7 @@ export default function HomePage() {
       <section className={styles.finalCta} id="contato">
         <Image
           src="/landing/professional/acauamedia-135.jpg"
-          alt="Magaly Abreu em atendimento"
+          alt="Magaly Abreu em retrato profissional"
           width={1800}
           height={1200}
           sizes="(max-width: 900px) 100vw, 45vw"
@@ -331,25 +344,21 @@ export default function HomePage() {
       </section>
 
       <footer className={styles.footer}>
-        <a className={styles.brand} href="#top" aria-label="Cartada Viva">
-          <Image
-            src="/cartada-viva-mark.png"
-            alt="Cartada Viva"
-            width={220}
-            height={220}
-          />
+        <a className={styles.brand} href="#top" aria-label="Magaly Abreu — início">
+          <span className={styles.brandName}>Magaly Abreu</span>
         </a>
 
         <nav aria-label="Links do rodapé">
-          <a href="#sobre">Sobre</a>
+          <a href="#magaly">Sobre Magaly</a>
           <Link href="/public/ultima-cartada">A Última Cartada</Link>
+          <Link href="/public/cartada-viva">Cartada Viva</Link>
           <Link href="/public/herbilife">Herbalife</Link>
-          <Link href="/player/support">Suporte</Link>
           <Link href="/terms">Termos</Link>
           <Link href="/privacy">Privacidade</Link>
           <a href="#contato">Contato</a>
         </nav>
 
+        <p className={styles.footerNotice}>A Mentoria A Última Cartada e o Game Cartada Viva não substituem atendimento psicológico, nutricional ou médico.</p>
         <small>© 2026 Magaly Abreu. Todos os direitos reservados.</small>
       </footer>
     </main>

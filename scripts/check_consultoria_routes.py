@@ -29,6 +29,10 @@ class Document(HTMLParser):
         self.access_theme = False
         self.form_count = 0
         self.links = []
+        self.labeled_links = []
+        self.active_link = None
+        self.images = []
+        self.aria_labels = []
         self.ids = set()
         self.canonical = None
         self.meta = {}
@@ -50,20 +54,30 @@ class Document(HTMLParser):
             self.form_count += 1
         if attrs.get("id"):
             self.ids.add(attrs["id"])
+        if tag == "img":
+            self.images.append(attrs.get("alt"))
         if tag == "a":
             self.links.append(attrs.get("href", ""))
+            self.active_link = {"href": attrs.get("href", ""), "text": []}
+            if attrs.get("aria-label"):
+                self.aria_labels.append(attrs["aria-label"])
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonical = attrs.get("href")
         if tag == "meta":
             self.meta[attrs.get("name") or attrs.get("property")] = attrs.get("content", "")
 
     def handle_endtag(self, tag):
+        if tag == "a" and self.active_link is not None:
+            self.labeled_links.append((self.active_link["href"], " ".join("".join(self.active_link["text"]).split())))
+            self.active_link = None
         if tag == "title":
             self.in_title = False
         if tag in ("script", "style"):
             self.hidden_depth -= 1
 
     def handle_data(self, data):
+        if self.active_link is not None:
+            self.active_link["text"].append(data)
         if self.in_title:
             self.title += data
         if not self.hidden_depth:
@@ -74,6 +88,7 @@ def verify(base_url, mode):
     opener = build_opener(NoRedirect)
     checked = []
     documents = {}
+    checked_assets = set()
 
     def verify_login_contact(document):
         if "/#contato" not in document.links or "/player/support" in document.links:
@@ -81,12 +96,14 @@ def verify(base_url, mode):
         if "contato" not in documents["/"].ids:
             raise AssertionError("Ajuda do login aponta para seção pública inexistente")
 
-    def verify_links():
+    def verify_links(sources=None):
         # Somente páginas já consultadas; nenhum destino externo/API é requisitado.
         count = 0
         public_host = "magalyabreu.com.br"
         local_host = urlsplit(base_url).netloc
         for source, document in documents.items():
+            if sources is not None and source not in sources:
+                continue
             if mode == "preview" and not source.startswith("/preview/"):
                 continue
             for href in document.links:
@@ -94,6 +111,11 @@ def verify(base_url, mode):
                 if target.scheme not in ("http", "https") or target.netloc not in (local_host, public_host):
                     continue
                 path = target.path or "/"
+                if path.lower().endswith((".avif", ".gif", ".jpeg", ".jpg", ".m4v", ".mp4", ".png", ".svg", ".webp")):
+                    if path not in checked_assets:
+                        request(path, 200)
+                        checked_assets.add(path)
+                    continue
                 if path not in documents:
                     raise AssertionError(f"{source}: destino local não verificado: {href}")
                 if target.fragment and unquote(target.fragment) not in documents[path].ids:
@@ -109,7 +131,7 @@ def verify(base_url, mode):
         with response:
             status = response.code
             headers = response.headers
-            body = response.read().decode("utf-8")
+            body = response.read().decode("utf-8", errors="replace")
         if status != expected_status:
             raise AssertionError(f"{path}: HTTP {status}, esperado {expected_status}")
         checked.append((path, status))
@@ -131,6 +153,17 @@ def verify(base_url, mode):
         for href in document.links:
             if href.startswith("#") and href[1:] not in document.ids:
                 raise AssertionError(f"{path}: âncora sem destino: {href}")
+
+    def verify_public_metadata(path, document):
+        canonical = urlsplit(document.canonical or "")
+        if (canonical.scheme, canonical.netloc, canonical.path or "/", canonical.query, canonical.fragment) != ("https", "magalyabreu.com.br", path, "", ""):
+            raise AssertionError(f"{path}: canonical incorreto: {document.canonical}")
+        if document.meta.get("og:site_name") != "Magaly Abreu":
+            raise AssertionError(f"{path}: marca incorreta nos metadados")
+
+    def verify_labeled_link(document, label, href):
+        if (href, label) not in document.labeled_links:
+            raise AssertionError(f"CTA ausente ou com destino incorreto: {label} → {href}")
 
     previews = (
         "/preview/consultoria", "/preview/consultoria/mentoria", "/preview/consultoria/game",
@@ -174,20 +207,42 @@ def verify(base_url, mode):
         _, home = request("/", 200)
         documents["/"] = Document(home)
         verify_local_anchors("/", documents["/"])
-        if "Você não precisa se culpar para voltar a cuidar de si." not in " ".join(documents["/"].text):
+        verify_public_metadata("/", documents["/"])
+        if "/player/support" in documents["/"].links:
+            raise AssertionError("A home pública não deve encaminhar visitantes para o suporte autenticado")
+        home_text = " ".join(documents["/"].text)
+        if "Você não precisa se culpar para voltar a cuidar de si." not in home_text:
             raise AssertionError("A home pública não contém o texto editorial aprovado")
+        if "Consciência para mudar. Hábitos para continuar." not in home_text or "Foi uma carta, não foi o jogo." not in home_text:
+            raise AssertionError("A home pública não contém as frases centrais da consultoria")
+        if "A Mentoria A Última Cartada e o Game Cartada Viva não substituem atendimento psicológico, nutricional ou médico." not in home_text:
+            raise AssertionError("A home pública não apresenta os limites das experiências")
+        if not documents["/"].images or any(not alt for alt in documents["/"].images):
+            raise AssertionError("A home pública contém imagem informativa sem texto alternativo")
+        if documents["/"].images.count("Magaly Abreu em retrato profissional") < 3:
+            raise AssertionError("A home pública não mantém a descrição profissional das fotografias de Magaly")
+        verify_labeled_link(documents["/"], "Conhecer A Última Cartada", "/public/ultima-cartada")
+        verify_labeled_link(documents["/"], "Conhecer o Game Cartada Viva", "/public/cartada-viva")
         headers, _ = request("/public/consultoria", 308)
         if urlsplit(headers.get("Location", "")).path != "/public/ultima-cartada":
             raise AssertionError("Consultoria não redireciona à mentoria")
         _, mentorship = request("/public/ultima-cartada", 200)
         mentorship_document = Document(mentorship)
+        documents["/public/ultima-cartada"] = mentorship_document
         verify_local_anchors("/public/ultima-cartada", mentorship_document)
+        verify_public_metadata("/public/ultima-cartada", mentorship_document)
         _, game = request("/public/cartada-viva", 200)
         game_document = Document(game)
+        documents["/public/cartada-viva"] = game_document
         verify_local_anchors("/public/cartada-viva", game_document)
+        verify_public_metadata("/public/cartada-viva", game_document)
         game_text = " ".join(game_document.text)
         if game_document.h1_count != 1 or "sem precisar adquirir o game novamente" not in game_text:
             raise AssertionError("A página informativa pública do game está incompleta")
+        if game_document.aria_labels.count("Magaly Abreu — início") < 2:
+            raise AssertionError("A marca do Game precisa de rótulos acessíveis no cabeçalho e rodapé")
+        if "Magaly Abreu · Psicóloga · CRP 17/5894" not in game_text:
+            raise AssertionError("O rodapé do Game não exibe a identificação profissional fornecida")
         if "5584999181607" in game or "/preview/" in " ".join(game_document.links):
             raise AssertionError("A página pública do game expõe destino legado ou prévia")
     else:
@@ -200,11 +255,7 @@ def verify(base_url, mode):
             text = " ".join(document.text)
             if document.h1_count != 1:
                 raise AssertionError(f"{path}: quantidade de H1 inválida")
-            canonical = urlsplit(document.canonical or "")
-            if (canonical.scheme, canonical.netloc, canonical.path or "/", canonical.query, canonical.fragment) != ("https", "magalyabreu.com.br", path, "", ""):
-                raise AssertionError(f"{path}: canonical incorreto: {document.canonical}")
-            if document.meta.get("og:site_name") != "Magaly Abreu":
-                raise AssertionError(f"{path}: marca incorreta nos metadados")
+            verify_public_metadata(path, document)
             if path == "/public/cartada-viva":
                 for key in ("description", "og:description", "twitter:description"):
                     if "O percurso depende da jornada vinculada ao seu grupo" not in document.meta.get(key, ""):
@@ -236,19 +287,20 @@ def verify(base_url, mode):
     for path in ("/login", "/terms", "/privacy", "/public/herbilife"):
         _, body = request(path, 200)
         document = Document(body)
+        documents[path] = document
         if mode == "legacy" and path == "/public/herbilife":
             verify_local_anchors(path, document)
-        if mode == "updated":
-            documents[path] = document
+            verify_public_metadata(path, document)
+            if "Magaly Abreu — início" not in document.aria_labels or "/cartada-viva-mark.png" in body:
+                raise AssertionError("Página comercial não pode usar a marca visual do Game")
         text = " ".join(document.text)
         if path in ("/terms", "/privacy"):
             if document.access_theme != (mode == "updated"):
                 raise AssertionError(f"{path}: tema legal não acompanha a chave")
-            if mode == "updated":
-                expected_title = ("Termos de Uso" if path == "/terms" else "Política de Privacidade") + " | Magaly Abreu"
-                if document.title != expected_title:
-                    raise AssertionError(f"{path}: título legal incorreto: {document.title}")
-            if mode == "updated" and "Magaly Abreu" not in text:
+            expected_title = ("Termos de Uso" if path == "/terms" else "Política de Privacidade") + " | Magaly Abreu"
+            if document.title != expected_title:
+                raise AssertionError(f"{path}: título legal incorreto: {document.title}")
+            if "Magaly Abreu" not in text:
                 raise AssertionError(f"{path}: marca principal ausente")
         if path == "/login":
             verify_login_contact(document)
@@ -292,6 +344,8 @@ def verify(base_url, mode):
         raise AssertionError("Prova offline sem bloqueio de indexação")
     if mode == "updated":
         verify_links()
+    if mode == "legacy":
+        verify_links(sources={"/", "/public/ultima-cartada", "/public/cartada-viva", "/public/herbilife", "/login", "/terms", "/privacy"})
     for path, status in checked:
         print(f"{status} {path}")
     print(f"Modo {mode}: {len(checked)} respostas e contratos conferidos.")

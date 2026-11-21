@@ -8,12 +8,8 @@ import type { Metadata } from "next";
 import PublicNavigation from "@/components/landing/PublicNavigation";
 import styles from "./UltimaCartadaPage.module.css";
 
-const legacyMetadata: Metadata = {
-  title: "A Última Cartada — Mentoria | Magaly Abreu",
-  description: "A Última Cartada, de Magaly Abreu: uma proposta para desenvolver hábitos, compreender escolhas e recuperar a confiança em si mesma.",
-};
 export function generateMetadata(): Metadata {
-  return isConsultoriaSiteEnabled() ? getConsultoriaMetadata("mentorship") : legacyMetadata;
+  return getConsultoriaMetadata("mentorship");
 }
 
 function getCheckoutUrl(): string | null {
@@ -52,7 +48,6 @@ export default function UltimaCartadaPage() {
     <main className={styles.page} id="top">
       <header className={styles.header}>
         <Link className={styles.brand} href="/" aria-label="A Última Cartada — voltar à página inicial">
-          <span className={styles.brandSymbol} aria-hidden="true">♠</span>
           <span className={styles.brandText}><strong>A Última Cartada</strong><small>Mentoria de Magaly Abreu</small></span>
         </Link>
         <PublicNavigation id="metodo-navigation" label="Navegação da Última Cartada" className={styles.nav}>
