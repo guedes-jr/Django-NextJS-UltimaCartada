@@ -1382,6 +1382,12 @@ CONS-10.4 foi encerrado como não aplicável. Não há formulário aprovado, end
 
 Validações executadas: proteção HTTP contra formulários públicos e `git diff --check`. Não houve formulário criado, transmissão de dados, backend, dados, dependências, commit ou push neste recorte.
 
+## Ambiente local — valor global de DEBUG tolerado — 22/11/2026
+
+O backend falhava antes de iniciar porque o processo herdava `DEBUG=release`, que tem precedência sobre `backend/.env` no `python-decouple` e não é um booleano aceito pelo cast padrão. O parsing agora reconhece booleanos e perfis usuais (`debug`/`development` e `release`/`production`), mantendo erro explícito para valores desconhecidos. Isso evita a colisão de ambiente sem expor segredos, alterar banco ou mudar o comportamento de `DEBUG=False` da configuração local.
+
+Validações executadas: `DEBUG=release python manage.py check`, `DEBUG=release python manage.py makemigrations --check --dry-run` e `git diff --check`. O check passou; a conferência de migrations não encontrou alterações, mas reportou que a senha local de `cartada_viva_user` não autentica no PostgreSQL. A URL local do frontend foi alinhada a `http://127.0.0.1:8000/api/v1`; ela não é versionada. Não houve migration aplicada, servidor público, alteração de dados, dependências, commit ou push.
+
 ## Consultoria — evolução futura excluída desta liberação — 22/11/2026
 
 CONS-14.1 a CONS-14.5 foram encerrados como fora do escopo da liberação atual. Não houve decisão para demonstração, Game independente, preço, cadastro, checkout, convite, automação ou métricas; portanto nenhum desses recursos foi iniciado. Uma decisão futura deve abrir recorte próprio, com regras, privacidade, segurança, testes e autorização de publicação específicos.

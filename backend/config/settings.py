@@ -1,12 +1,22 @@
 from pathlib import Path
 
 from decouple import Csv, config
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY")
 
-DEBUG = config("DEBUG", default=False, cast=bool)
+_debug_value = config("DEBUG", default="False").strip().lower()
+if _debug_value in {"1", "true", "yes", "on", "debug", "development"}:
+    DEBUG = True
+elif _debug_value in {"", "0", "false", "no", "off", "release", "production", "prod"}:
+    DEBUG = False
+else:
+    raise ImproperlyConfigured(
+        "DEBUG deve ser um booleano ou um perfil conhecido: "
+        "debug/development/release/production."
+    )
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
