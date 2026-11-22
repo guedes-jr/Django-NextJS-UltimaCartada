@@ -47,7 +47,7 @@ export function ConsultoriaShell({ children, routes = previewRoutes, preview = t
             <Link href={routes.mentorship}>A Última Cartada — Mentoria</Link>
             <Link href={routes.game}>Cartada Viva — Game</Link>
             <Link href="/login">Entrar na minha área</Link>
-            {instagram && <a href={instagram.url} target="_blank" rel="noopener noreferrer">Instagram {instagram.username}</a>}
+            {instagram && <a href={instagram.url} target="_blank" rel="noopener noreferrer" aria-label={`Instagram ${instagram.username} (abre em nova aba)`}>Instagram {instagram.username}</a>}
           </nav>
         </div>
         {professionalIdentity && <p className={styles.professionalIdentity}>{professionalIdentity}</p>}

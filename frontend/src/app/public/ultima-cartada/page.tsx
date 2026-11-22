@@ -1,6 +1,7 @@
 import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
 import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
 import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
+import { getConsultoriaProfessionalIdentity, getMentorshipCheckoutUrl, pendingContactNotice } from "@/components/consultoria/content";
 import { BarChart3, CheckCircle2, ChevronRight, Gamepad2, Heart, Layers3, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,14 +13,6 @@ export function generateMetadata(): Metadata {
   return getConsultoriaMetadata("mentorship");
 }
 
-function getCheckoutUrl(): string | null {
-  try {
-    const url = new URL(process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_URL ?? "");
-    return url.protocol === "https:" && ["pay.hotmart.com", "checkout.hotmart.com", "go.hotmart.com"].includes(url.hostname) && !url.username && !url.password ? url.href : null;
-  } catch {
-    return null;
-  }
-}
 const pillars = [
   { title: "Corpo", suit: "♣", phrase: "Eu ajo", description: "Cultivar movimento e cuidado com o corpo, respeitando suas possibilidades e seu contexto.", example: "Na rotina: perceber como você está e encontrar um espaço possível para se movimentar." },
   { title: "Nutrição", suit: "♦", phrase: "Eu me nutro", description: "Desenvolver atenção à alimentação e às escolhas de cuidado que fazem parte da rotina.", example: "Na rotina: observar suas escolhas e organizar pequenos gestos de cuidado com a alimentação." },
@@ -41,12 +34,14 @@ const gameSteps = [
 
 export default function UltimaCartadaPage() {
   if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="mentorship" />;
-  const checkoutUrl = getCheckoutUrl();
+  const checkoutUrl = getMentorshipCheckoutUrl();
   const participationUrl = checkoutUrl ?? "#condicoes";
   const participationLabel = checkoutUrl ? "Ver condições na Hotmart" : "Conhecer as condições de participação";
+  const professionalIdentity = getConsultoriaProfessionalIdentity();
   return (
-    <main className={styles.page} id="top">
-      <header className={styles.header}>
+    <main className={styles.page} id="conteudo" tabIndex={-1}>
+      <a className={styles.skipLink} href="#ideia">Pular para o conteúdo</a>
+      <header className={styles.header} id="top">
         <Link className={styles.brand} href="/" aria-label="A Última Cartada — voltar à página inicial">
           <span className={styles.brandText}><strong>A Última Cartada</strong><small>Mentoria de Magaly Abreu</small></span>
         </Link>
@@ -77,7 +72,7 @@ export default function UltimaCartadaPage() {
         </div>
       </section>
 
-      <section className={styles.idea} id="ideia" aria-labelledby="idea-title">
+      <section className={styles.idea} id="ideia" tabIndex={-1} aria-labelledby="idea-title">
         <div>
           <span className={styles.eyebrow}>01 / A metodologia</span>
           <h2 id="idea-title">Transformar intenção em uma prática possível.</h2>
@@ -142,13 +137,13 @@ export default function UltimaCartadaPage() {
         </div>
         <div className={styles.playerShowcase}>
           <div className={styles.playerCopy}><span className={styles.gameEyebrow}>Dentro da experiência</span><h3>Seu dia, sua cartada<br />e o seu percurso.</h3><p>A área do jogador reúne a jornada, a proposta do dia e os próximos passos. Você encontra espaço para registrar uma intenção e a experiência vivida.</p><p>O acompanhamento por pilar e o histórico ajudam a perceber o próprio progresso, preservando o que já foi construído.</p></div>
-          <figure className={styles.playerFigure}><Image src="/landing/ultima-cartada/player-journey.svg" alt="Prévia ilustrativa da área do jogador com cartada diária, intenção, evidência e progresso por pilar" width={1280} height={920} sizes="(max-width: 980px) 100vw, 65vw" /><figcaption>Prévia ilustrativa da área do jogador, sem dados de participantes.</figcaption></figure>
+          <figure className={styles.playerFigure}><Image src="/consultoria/player-journey.svg" alt="Prévia ilustrativa da área da participante com cartada diária, intenção, evidência e progresso por pilar" width={1280} height={920} sizes="(max-width: 980px) 100vw, 65vw" /><figcaption>Prévia ilustrativa da área da participante, sem dados pessoais.</figcaption></figure>
         </div>
         <div className={styles.deckShowcase}>
           <div><span className={styles.gameEyebrow}>As cartas</span><h3>Um convite visual<br />para sair da intenção.</h3><p>Cada carta aproxima uma proposta de cuidado de uma ação concreta. Imagem e texto ajudam a compreender o convite e a levá-lo para o cotidiano.</p><p>As imagens ao lado fazem parte do material original do jogo. As propostas utilizadas em cada jornada são definidas conforme o conteúdo revisado e a orientação da facilitadora.</p><span className={styles.galleryHint}>Selecione uma carta para ver a imagem completa.</span></div>
           <div className={styles.deckGallery}>
-            <figure><a href="/landing/ultima-cartada/carta-pausa.png" target="_blank" rel="noreferrer"><Image src="/landing/ultima-cartada/carta-pausa.png" alt="Carta do material original com uma proposta de pausa e atenção" width={720} height={1008} sizes="(max-width: 620px) 40vw, 260px" /></a><figcaption>Pausa e atenção</figcaption></figure>
-            <figure><a href="/landing/ultima-cartada/carta-comunidade.png" target="_blank" rel="noreferrer"><Image src="/landing/ultima-cartada/carta-comunidade.png" alt="Carta do material original que convida ao apoio entre colegas" width={720} height={1008} sizes="(max-width: 620px) 40vw, 260px" /></a><figcaption>Apoio e pertencimento</figcaption></figure>
+            <figure><a href="/landing/ultima-cartada/carta-pausa.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir carta Pausa e atenção em nova aba"><Image src="/landing/ultima-cartada/carta-pausa.png" alt="Carta do material original com uma proposta de pausa e atenção" width={720} height={1008} sizes="(max-width: 620px) 40vw, 260px" /></a><figcaption>Pausa e atenção</figcaption></figure>
+            <figure><a href="/landing/ultima-cartada/carta-comunidade.png" target="_blank" rel="noopener noreferrer" aria-label="Abrir carta Apoio e pertencimento em nova aba"><Image src="/landing/ultima-cartada/carta-comunidade.png" alt="Carta do material original que convida ao apoio entre colegas" width={720} height={1008} sizes="(max-width: 620px) 40vw, 260px" /></a><figcaption>Apoio e pertencimento</figcaption></figure>
           </div>
         </div>
         <div className={styles.journeyTimeline} aria-label="Estrutura da jornada">
@@ -189,7 +184,7 @@ export default function UltimaCartadaPage() {
         <div className={styles.participationCard}>
           <h3>Uma escolha com clareza.</h3>
           <p>Antes de decidir, conheça o formato dos encontros, o período de acompanhamento, os materiais, o investimento e as condições de participação.</p>
-          <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
+          <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined} aria-label={checkoutUrl ? `${participationLabel} (abre em nova aba)` : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
           <p className={styles.participationNote}>{checkoutUrl ? "Consulte a oferta e suas condições antes de concluir a compra na Hotmart." : "As condições de participação são apresentadas antes de qualquer decisão."}</p>
         </div>
       </section>
@@ -206,12 +201,13 @@ export default function UltimaCartadaPage() {
       </section>
 
       <section className={styles.finalCta} id="contato">
-        <div><h2>Qual cuidado você quer trazer para o seu cotidiano?</h2><p>Conheça a mentoria A Última Cartada e as condições apresentadas antes da participação.</p></div>
-        <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
+        <div><h2>Qual cuidado você quer trazer para o seu cotidiano?</h2><p>Conheça a mentoria A Última Cartada e as condições apresentadas antes da participação.</p><p className={styles.contactPending}>{pendingContactNotice}</p></div>
+        <a className={styles.primaryButton} href={participationUrl} target={checkoutUrl ? "_blank" : undefined} rel={checkoutUrl ? "noopener noreferrer" : undefined} aria-label={checkoutUrl ? `${participationLabel} (abre em nova aba)` : undefined}>{participationLabel} <ChevronRight aria-hidden="true" /></a>
       </section>
       <footer className={styles.methodFooter}>
         <Link href="/">Voltar à página inicial</Link>
         <nav className={styles.footerLinks} aria-label="Informações legais"><Link href="/terms">Termos de uso</Link><Link href="/privacy">Privacidade</Link></nav>
+        <p className={styles.professionalIdentity}>{professionalIdentity}</p>
         <p>A Cartada Viva é uma aplicação educacional para o desenvolvimento de hábitos. Não substitui acompanhamento psicológico, nutricional ou médico.</p>
       </footer>
     </main>

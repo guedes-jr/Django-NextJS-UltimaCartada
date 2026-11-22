@@ -78,3 +78,7 @@ O responsável confirmou a oferta **Método Última Cartada / mentoria**, com ch
 Configure `NEXT_PUBLIC_HOTMART_CHECKOUT_URL` no frontend e execute novo build. Aceita HTTPS em hosts exatos `pay.hotmart.com`, `checkout.hotmart.com` e `go.hotmart.com`, sem credenciais. Preserva parâmetros existentes do link. Sem configuração válida, direciona ao WhatsApp. Não há concessão automática de acesso, captura de dados ou pixels nesta entrega. Confirme os detalhes comerciais antes de ativar o checkout.
 
 Referência: [Hotmart — página de vendas externa](https://help.hotmart.com/pt-br/article/360017889651/como-configurar-minha-pagina-de-vendas-externas-na-hotmart-). A orientação é vincular a página externa à página de pagamento da oferta.
+
+## Atualização da consultoria — 21/11/2026
+
+O registro de 12/10/2026 acima é histórico e foi superado pelo briefing ativo. A oferta pública é **A Última Cartada — Mentoria**; o Game Cartada Viva é incluído para participantes da mentoria. Sem `NEXT_PUBLIC_HOTMART_CHECKOUT_URL` válida e expressamente aprovada, os CTAs permanecem na seção de condições da mentoria — não direcionam ao WhatsApp. A variável aceita somente HTTPS nos hosts Hotmart já listados, não cria acesso automático e não deve ser preenchida sem confirmação do destino e da oferta.

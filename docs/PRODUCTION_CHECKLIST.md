@@ -15,6 +15,22 @@
 - [ ] Serviços systemd criados.
 - [ ] Comando global `deploy-cartada` instalado em `/usr/local/bin/deploy-cartada`.
 
+## Liberação da apresentação da consultoria
+
+Preencher esta seção somente depois da validação final e antes de habilitar a
+apresentação atualizada em produção. Não configurar contato, checkout, ativos
+ou condições comerciais por inferência.
+
+- [ ] Autorização expressa de publicação registrada, com responsável, data, versão e escopo.
+- [ ] Duração, formato, encontros, materiais, suporte e condições da Mentoria confirmados ou mantidos explicitamente como provisórios por decisão aprovada.
+- [ ] Identificação profissional, WhatsApp, Instagram e eventual checkout revisados; destinos não aprovados permanecem vazios.
+- [ ] Monograma, assinatura, logos, fotografias, cartas e depoimentos possuem confirmação de uso para as superfícies publicadas.
+- [ ] `ENABLE_CONSULTORIA_SITE=true` foi decidido para o build de produção; `ENABLE_CONSULTORIA_PREVIEW=false` permanece no ambiente público.
+- [ ] `NEXT_PUBLIC_API_URL=/api/v1` permanece configurado; `/django-admin/` não é substituído por `/admin/`.
+- [ ] `npm run test:consultoria`, `npm run lint` e `npm run build` foram executados no artefato candidato; smoke HTTP executado no modo correspondente.
+- [ ] Backup/restauração de banco, `media/`, variáveis e versão atualmente publicada foram confirmados no ambiente autorizado. O rollback de código não substitui restauração de dados.
+- [ ] Plano de rollback define responsável, condição de acionamento e retorno à versão/flag anterior, sem executar migrations destrutivas como atalho.
+
 ## Backend
 
 - [ ] `python manage.py check` sem erros.

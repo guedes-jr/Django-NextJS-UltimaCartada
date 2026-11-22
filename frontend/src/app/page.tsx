@@ -1,6 +1,7 @@
 import { ConsultoriaPublicPage } from "@/components/consultoria/ConsultoriaPublicPage";
 import { isConsultoriaSiteEnabled } from "@/components/consultoria/release";
 import { getConsultoriaMetadata } from "@/components/consultoria/metadata";
+import { pendingContactNotice } from "@/components/consultoria/content";
 import {
   CalendarDays,
   CheckCircle2,
@@ -72,8 +73,9 @@ const pillars = [
 export default function HomePage() {
   if (isConsultoriaSiteEnabled()) return <ConsultoriaPublicPage page="home" />;
   return (
-    <main className={styles.page} id="top">
-      <header className={styles.header}>
+    <main className={styles.page} id="conteudo" tabIndex={-1}>
+      <a className={styles.skipLink} href="#sobre">Pular para o conteúdo</a>
+      <header className={styles.header} id="top">
         <a className={styles.brand} href="#top" aria-label="Magaly Abreu — início">
           <span className={styles.brandName}>Magaly Abreu</span>
         </a>
@@ -87,11 +89,11 @@ export default function HomePage() {
         </PublicNavigation>
 
         <Link className={styles.loginLink} href="/login">
-          Entrar
+          Entrar na minha área
         </Link>
       </header>
 
-      <section className={styles.hero} id="sobre">
+      <section className={styles.hero} id="sobre" tabIndex={-1}>
         <div className={styles.heroCopy}>
           <h1>
             Você não precisa se culpar para voltar a cuidar de si.
@@ -142,7 +144,7 @@ export default function HomePage() {
         <div className={styles.heroVisual}>
           <Image
             src="/landing/professional/acauamedia-131.jpg"
-            alt="Magaly Abreu em retrato profissional"
+            alt="Magaly Abreu em retrato com blazer escuro sobre fundo escuro"
             width={1800}
             height={1200}
             priority
@@ -224,7 +226,7 @@ export default function HomePage() {
       <section className={styles.about} id="magaly" aria-labelledby="magaly-title">
         <Image
           src="/landing/professional/acauamedia-117.jpg"
-          alt="Magaly Abreu em retrato profissional"
+          alt="Magaly Abreu sentada em poltrona amarela, com a mão próxima ao rosto"
           width={1800}
           height={1200}
           sizes="(max-width: 900px) 100vw, 45vw"
@@ -301,7 +303,7 @@ export default function HomePage() {
 
         <Image
           src="/landing/professional/acauamedia-114.jpg"
-          alt="Magaly Abreu em retrato profissional"
+          alt="Magaly Abreu sentada em poltrona amarela"
           width={1800}
           height={1200}
           sizes="(max-width: 900px) 100vw, 45vw"
@@ -311,7 +313,7 @@ export default function HomePage() {
       <section className={styles.finalCta} id="contato">
         <Image
           src="/landing/professional/acauamedia-135.jpg"
-          alt="Magaly Abreu em retrato profissional"
+          alt="Magaly Abreu em retrato, gesticulando com as mãos"
           width={1800}
           height={1200}
           sizes="(max-width: 900px) 100vw, 45vw"
@@ -323,6 +325,7 @@ export default function HomePage() {
             Mais consciência para fazer escolhas possíveis, aprender com as
             dificuldades e continuar cuidando de si.
           </p>
+          <p className={styles.contactPending}>{pendingContactNotice}</p>
 
           <div className={styles.microBenefits}>
             <span>

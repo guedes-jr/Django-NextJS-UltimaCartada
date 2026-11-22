@@ -33,7 +33,9 @@ class Document(HTMLParser):
         self.active_link = None
         self.images = []
         self.aria_labels = []
+        self.new_tab_links = []
         self.ids = set()
+        self.programmatic_focus_ids = set()
         self.canonical = None
         self.meta = {}
         self.text = []
@@ -54,6 +56,8 @@ class Document(HTMLParser):
             self.form_count += 1
         if attrs.get("id"):
             self.ids.add(attrs["id"])
+            if attrs.get("tabindex") == "-1":
+                self.programmatic_focus_ids.add(attrs["id"])
         if tag == "img":
             self.images.append(attrs.get("alt"))
         if tag == "a":
@@ -61,6 +65,8 @@ class Document(HTMLParser):
             self.active_link = {"href": attrs.get("href", ""), "text": []}
             if attrs.get("aria-label"):
                 self.aria_labels.append(attrs["aria-label"])
+            if attrs.get("target") == "_blank":
+                self.new_tab_links.append({"href": attrs.get("href", ""), "label": attrs.get("aria-label", ""), "rel": attrs.get("rel", "")})
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonical = attrs.get("href")
         if tag == "meta":
@@ -165,6 +171,46 @@ def verify(base_url, mode):
         if (href, label) not in document.labeled_links:
             raise AssertionError(f"CTA ausente ou com destino incorreto: {label} → {href}")
 
+    def verify_single_h1(path, document):
+        if document.h1_count != 1:
+            raise AssertionError(f"{path}: quantidade de H1 inválida")
+
+    def verify_image_alts(path, document):
+        if any(alt is None for alt in document.images):
+            raise AssertionError(f"{path}: imagem sem atributo alt")
+
+    def verify_no_public_forms(path, document):
+        if document.form_count:
+            raise AssertionError(f"{path}: página pública não pode coletar dados sem decisão de privacidade")
+
+    def verify_current_player_journey(path, body):
+        current_source = ("/consultoria/player-journey.svg", "%2Fconsultoria%2Fplayer-journey.svg")
+        legacy_source = ("/landing/ultima-cartada/player-journey.svg", "%2Flanding%2Fultima-cartada%2Fplayer-journey.svg")
+        if not any(source in body for source in current_source):
+            raise AssertionError(f"{path}: prévia de percurso sem duração não está em uso")
+        if any(source in body for source in legacy_source):
+            raise AssertionError(f"{path}: prévia legada com duração não confirmada foi reintroduzida")
+
+    def verify_skip_target(document, label, href):
+        verify_labeled_link(document, label, href)
+        if href[1:] not in document.programmatic_focus_ids:
+            raise AssertionError(f"Atalho não leva a um destino focável: {label} → {href}")
+
+    def verify_new_tab_labels(document):
+        visible_labels = {}
+        for href, label in document.labeled_links:
+            visible_labels.setdefault(href, []).append(label)
+        missing = [
+            link["href"]
+            for link in document.new_tab_links
+            if "nova aba" not in " ".join((link["label"], *visible_labels.get(link["href"], []))).lower()
+        ]
+        if missing:
+            raise AssertionError(f"Link em nova aba sem rótulo acessível: {', '.join(missing)}")
+        unprotected = [link["href"] for link in document.new_tab_links if not {"noopener", "noreferrer"}.issubset(set(link["rel"].split()))]
+        if unprotected:
+            raise AssertionError(f"Link em nova aba sem proteção de navegação: {', '.join(unprotected)}")
+
     previews = (
         "/preview/consultoria", "/preview/consultoria/mentoria", "/preview/consultoria/game",
         "/preview/consultoria/herbalife", "/preview/consultoria/guia-visual", "/preview/consultoria/revisao",
@@ -188,6 +234,9 @@ def verify(base_url, mode):
             raise AssertionError("Roteiro de revisão sem seções ou com coleta não prevista")
         if "A aprovação da proposta não publica o site." not in " ".join(review.text):
             raise AssertionError("Roteiro confunde aprovação com publicação")
+        review_text = " ".join(review.text)
+        if "Checkout da mentoria" not in review_text or "A confirmar; não publicar destino sem aprovação expressa" not in review_text:
+            raise AssertionError("Roteiro de revisão não apresenta a pendência de checkout")
         for asset in ("story-background.svg", "share-background.svg"):
             _, svg = request("/consultoria/templates/" + asset, 200)
             documents["/consultoria/templates/" + asset] = Document("")
@@ -208,6 +257,8 @@ def verify(base_url, mode):
         documents["/"] = Document(home)
         verify_local_anchors("/", documents["/"])
         verify_public_metadata("/", documents["/"])
+        verify_single_h1("/", documents["/"])
+        verify_image_alts("/", documents["/"])
         if "/player/support" in documents["/"].links:
             raise AssertionError("A home pública não deve encaminhar visitantes para o suporte autenticado")
         home_text = " ".join(documents["/"].text)
@@ -217,12 +268,23 @@ def verify(base_url, mode):
             raise AssertionError("A home pública não contém as frases centrais da consultoria")
         if "A Mentoria A Última Cartada e o Game Cartada Viva não substituem atendimento psicológico, nutricional ou médico." not in home_text:
             raise AssertionError("A home pública não apresenta os limites das experiências")
+        if "Canal de contato: a confirmar." not in home_text:
+            raise AssertionError("A home pública não sinaliza a ausência de contato confirmado")
         if not documents["/"].images or any(not alt for alt in documents["/"].images):
             raise AssertionError("A home pública contém imagem informativa sem texto alternativo")
-        if documents["/"].images.count("Magaly Abreu em retrato profissional") < 3:
-            raise AssertionError("A home pública não mantém a descrição profissional das fotografias de Magaly")
+        expected_home_alts = {
+            "Magaly Abreu em retrato com blazer escuro sobre fundo escuro",
+            "Magaly Abreu segurando uma ampulheta",
+            "Magaly Abreu sentada em poltrona amarela, com a mão próxima ao rosto",
+            "Magaly Abreu sentada em poltrona amarela",
+            "Magaly Abreu em retrato, gesticulando com as mãos",
+        }
+        if not expected_home_alts.issubset(set(documents["/"].images)):
+            raise AssertionError("A home pública não mantém descrições contextuais das fotografias de Magaly")
+        verify_skip_target(documents["/"], "Pular para o conteúdo", "#sobre")
         verify_labeled_link(documents["/"], "Conhecer A Última Cartada", "/public/ultima-cartada")
         verify_labeled_link(documents["/"], "Conhecer o Game Cartada Viva", "/public/cartada-viva")
+        verify_labeled_link(documents["/"], "Entrar na minha área", "/login")
         headers, _ = request("/public/consultoria", 308)
         if urlsplit(headers.get("Location", "")).path != "/public/ultima-cartada":
             raise AssertionError("Consultoria não redireciona à mentoria")
@@ -231,11 +293,22 @@ def verify(base_url, mode):
         documents["/public/ultima-cartada"] = mentorship_document
         verify_local_anchors("/public/ultima-cartada", mentorship_document)
         verify_public_metadata("/public/ultima-cartada", mentorship_document)
+        verify_single_h1("/public/ultima-cartada", mentorship_document)
+        verify_image_alts("/public/ultima-cartada", mentorship_document)
+        verify_skip_target(mentorship_document, "Pular para o conteúdo", "#ideia")
+        verify_new_tab_labels(mentorship_document)
+        mentorship_text = " ".join(mentorship_document.text)
+        if "Magaly Abreu · Psicóloga · CRP 17/5894" not in mentorship_text or "Não substitui acompanhamento psicológico, nutricional ou médico." not in mentorship_text:
+            raise AssertionError("Rodapé da mentoria não identifica a profissional ou os limites da experiência")
+        if "Canal de contato: a confirmar." not in mentorship_text:
+            raise AssertionError("Mentoria não sinaliza a ausência de contato confirmado")
+        verify_current_player_journey("/public/ultima-cartada", mentorship)
         _, game = request("/public/cartada-viva", 200)
         game_document = Document(game)
         documents["/public/cartada-viva"] = game_document
         verify_local_anchors("/public/cartada-viva", game_document)
         verify_public_metadata("/public/cartada-viva", game_document)
+        verify_image_alts("/public/cartada-viva", game_document)
         game_text = " ".join(game_document.text)
         if game_document.h1_count != 1 or "sem precisar adquirir o game novamente" not in game_text:
             raise AssertionError("A página informativa pública do game está incompleta")
@@ -253,13 +326,17 @@ def verify(base_url, mode):
             document = Document(body)
             documents[path] = document
             text = " ".join(document.text)
-            if document.h1_count != 1:
-                raise AssertionError(f"{path}: quantidade de H1 inválida")
+            verify_single_h1(path, document)
+            verify_image_alts(path, document)
+            verify_new_tab_labels(document)
             verify_public_metadata(path, document)
             if path == "/public/cartada-viva":
                 for key in ("description", "og:description", "twitter:description"):
                     if "O percurso depende da jornada vinculada ao seu grupo" not in document.meta.get(key, ""):
                         raise AssertionError(f"{path}: {key} presume percurso único para todos os grupos")
+            if path == "/":
+                if "Magaly Abreu sentada em poltrona amarela, com a mão próxima ao rosto" not in document.images:
+                    raise AssertionError("Home atualizada não mantém descrição contextual da fotografia")
             if "sem precisar adquirir o game novamente" not in text:
                 raise AssertionError(f"{path}: inclusão do game não está explícita")
             if path in ("/public/ultima-cartada", "/public/cartada-viva"):
@@ -267,6 +344,8 @@ def verify(base_url, mode):
                     raise AssertionError(f"{path}: condições provisórias ausentes")
                 if any(value in text for value in ("6 meses", "21 dias", "3 jogos")):
                     raise AssertionError(f"{path}: duração comercial não confirmada")
+            if path == "/public/cartada-viva":
+                verify_current_player_journey(path, body)
             if "Prévia para aprovação" in text:
                 raise AssertionError(f"{path}: aviso interno de prévia exposto")
             if "Jogo terapêutico e mentoria em grupo" in text:
@@ -288,12 +367,22 @@ def verify(base_url, mode):
         _, body = request(path, 200)
         document = Document(body)
         documents[path] = document
+        text = " ".join(document.text)
+        if mode == "updated":
+            verify_new_tab_labels(document)
         if mode == "legacy" and path == "/public/herbilife":
             verify_local_anchors(path, document)
             verify_public_metadata(path, document)
+            verify_single_h1(path, document)
+            verify_image_alts(path, document)
+            verify_skip_target(document, "Pular para o conteúdo", "#passos")
+            verify_new_tab_labels(document)
             if "Magaly Abreu — início" not in document.aria_labels or "/cartada-viva-mark.png" in body:
                 raise AssertionError("Página comercial não pode usar a marca visual do Game")
-        text = " ".join(document.text)
+            if "Magaly Abreu sentada em poltrona amarela" not in document.images:
+                raise AssertionError("Página comercial não mantém descrição contextual da fotografia")
+            if "consultora independente Magaly Abreu" not in text or "A compra de produtos não é condição para participar da mentoria ou do Game." not in text:
+                raise AssertionError("Página comercial não deixa clara a separação da mentoria e do Game")
         if path in ("/terms", "/privacy"):
             if document.access_theme != (mode == "updated"):
                 raise AssertionError(f"{path}: tema legal não acompanha a chave")
@@ -342,9 +431,26 @@ def verify(base_url, mode):
         raise AssertionError("Tela offline inválida ou com formulário")
     if mode == "updated" and "noindex" not in offline_document.meta.get("robots", ""):
         raise AssertionError("Prova offline sem bloqueio de indexação")
+    for path in ("/", "/public/ultima-cartada", "/public/cartada-viva", "/public/herbilife"):
+        verify_no_public_forms(path, documents[path])
     if mode == "updated":
         verify_links()
     if mode == "legacy":
+        public_text = " ".join(
+            " ".join(documents[path].text).lower()
+            for path in ("/", "/public/ultima-cartada", "/public/cartada-viva", "/public/herbilife")
+        )
+        forbidden_editorial_text = (
+            "magaly rica", "jogo terapêutico e mentoria em grupo", "bônus de 21 dias",
+            "3 jogos", "6 meses", "grandes transformações",
+        )
+        if any(value in public_text for value in forbidden_editorial_text):
+            raise AssertionError("Página pública reintroduz texto editorial legado ou promessa não aprovada")
+        if any("5584999181607" in href for document in documents.values() for href in document.links):
+            raise AssertionError("Página pública reintroduz o contato legado não confirmado")
+        unconfigured_commercial_hosts = {"wa.me", "pay.hotmart.com", "checkout.hotmart.com", "go.hotmart.com"}
+        if any(urlsplit(href).hostname in unconfigured_commercial_hosts for document in documents.values() for href in document.links):
+            raise AssertionError("Modo público padrão expõe contato ou checkout que depende de configuração aprovada")
         verify_links(sources={"/", "/public/ultima-cartada", "/public/cartada-viva", "/public/herbilife", "/login", "/terms", "/privacy"})
     for path, status in checked:
         print(f"{status} {path}")

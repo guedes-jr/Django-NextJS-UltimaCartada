@@ -49,7 +49,7 @@ Não habilitar a prévia na produção pública nem substituir as páginas atuai
 
 ## Dados provisórios autorizados
 
-O responsável autorizou prosseguir com dados padrão provisórios e pediu nova pergunta no final. O painel “Dados provisórios para revisão final” apresenta os campos como “A confirmar”, centralizados em `consultoriaPendingDetails` no arquivo `content.ts`. Não há duração, telefone, perfil ou registro profissional fictícios; WhatsApp sem valor confirmado permanece sem link externo. Perguntar novamente em CONS-12.8 e substituir os placeholders antes da publicação. A ausência desses dados não interrompe o desenvolvimento visual.
+O responsável autorizou prosseguir com dados padrão provisórios e pediu nova pergunta no final. O painel “Dados provisórios para revisão final” apresenta os campos como “A confirmar”, centralizados em `consultoriaPendingDetails` no arquivo `content.ts`, inclusive o checkout da mentoria. Não há duração, telefone ou perfil fictícios; a identificação confirmada “Magaly Abreu · Psicóloga · CRP 17/5894” é o padrão público e qualquer complemento ainda exige aprovação. WhatsApp sem valor confirmado permanece sem link externo. Perguntar novamente em CONS-12.8 e substituir os placeholders antes da publicação. A ausência desses dados não interrompe o desenvolvimento visual.
 
 ## O que revisar
 
@@ -62,6 +62,8 @@ O responsável autorizou prosseguir com dados padrão provisórios e pediu nova 
 
 A inclusão no sistema foi implementada em 13/11/2026: mentoria vigente acrescenta GAME aos produtos efetivos, sem criar concessão ou matrícula automática. Login/sessão e API diária foram testados; CONS-09.6 foi conferido tecnicamente no Chrome com contas sintéticas em 14/11/2026; homologação integral e aprovação continuam pendentes (evidências nas seções posteriores). O dashboard usa a sessão atualizada pelo servidor, e a home distingue acesso de vínculo com grupo/jornada. Não houve deploy ou regularização de dados no banco real.
 
+Pendências de aceite, homologação, publicação e evolução futura estão consolidadas em [VALIDACAO_FINAL.md](consultoria/VALIDACAO_FINAL.md).
+
 ## Verificação inicial — histórico de 13/11/2026
 
 Lint, TypeScript e build executados; lint com oito avisos preexistentes de imagens em arquivos antigos. Verificadas respostas HTTP das três prévias em desenvolvimento (200), bloqueio no build de produção padrão (404), home atual (200) e redirecionamento legado do game (308). Inspeção do HTML confirmou H1 único, noindex/nofollow, âncoras existentes e alternativas de imagens. Contrastes de pares sólidos medidos e registrados em DESIGN.md.
@@ -69,6 +71,15 @@ Lint, TypeScript e build executados; lint com oito avisos preexistentes de image
 Na tentativa inicial, a conferência visual/interativa não foi executada: o navegador integrado retornou “The browser access host is unavailable”. Não houve verificação em aparelhos físicos, teste de interação do menu, medição de desempenho real ou aceite de tela. Esses itens permanecem abertos no plano.
 
 ## Testar a integração de rotas sem publicar
+
+Antes da validação HTTP, execute a bateria local de conteúdo, componentes de navegação e contraste:
+
+```bash
+cd frontend
+npm run test:consultoria
+```
+
+Ela inclui conteúdo, CTAs, navegação, PWA/instalação e contraste; não inicia servidor, não consulta API, não abre destinos externos e não substitui revisão visual, sessão autenticada ou homologação em aparelhos.
 
 Para conferir a nova apresentação nas URLs definitivas em ambiente local, sem gravar configuração real:
 
@@ -171,7 +182,7 @@ Inventário de imagens/fontes, ajuste de sizes e medição do otimizador: [CONSU
 
 `frontend/.env.example` lista campos vazios para duração da mentoria/game, formato, encontros, materiais/suporte, identificação profissional e usuário do Instagram. Preencher somente com texto aprovado pela titular no ambiente apropriado; exige novo build. As variáveis são lidas pelo servidor, mas seus valores são conteúdo público renderizado: não inserir segredos.
 
-`content.ts` mantém condições/FAQ/painel sincronizados. Ausência de fatos conserva “A confirmar”; ausência de identificação/Instagram omite esses elementos do rodapé. Instagram aceita somente usuário com ou sem @ e gera link no domínio fixo instagram.com; não recebe URL arbitrária. Identificação é texto literal escapado pelo React, sem HTML, sem inferência de registro ou título. WhatsApp da mentoria e Herbalife continuam separados.
+`content.ts` mantém condições/FAQ/painel sincronizados. Ausência de fatos conserva “A confirmar”; a identificação profissional usa o registro confirmado como padrão e Instagram ausente é omitido do rodapé. Instagram aceita somente usuário com ou sem @ e gera link no domínio fixo instagram.com; não recebe URL arbitrária. Identificação é texto literal escapado pelo React, sem HTML, sem inferência de registro ou título além do dado confirmado. WhatsApp da mentoria e Herbalife continuam separados.
 
 `npm run test:consultoria-content` verifica oito cenários de configuração/validação sem rede ou destino real. Configuração válida sintaticamente não confirma titularidade, dados profissionais ou aprovação editorial. Testar destinos e revisar informações antes da publicação. O smoke HTTP atual presume fatos provisórios; quando os dados forem confirmados, atualizar seus critérios editoriais para os valores aprovados.
 

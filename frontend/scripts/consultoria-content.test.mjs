@@ -11,13 +11,15 @@ function content(env = {}) {
   vm.runInNewContext(code, { exports, module: { exports }, process: { env }, URL });
   return exports;
 }
-test('dados ausentes mantêm placeholders e não ativam destinos', () => {
+test('dados ausentes mantêm placeholders, não ativam destinos e preservam identificação confirmada', () => {
   const c = content();
   assert.ok(Object.values(c.consultoriaOfferDetails).every(value => value === 'A confirmar'));
   assert.equal(c.getConsultoriaContact(), null);
   assert.equal(c.getHerbalifeContact(), null);
   assert.equal(c.getConsultoriaInstagram(), null);
-  assert.equal(c.getConsultoriaProfessionalIdentity(), null);
+  assert.equal(c.getConsultoriaProfessionalIdentity(), 'Magaly Abreu · Psicóloga · CRP 17/5894');
+  assert.match(c.pendingContactNotice, /^Canal de contato: a confirmar\./);
+  assert.ok(c.consultoriaPendingDetails.some(item => item.label === 'Checkout da mentoria' && item.value.includes('A confirmar')));
 });
 test('fatos configurados alimentam condições, FAQ e painel como texto literal', () => {
   const c = content({ CONSULTORIA_MENTORSHIP_DURATION: ' Duração aprovada de teste ', CONSULTORIA_PROFESSIONAL_IDENTITY: ' Identificação de teste <texto> ' });
@@ -61,4 +63,18 @@ test('cadastro comercial aceita somente HTTPS sem credenciais', () => {
     assert.equal(content({ NEXT_PUBLIC_HERBALIFE_REGISTRATION_URL: value }).getHerbalifeRegistrationUrl(), null);
   }
   assert.equal(content({ NEXT_PUBLIC_HERBALIFE_REGISTRATION_URL: 'https://example.com/cadastro' }).getHerbalifeRegistrationUrl(), 'https://example.com/cadastro');
+});
+test('checkout da mentoria aceita somente host Hotmart HTTPS sem credenciais, porta ou fragmento', () => {
+  const c = content();
+  assert.equal(c.getMentorshipCheckoutUrl(), null);
+  for (const value of [
+    'http://pay.hotmart.com/oferta',
+    'https://example.com/oferta',
+    'https://user:secret@pay.hotmart.com/oferta',
+    'https://pay.hotmart.com:444/oferta',
+    'https://pay.hotmart.com/oferta#etapa',
+  ]) {
+    assert.equal(c.getMentorshipCheckoutUrl(value), null);
+  }
+  assert.equal(c.getMentorshipCheckoutUrl('https://pay.hotmart.com/ABC123?src=site'), 'https://pay.hotmart.com/ABC123?src=site');
 });

@@ -2,12 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
-import { consultoria, consultoriaOfferDetails, getConsultoriaContact, previewRoutes, sharedQuestions, type ConsultoriaRoutes } from "./content";
+import { consultoria, consultoriaOfferDetails, getConsultoriaContact, pendingContactNotice, previewRoutes, sharedQuestions, type ConsultoriaRoutes } from "./content";
 import styles from "./Consultoria.module.css";
 
 type ActionProps = { href: string; children: ReactNode; secondary?: boolean; external?: boolean };
 export function ActionLink({ href, children, secondary = false, external = false }: ActionProps) {
-  return <Link className={secondary ? styles.secondaryButton : styles.primaryButton} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}<ArrowUpRight size={18} aria-hidden="true" /></Link>;
+  const externalProps = external ? {
+    target: "_blank",
+    rel: "noopener noreferrer",
+    "aria-label": typeof children === "string" ? `${children} (abre em nova aba)` : "Abrir link em nova aba",
+  } : {};
+  return <Link className={secondary ? styles.secondaryButton : styles.primaryButton} href={href} {...externalProps}>{children}<ArrowUpRight size={18} aria-hidden="true" /></Link>;
 }
 
 export function Hero({ eyebrow, title, description, children, image = "/landing/professional/acauamedia-130.jpg", alt = "Retrato profissional de Magaly Abreu", caption = "Magaly Abreu · Psicóloga e Mentora", footnote = "Um caminho com espaço para a vida real." }: {
@@ -62,7 +67,7 @@ export function Contact({ game = false, routes = previewRoutes }: { game?: boole
   return <section className={styles.contact} id="contato" aria-labelledby="contact-title">
     <div><p className={styles.eyebrow}>O próximo passo pode ser uma conversa</p><h2 id="contact-title">Conhecer. Perguntar.<br />Escolher com clareza.</h2><p>Entenda a proposta, esclareça as condições de participação e veja como essa experiência se conecta ao seu momento.</p></div>
     <div className={styles.contactActions}>
-      {contact ? <ActionLink href={contact} external>Conversar com Magaly</ActionLink> : <p className={styles.contactPending}>Canal de contato: a confirmar.</p>}
+      {contact ? <ActionLink href={contact} external>Conversar com Magaly</ActionLink> : <p className={styles.contactPending}>{pendingContactNotice}</p>}
       <Link className={styles.textLink} href={game ? routes.mentorship : routes.game}>{game ? "Conhecer a Mentoria A Última Cartada" : "Conhecer o Game Cartada Viva"}<ArrowRight size={18} aria-hidden="true" /></Link>
     </div>
   </section>;

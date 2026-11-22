@@ -1021,3 +1021,381 @@ Validações executadas: `python3 scripts/check_consultoria_routes.py --mode leg
 O rodapé da home passou a informar que a Mentoria A Última Cartada e o Game Cartada Viva não substituem atendimento psicológico, nutricional ou médico. O aviso alinha a home às páginas próprias, sem afirmar diagnóstico, tratamento, especialidade ou condição comercial.
 
 Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3023` (28 respostas/contratos aprovados e 76 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — proteção contra texto editorial legado — 21/11/2026
+
+O smoke do modo público passou a falhar se home, mentoria, Game ou Herbalife voltarem a expor “Magaly Rica”, o subtítulo conjunto antigo, bônus de 21 dias, três jogos, seis meses ou “grandes transformações”. A lista cobre textos já revisados; não substitui a revisão editorial integral, dos ativos originais ou da titular.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3023` (28 respostas/contratos aprovados e 76 links internos/fragmentos conferidos) e `git diff --check`. O servidor Next foi iniciado localmente apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — separação comercial Herbalife no modo público — 21/11/2026
+
+O smoke passou a exigir em `/public/herbilife`, no modo padrão, a identificação “consultora independente Magaly Abreu” e a declaração de que não há aquisição obrigatória para participar da mentoria ou do Game. A regra complementa a verificação de marca visual já existente e protege a separação comercial sem configurar contato, desconto ou compra.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3024` (28 respostas/contratos aprovados e 76 links internos/fragmentos conferidos). A primeira execução do smoke expôs a ausência da frase explícita na página comercial; ela foi adicionada. A asserção inicial também lia o texto da página anterior e foi corrigida antes da execução final aprovada. O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — bloqueio do contato legado não confirmado — 21/11/2026
+
+O smoke do modo público passou a falhar se qualquer página consultada voltar a expor o número legado `5584999181607`. Redes e WhatsApp continuam condicionados aos helpers de configuração; nenhum perfil ou contato novo foi incluído neste recorte.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3024` (28 respostas/contratos aprovados e 76 links internos/fragmentos conferidos) e `git diff --check`. O servidor Next foi iniciado localmente apenas para essa verificação. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — atalho de teclado na home pública — 21/11/2026
+
+A home legada passou a oferecer o link “Pular para o conteúdo”, visível ao receber foco por teclado e direcionado à primeira seção de conteúdo. A âncora histórica `#top` foi preservada no cabeçalho. O ajuste não altera texto comercial, rotas ou dados.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3025` (28 respostas/contratos aprovados e 77 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — atalho de teclado na mentoria pública — 21/11/2026
+
+A página legada da Mentoria A Última Cartada passou a oferecer “Pular para o conteúdo”, visível ao receber foco por teclado e direcionado à seção inicial da proposta. A âncora `#top` foi mantida no cabeçalho. Não houve alteração de oferta, dados, condições ou rotas.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3026` (28 respostas/contratos aprovados e 78 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — atalho de teclado na página comercial — 21/11/2026
+
+A página Herbalife legada passou a oferecer “Pular para o conteúdo”, visível ao receber foco por teclado e direcionado ao passo a passo. A âncora `#top` foi adicionada ao cabeçalho; o fluxo comercial e as condições continuam inalterados.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3027` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — destino focável dos atalhos públicos — 21/11/2026
+
+Os atalhos “Pular para o conteúdo” da home, da Mentoria e da página Herbalife passaram a apontar para a primeira seção de conteúdo com `tabIndex={-1}`. Assim, além da rolagem, o teclado transfere o foco para fora do cabeçalho. O smoke passou a falhar se o destino de qualquer um desses atalhos deixar de ser focável programaticamente.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3028` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — rótulos de links em nova aba — 21/11/2026
+
+As ampliações das cartas da Mentoria e os links externos da página Herbalife passaram a declarar no rótulo acessível que abrem em nova aba. O rodapé compartilhado faz o mesmo para Instagram, caso esse destino seja futuramente configurado. O smoke do modo público falha se um link aberto em nova aba nessas páginas não tiver esse aviso. Não foram configurados contatos, redes sociais ou URLs comerciais.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3029` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — identificação e limites no rodapé da mentoria — 21/11/2026
+
+O rodapé legado da Mentoria passou a reutilizar a identificação profissional centralizada, cujo valor confirmado é “Magaly Abreu · Psicóloga · CRP 17/5894”, e preserva o aviso de que o Game é uma experiência educativa de hábitos que não substitui acompanhamento psicológico, nutricional ou médico. O smoke exige as duas informações nessa página. Uma identificação complementar continua sujeita à confirmação da titular.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3030` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para essa verificação. `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — cobertura de links em nova aba na apresentação ativada — 21/11/2026
+
+O smoke passou a validar também as páginas públicas quando a apresentação da consultoria está ativada. Ele aceita aviso no rótulo acessível ou no texto visível do link; a verificação será executada com um nome de Instagram sintético, sem armazenar ou publicar perfil real.
+
+Validações executadas: `ENABLE_CONSULTORIA_SITE=true CONSULTORIA_INSTAGRAM_USERNAME=magalyteste npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `ENABLE_CONSULTORIA_SITE=true CONSULTORIA_INSTAGRAM_USERNAME=magalyteste npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode updated --base-url http://127.0.0.1:3031` (27 respostas/contratos aprovados e 82 links internos/fragmentos conferidos). O nome de Instagram foi sintético e valeu apenas para esta execução. O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — teste de conteúdo da identificação confirmada — 21/11/2026
+
+O teste de conteúdo ainda esperava que a identificação profissional fosse ausente quando não havia variável de ambiente. Isso contrariava o dado confirmado da consultoria, que passou a ser o valor padrão no helper centralizado. A expectativa foi atualizada para exigir “Magaly Abreu · Psicóloga · CRP 17/5894”, mantendo contatos e dados comerciais sem valor padrão.
+
+Validações executadas: `npm run check:contrast` (16 pares sólidos aprovados; restrições decorativas já documentadas), `npm run test:consultoria-content` e `npm run test:public-navigation` (ambas aprovadas) e `git diff --check`. Não houve build, deploy, mensagens externas, backend, dados, dependências, commit ou push neste recorte de teste/documentação.
+
+## Consultoria — checkout opcional e destino das condições — 21/11/2026
+
+O exemplo de ambiente foi alinhado ao comportamento real: sem URL Hotmart válida, os CTAs da Mentoria permanecem na seção de condições, sem direcionamento a WhatsApp. A configuração continua condicionada à confirmação expressa da oferta e do destino. Quando uma URL aprovada estiver configurada, os CTAs abrem em nova aba e agora informam esse comportamento no rótulo acessível. A validação usará URL Hotmart sintética apenas em servidor local; nenhum checkout foi configurado ou publicado.
+
+Validações executadas: `NEXT_PUBLIC_HOTMART_CHECKOUT_URL=https://pay.hotmart.com/synthetic npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `NEXT_PUBLIC_HOTMART_CHECKOUT_URL=https://pay.hotmart.com/synthetic npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3032` (28 respostas/contratos aprovados e 77 links internos/fragmentos conferidos). A URL foi sintética e usada somente localmente; links externos não são requisitados pelo smoke. O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — links externos do componente compartilhado — 21/11/2026
+
+`ActionLink`, usado pela apresentação ativada e pela Herbalife, passou a gerar rótulo acessível de abertura em nova aba sempre que recebe a opção externa. O smoke agora confere também os links externos da Herbalife nesse modo. Os destinos permanecem condicionais ou oficiais já existentes; a verificação não os requisita externamente.
+
+Validações executadas: `ENABLE_CONSULTORIA_SITE=true npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `ENABLE_CONSULTORIA_SITE=true npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode updated --base-url http://127.0.0.1:3033` (27 respostas/contratos aprovados e 82 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — bloqueio de destinos comerciais não configurados — 21/11/2026
+
+O smoke do modo público padrão passou a falhar se qualquer página consultada expuser `wa.me` ou os hosts Hotmart aceitos pelo checkout opcional. A regra protege o estado sem contato/check-out aprovado; os testes de configuração sintética continuam sendo locais e separados. Nenhum destino comercial real foi adicionado.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3034` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — teste unitário do CTA externo — 21/11/2026
+
+Foi acrescentado teste unitário para `ActionLink`: um destino externo deve manter `target="_blank"`, `rel="noopener noreferrer"` e o rótulo de nova aba; um destino interno não recebe esses atributos. A tentativa de iniciar a inspeção visual por navegador foi bloqueada porque o host de browser não estava disponível neste ambiente; nenhuma janela, conta ou dado externo foi acessado.
+
+Validações executadas: `npm run test:consultoria-sections`, `npm run test:consultoria-content` e `npm run test:public-navigation` (aprovadas) e `git diff --check`. Não houve build, deploy, mensagens externas, backend, dados, dependências, commit ou push neste recorte de teste/documentação.
+
+## Consultoria — alinhamento da documentação de checkout e identificação — 21/11/2026
+
+O registro histórico de posicionamento recebeu uma atualização explícita: o fallback atual do checkout é a seção de condições, não WhatsApp, e o uso da variável Hotmart depende de aprovação. A documentação de prévia agora distingue os placeholders ainda pendentes da identificação profissional confirmada “Magaly Abreu · Psicóloga · CRP 17/5894”. Nenhuma variável, checkout, contato ou perfil foi configurado.
+
+Validações executadas: busca estática nas duas referências atualizadas (a frase de WhatsApp persiste somente no registro histórico datado, seguido da correção vigente), `npm run test:consultoria-content` (aprovado) e `git diff --check`. Não houve build, deploy, mensagens externas, backend, dados, dependências, commit ou push neste recorte documental.
+
+## Consultoria — âncoras legadas de contato sem canal configurado — 21/11/2026
+
+As seções `#contato` da home e da Mentoria legadas agora deixam explícito que o canal de contato está “A confirmar” e direcionam a pessoa às condições de participação. Isso torna coerente o menu e a ajuda pública do login, sem adicionar WhatsApp, formulário, checkout ou destino inventado. O smoke exige o aviso nas duas páginas.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3035` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — título principal único nas páginas públicas — 21/11/2026
+
+O smoke passou a exigir exatamente um H1 na home, Mentoria e Herbalife legadas, além da cobertura já existente para o Game e para a apresentação ativada. A regra protege a hierarquia de conteúdo sem alterar textos ou oferta.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3035` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos) e `git diff --check`. Foi reutilizado o servidor local da validação anterior; não houve build, deploy, mensagens externas, backend, dados, dependências, commit ou push neste recorte de smoke/documentação.
+
+## Consultoria — proteção de texto alternativo nas imagens públicas — 21/11/2026
+
+O smoke passou a verificar que as imagens renderizadas nas superfícies públicas consultadas possuem atributo `alt`, no modo legado e na apresentação ativada. A regra não substitui a revisão humana de qualidade, direitos e pertinência da descrição, que continua pendente.
+
+Validações executadas: `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3035` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos) e `git diff --check`. Foi reutilizado o servidor local da validação anterior; não houve build, deploy, mensagens externas, backend, dados, dependências, commit ou push neste recorte de smoke/documentação.
+
+## Consultoria — checkout pendente no painel de revisão — 21/11/2026
+
+O painel de dados provisórios passou a listar “Checkout da mentoria” como “A confirmar; não publicar destino sem aprovação expressa”. A informação é apenas de revisão e não configura Hotmart, pagamento, contato ou acesso. O teste de conteúdo passou a exigir essa pendência no estado padrão.
+
+Validações executadas: `npm run test:consultoria-content` (aprovado), `ENABLE_CONSULTORIA_SITE=true ENABLE_CONSULTORIA_PREVIEW=true npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `ENABLE_CONSULTORIA_SITE=true ENABLE_CONSULTORIA_PREVIEW=true npm run build` (incluindo a checagem TypeScript integrada), `python3 scripts/check_consultoria_routes.py --mode preview --base-url http://127.0.0.1:3036` (17 respostas/contratos aprovados e 137 links internos/fragmentos conferidos) e `git diff --check`. O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — proteção de navegação em links de nova aba — 21/11/2026
+
+As ampliações das cartas na Mentoria foram padronizadas com `rel="noopener noreferrer"`. O smoke passou a exigir, além do aviso de nova aba, os dois tokens de proteção em todos os links com `target="_blank"` das páginas públicas consultadas. Não houve abertura nem requisição de destinos externos.
+
+Validações executadas: `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3037` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — mensagem única para contato pendente — 21/11/2026
+
+A mensagem de ausência de contato confirmado foi centralizada em `pendingContactNotice` e aplicada à home, Mentoria e apresentação atualizada. Isso mantém a mesma orientação — conhecer condições de participação, sem inventar destino — enquanto o canal externo segue pendente.
+
+Validações executadas: `npm run test:consultoria-content` (aprovado), `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run build` (incluindo a checagem TypeScript integrada), `git diff --check` e `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3038` (28 respostas/contratos aprovados e 79 links internos/fragmentos conferidos). O servidor Next foi iniciado localmente apenas para a verificação; `frontend/next-env.d.ts` foi restaurado após o build. Não houve deploy, checkout real, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — inventário de ativos visuais pendentes — 21/11/2026
+
+Foi criado `docs/consultoria/ATIVOS_VISUAIS_PENDENTES.md` para registrar os arquivos visuais públicos atualmente observados, seus usos e a comprovação ainda necessária. O inventário não presume direitos: fotografias, símbolo do game, ilustrações, cartas e fundos permanecem sujeitos à confirmação de autoria, origem, licença, identidade da retratada, autorização de divulgação e aceite. Também deixa explícito que monograma MA, assinatura e logo da mentoria ainda precisam ser recebidos em arquivo original. `CONS-01.5` e `CONS-01.7` receberam a evidência preparatória, mas permanecem abertas por dependerem de retorno externo.
+
+Validações executadas: conferência estática dos caminhos locais inventariados e `git diff --check`. Não houve alteração de arquivo visual, publicação, uso de imagem nova, mensagens externas, backend, dados, dependências, commit ou push neste recorte documental.
+
+## Consultoria — remoção de prazo não confirmado em ilustração legada — 21/11/2026
+
+A triagem de subtítulos incorporados encontrou no SVG de percurso renderizado pela Mentoria legada “Jogo 1/2/3” e “21 dias de prática”. Como a duração e a estrutura de jornadas seguem pendentes, a página passou a referenciar a prévia atual sem esses prazos. O SVG antigo foi preservado sem edição, para permitir futura conferência do original/editável e do aceite; as cartas PNG continuam pendentes de revisão visual e confirmação externa.
+
+Validações executadas: inspeção estática dos nós de texto nos dois SVGs, conferência do caminho local substituído, `npm run lint` (zero erros; quatro avisos existentes fora deste recorte), `npm run test:consultoria-content` (aprovado), `npm run build` (incluindo a checagem TypeScript integrada) e `git diff --check`. `frontend/next-env.d.ts` foi restaurado após o build. Não houve publicação, alteração destrutiva de ativo, uso de imagem nova, mensagens externas, backend, dados, dependências, commit ou push neste recorte.
+
+O smoke HTTP também passou a exigir que a Mentoria legada use a prévia atual sem duração e a falhar se a referência ao SVG legado for reintroduzida. No modo atualizado, a mesma ilustração pertence à página do Game e é verificada nessa superfície. `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3039` foi aprovado com 28 respostas/contratos e 79 links internos/fragmentos; o servidor foi local e nenhum recurso externo foi requisitado.
+
+## Consultoria — tamanho responsivo e descrição da foto Herbalife — 21/11/2026
+
+A foto de destaque da página pública Herbalife passou a declarar `sizes` compatível com o container responsivo e recebeu texto alternativo contextual (“Magaly Abreu em retrato profissional”), alinhado às demais fotos públicas. A alteração apenas melhora a escolha de variante pelo otimizador e a descrição acessível; não altera o arquivo, nem confirma direitos, origem ou autorização de uso da imagem.
+
+Validações executadas: `npm run lint`, `npm run build` e `git diff --check`. O build foi local; não houve publicação, alteração de ativo, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — ficha consolidada de aceite da primeira etapa — 21/11/2026
+
+Foi criada `docs/consultoria/FICHA_DE_ACEITE_DA_PRIMEIRA_ETAPA.md`, reunindo as dez confirmações externas da fase 1, os fatos já refletidos no recorte, o comportamento seguro enquanto cada resposta está pendente e um modelo mínimo para registrar decisão, responsável, data, escopo e evidência. A ficha não contém contato, preço, checkout, ativo ou autorização inventados e não encerra nenhuma pendência; ela prepara o retorno verificável da titular antes de qualquer publicação.
+
+Validações executadas: conferência dos IDs A01–A10 contra CONS-01.1–CONS-01.10 e `git diff --check`. Não houve publicação, comunicação externa, backend, dados, dependências, commit ou push neste recorte documental.
+
+## Consultoria — textos alternativos contextuais das fotografias públicas — 21/11/2026
+
+Foi feita inspeção visual local das seis fotografias profissionais já presentes no repositório. As ocorrências genéricas da home, página Herbalife legada e home da apresentação ativada foram substituídas por descrições contextuais, limitadas ao que é visível (postura, poltrona, blazer ou gesto). O smoke agora exige as cinco descrições da home legada, a descrição da foto Herbalife legada e a foto usada na home ativada; a Herbalife ativada não renderiza fotografia. Nenhum arquivo foi alterado e nenhuma descrição infere autorização, finalidade da imagem ou atributo profissional além do que já é público.
+
+Validações executadas: `npm run lint`, `npm run build`, `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3040`, build/smoke do modo atualizado e `git diff --check`. O servidor e os builds foram locais; não houve publicação, alteração de ativo, mensagens externas, backend, dados, dependências, commit ou push.
+
+## Consultoria — adiamento autorizado das confirmações da primeira etapa — 21/11/2026
+
+Por instrução expressa do responsável, CONS-01.1 a CONS-01.10 foram encerrados como recorte de preparação, com a validação externa concentrada na revisão final. Isso não confirma duração, condições, identificação adicional, contatos, checkout, direitos de ativos, responsáveis ou janela de campanha; tampouco autoriza publicação. Os comportamentos seguros atuais e a ficha de aceite permanecem como referência, e CONS-12.8/CONS-13.1 continuam bloqueando validação final e publicação até que os retornos sejam verificados.
+
+Validações executadas: conferência dos dez IDs reclassificados, da referência à ficha de aceite e `git diff --check`. Não houve alteração de produto, configuração externa, publicação, comunicação externa, backend, dados, dependências, commit ou push neste recorte de backlog.
+
+## Consultoria — validação centralizada do checkout opcional — 21/11/2026
+
+A validação do checkout da Mentoria foi centralizada em `getMentorshipCheckoutUrl`, reutilizada pela página legada e coberta por teste. Ela aceita somente HTTPS nos hosts Hotmart previstos, sem credenciais, porta ou fragmento; qualquer valor ausente ou inválido mantém o CTA apontando às condições. A validação técnica não confirma que uma URL aceita esteja comercialmente aprovada: a variável continua vazia e a decisão permanece para a validação final.
+
+Validações executadas: `npm run test:consultoria-content`, `npm run lint`, `npm run build` e `git diff --check`. Não houve checkout configurado, contato externo, publicação, backend, dados, dependências, commit ou push.
+
+## Consultoria — rótulo consistente para acesso autenticado — 21/11/2026
+
+O link `/login` da home legada passou de “Entrar” para “Entrar na minha área”, alinhando o rótulo à navegação da apresentação atualizada e ao mapa de destinos. A rota, a sessão, os encaminhamentos após autenticação e as permissões Django não foram alterados. O smoke exige o novo texto e o destino `/login`.
+
+Validações executadas: `npm run lint`, `npm run build`, `python3 scripts/check_consultoria_routes.py --mode legacy --base-url http://127.0.0.1:3042` e `git diff --check`. O servidor e o build foram locais; não houve publicação, backend, dados, dependências, commit ou push.
+
+O controle de acesso da home legada passou a manter o novo rótulo em uma única linha (`white-space: nowrap`), preservando seu alvo de toque de ao menos 44 px no breakpoint móvel. Isso evita quebra visual do texto sem alterar rota, foco, semântica ou comportamento do menu.
+
+Validações executadas: `npm run lint`, `npm run build` e `git diff --check`. O build foi local; não houve publicação, backend, dados, dependências, commit ou push.
+
+## Consultoria — conclusão técnica da navegação e nomenclatura pública — 21/11/2026
+
+A revisão estática de menus, CTAs, rodapés e mensagens públicas não encontrou “Consultoria” como nome de produto nem “Método” como oferta/rota autônoma. “Metodologia” aparece exclusivamente ao explicar a abordagem da Mentoria A Última Cartada e a conexão com o Game Cartada Viva. Os destinos públicos continuam limitados às páginas das experiências, às condições, à área autenticada e à atividade comercial separada. Com essa evidência, CONS-05.2 foi encerrado como implementação; destinos externos de contato continuam condicionados à validação final em CONS-12.8.
+
+Validações executadas: busca estática nas superfícies públicas, conferência dos destinos de navegação e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — conclusão técnica do mapa de destinos públicos — 21/11/2026
+
+CONS-02.7 foi encerrado como implementação: os convites para a Mentoria e o Game levam às respectivas páginas informativas; o acesso de participantes leva a `/login`; as âncoras públicas de contato existem e apontam a conteúdo local sem contato ou checkout inventado; e a home não encaminha visitantes ao suporte autenticado. Esses contratos são verificados pelo smoke HTTP. A validação de WhatsApp, Instagram e mensagem inicial continua reservada para CONS-12.8.
+
+Validações executadas: revisão das asserções do smoke para CTAs, login, âncoras e suporte, e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — conclusão técnica dos textos das páginas públicas — 21/11/2026
+
+CONS-02.4 foi encerrado como implementação de conteúdo: home, Mentoria e Game dispõem de títulos, seções, CTAs, legendas, FAQ, rodapé, limites e identificação profissional fornecida; as frases centrais estão nas superfícies públicas e as condições não confirmadas permanecem explicitamente provisórias. Não foram criadas descrições de logo, contatos ou condições comerciais fictícias. Originais de marca, destinos e aceite editorial continuam concentrados na validação final.
+
+Validações executadas: conferência dos contratos textuais e de H1/imagens no smoke público existente, revisão das fontes centralizadas de conteúdo e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — arquitetura e URLs públicas implementadas — 21/11/2026
+
+CONS-02.1 e CONS-02.2 foram encerrados como implementação. A hierarquia Magaly Abreu → Mentoria A Última Cartada → Game Cartada Viva está aplicada nas páginas e metadados, sem terceira oferta de metodologia. As rotas institucionais, de mentoria e de game estão disponíveis nos caminhos definidos; `/public/consultoria` redireciona para a Mentoria e `/mentorship` permanece autenticada. A homologação editorial/visual e qualquer publicação continuam para a validação final.
+
+Validações executadas: revisão do mapa de rotas e dos redirecionamentos cobertos pelo smoke HTTP, e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — propostas públicas implementadas para validação final — 22/11/2026
+
+CONS-03.1, CONS-03.2 e CONS-03.3 foram encerrados como implementação das propostas de home, Mentoria e Game. As três superfícies dispõem de layout responsivo, conteúdo revisado, hierarquia entre as experiências, condições provisórias quando aplicável e CTAs sem contato, checkout ou acesso independente inventados. A inspeção visual integral, a aprovação da titular e a publicação continuam expressamente reservadas para a validação final.
+
+Validações executadas: revisão dos componentes públicos, das rotas condicionadas e das asserções HTTP existentes, e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — fundação de tema concluída para validação final — 22/11/2026
+
+CONS-04.2 foi encerrado como fundação técnica. Tokens semânticos, tipografia, foco, movimento, superfícies e controles foram centralizados no tema condicionado, preservando a apresentação legada fora do escopo. As áreas de acesso e documentos legais usam a fundação sem alterar autorização, dados ou conteúdo jurídico. A checagem automática de contraste cobre os pares sólidos; avaliação visual integral entre telas e aparelhos continua para a validação final.
+
+Validações executadas: revisão dos tokens e escopos condicionados, referência à checagem de contraste já aprovada e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — migração técnica das áreas autenticadas concluída — 22/11/2026
+
+CONS-04.6b foi encerrado como migração técnica. A inspeção confirmou `ConsultoriaAccessTheme` nos layouts de login, dashboard, mentoria e participante, com os módulos de comunidade, suporte, desempenho, ranking, jornada, desafios e tour já adaptados ao escopo condicionado. O Django Admin não foi incluído intencionalmente. Serviços, permissões, produtos e rotas autenticadas foram preservados; homologação visual, teclado em sessão real e aparelhos permanecem para a validação final.
+
+Validações executadas: inventário de layouts, páginas e módulos CSS no escopo condicionado, conferência de separação do admin e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — estrutura técnica da Mentoria concluída — 22/11/2026
+
+CONS-07.2 foi encerrado como implementação da página da Mentoria. A superfície apresenta público, proposta, benefícios possíveis, FAQ, vínculo explícito com o Game e condições de participação. Formato de acompanhamento, encontros, materiais, duração e condições ainda não confirmados não foram inferidos: permanecem visíveis como “A confirmar” e serão validados no recorte final antes de qualquer publicação.
+
+Validações executadas: revisão da página, da fonte centralizada de condições e das asserções públicas já existentes, e `git diff --check`. Não houve publicação, configuração comercial, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — página principal de Magaly concluída tecnicamente — 22/11/2026
+
+CONS-06.5 foi encerrado como implementação. A home apresenta Magaly com a identificação fornecida e destino direto para sua apresentação; Mentoria e Game são apresentados como experiências próprias e a rota Herbalife permanece separada, sem condicionar participação à compra. Depoimentos e contatos externos permanecem fora da publicação até a validação final, sem usar material ou destino não confirmado.
+
+Validações executadas: revisão dos contratos públicos de apresentação, identificação e separação comercial, e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — comando único de validação local — 22/11/2026
+
+Foi incluído `npm run test:consultoria`, que reúne os testes de conteúdo, CTAs/componentes, navegação pública, PWA/instalação e contraste. O comando não inicia servidor, não consulta API nem acessa destinos externos; ele prepara uma verificação reprodutível antes do smoke HTTP e da revisão final, sem afirmar homologação visual ou autenticada.
+
+Validações executadas: `npm run test:consultoria` e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push.
+
+## Consultoria — identificação e limites públicos concluídos tecnicamente — 22/11/2026
+
+CONS-10.1 foi encerrado como implementação. A identificação profissional fornecida está centralizada e protegida por teste de conteúdo; home, Mentoria e Game incluem limites que distinguem as experiências de atendimento psicológico, nutricional ou médico. Nenhum título, especialidade ou dado adicional foi inferido. A titular ainda deve conferir a forma final da identificação antes da publicação.
+
+Validações executadas: `npm run test:consultoria-content`, revisão das superfícies públicas e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — prévia isolada concluída tecnicamente — 22/11/2026
+
+CONS-12.7 foi encerrado como entrega técnica. A prévia local continua isolada por chave, com rotas próprias, bloqueio no build padrão, roteiro navegável de revisão, documentação de uso e dados provisórios centralizados. Ela não publica o site, não coleta retorno e não substitui homologação visual ou entrega hospedada; esses passos permanecem para a validação final.
+
+Validações executadas: conferência de `docs/CONSULTORIA_PREVIEW.md`, comandos/rotas de prévia documentados e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — medição local de desempenho concluída — 22/11/2026
+
+CONS-12.5 foi encerrado como medição técnica local. O inventário de imagens/fontes, os tamanhos responsivos, o lazy loading, as respostas do otimizador e o relatório Lighthouse das superfícies públicas estão preservados na documentação de performance e no artefato QA. A medição não representa rede móvel, aparelhos físicos, PWA instalada ou auditoria de cache de dados privados; esses cenários ficam para a validação final.
+
+Validações executadas: conferência das evidências de performance registradas e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — revisão editorial técnica concluída — 22/11/2026
+
+CONS-12.6 foi encerrado como revisão técnica. O material editorial foi registrado contra o briefing e a matriz de cobertura; as verificações públicas impedem o retorno de denominações, prazos, subtítulos e promessas legadas selecionadas. A checagem de logos originais, fatos externos e aceite da titular não foi presumida e permanece na validação final antes de publicação.
+
+Validações executadas: conferência de `docs/CONSULTORIA_REVISAO_EDITORIAL.md`, das proteções do smoke público e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — rotas e links públicos verificados tecnicamente — 22/11/2026
+
+CONS-12.4 foi encerrado como verificação técnica pública. O smoke percorre as superfícies públicas, links internos, fragmentos, redirecionamentos, login, páginas legais, separação Herbalife e ativos locais referenciados, sem requisitar destinos externos. Contatos reais, sessões, encaminhamentos autenticados e contas com produtos continuam fora desse teste e ficam para a validação final.
+
+Validações executadas: revisão do roteiro HTTP e de sua cobertura documentada, e `git diff --check`. Não houve publicação, consulta a API, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — menus públicos cobertos tecnicamente — 22/11/2026
+
+CONS-04.4b foi encerrado como cobertura técnica. O componente de navegação possui testes simulados para Escape, retorno de foco, saída por foco/clique, navegação por link, mudança de rota e limpeza de listeners; as amostras públicas anteriores incluíram resize e zoom. A homologação em toque, aparelhos reais e sessão autenticada não foi presumida e permanece para a validação final.
+
+Validações executadas: revisão de `test:public-navigation`, das evidências registradas e `git diff --check`. Não houve publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — imagens e acessibilidade pública concluídas tecnicamente — 22/11/2026
+
+CONS-04.5 e CONS-06.6 foram encerrados como implementação técnica. As imagens públicas preservam proporções e tamanhos responsivos, têm descrições contextuais e permanecem sem alteração destrutiva; as superfícies públicas têm H1 único, atalhos focáveis, CTAs com destinos locais seguros e proteção/rótulo para novas abas. Nenhuma dessas garantias substitui direitos de imagem, ativos originais, revisão humana ou aceite visual, que seguem para validação final.
+
+Validações executadas: bateria `npm run test:consultoria`, smoke público já registrado e `git diff --check`. Não houve publicação, alteração de ativos, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — gate operacional de pré-publicação — 22/11/2026
+
+O checklist de produção recebeu uma seção específica para liberar a apresentação da consultoria: autorização/versionamento, fatos e destinos finais, ativos aprovados, flags de build, API relativa, verificações locais, backup e rollback. Ela distingue rollback de código de restauração de dados e não orienta habilitar preview, checkout, contato ou migrations sem decisão/ambiente autorizados. CONS-13.2 recebeu a evidência preparatória, mas ambiente, backup e deploy reais permanecem pendentes.
+
+Validações executadas: conferência cruzada com `docs/DEPLOYMENT.md`, `scripts/deploy-cartada`, regras de rotas e `git diff --check`. Não houve deploy, backup/restauração real, migration, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — roteiro único para validação final — 22/11/2026
+
+Foi criado `docs/consultoria/VALIDACAO_FINAL.md`, reunindo os retornos da titular, homologação visual/funcional, gate de publicação e itens explicitamente fora desta liberação. O documento referencia a ficha de aceite, a prévia, a bateria local e o checklist de produção, sem criar destinos, valores, autorização, coleta ou deploy. Ele não encerra pendências; apenas torna a revisão final executável e rastreável.
+
+Validações executadas: conferência dos caminhos locais referenciados e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — guia de criativos concluído tecnicamente — 22/11/2026
+
+CONS-11.4 foi encerrado como entrega técnica do guia de criativos. O repositório já contém exemplos de header, rodapé, botões, paleta, tipografia, símbolo existente do Game e fundos de Story/capa, com orientação de dimensão e área segura. Nenhum depoimento fictício, assinatura recriada ou logo ausente foi adicionado. Aceite visual e ativos originais continuam para validação final.
+
+Validações executadas: conferência de `docs/CONSULTORIA_CRIATIVOS.md`, do guia visual e dos fundos locais, e `git diff --check`. Não houve publicação, geração de criativo final, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — bloqueio de coleta pública sem decisão — 22/11/2026
+
+O smoke HTTP passou a falhar se home, Mentoria, Game ou Herbalife renderizarem formulário. A regra preserva o estado atual sem coleta de leads enquanto contato/formulário, finalidade, retenção e controles não foram aprovados; ela não bloqueia formulários autenticados nem substitui a decisão de privacidade futura.
+
+Validações executadas: `python3 -m py_compile scripts/check_consultoria_routes.py`, smoke HTTP local e `git diff --check`. Não houve formulário criado, publicação, transmissão de dados, backend, dependências, commit ou push.
+
+## Consultoria — contato direto sem coleta implementado tecnicamente — 22/11/2026
+
+CONS-10.3 foi encerrado como implementação técnica. O contato direto permanece opcional e sem valor padrão; as validações de destino evitam URL arbitrária e o smoke impede formulários nas superfícies públicas. Não foi criado banco de leads, coleta, retenção ou comunicação automática. A escolha do canal real e sua finalidade continuam para validação final; qualquer decisão por formulário exige o recorte de CONS-10.4.
+
+Validações executadas: `npm run test:consultoria-content`, smoke HTTP local registrado e `git diff --check`. Não houve formulário criado, transmissão de dados, publicação, backend, dependências, commit ou push.
+
+## Consultoria — identidade textual e guia visual concluídos tecnicamente — 22/11/2026
+
+CONS-03.4, CONS-06.1 e CONS-07.1 foram encerrados como implementação com os ativos disponíveis. A marca principal usa identificação textual legível, o Game conserva seu símbolo existente apenas em seu próprio contexto e o guia visual demonstra tipografia, controles e fundos de aplicação sem reconstruir monograma, assinatura ou logos ausentes. Os arquivos originais, favicon e imagens finais de compartilhamento continuam para validação final; não houve substituição visual improvisada.
+
+Validações executadas: conferência do guia visual, das superfícies públicas e do inventário de ativos pendentes, e `git diff --check`. Não houve criação ou alteração de ativo visual, publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — metadados e PWA preparados tecnicamente — 22/11/2026
+
+CONS-11.2 foi encerrado como preparação técnica. Metadados textuais, canonical, Open Graph textual, manifest e cores da PWA acompanham o posicionamento quando a apresentação está ativa, preservando os ícones existentes sem recriar marcas. Favicon, ícones e imagens de compartilhamento finais, bem como seus recortes em canais reais, continuam para validação final.
+
+Validações executadas: revisão de metadata/manifest e das asserções HTTP existentes, e `git diff --check`. Não houve geração de imagem final, publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — PWA coberta tecnicamente — 22/11/2026
+
+CONS-11.3b foi encerrado como cobertura técnica. Os testes do service worker verificam cache somente da página offline genérica, preservação de respostas online/erros HTTP e ausência de interceptação de API, mídia ou recursos privados; o controle de instalação cobre espera, falha e repetição. Instalação, atualização, logout offline e ausência de dados privados em navegadores/aparelhos reais continuam para validação final.
+
+Validações executadas: `npm run test:pwa`, `npm run test:pwa-install` e `git diff --check`. Não houve instalação real, publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — responsividade e acessibilidade cobertas tecnicamente — 22/11/2026
+
+CONS-12.3 foi encerrado como cobertura técnica. As amostras e testes registrados abrangem larguras públicas, zoom, orientação, foco, teclado, menu, FAQ, ilustração e recuperação de estados. O ambiente atual não oferece host de navegador para uma nova inspeção visual; homologação integral em Safari/iPhone, Android/Chrome e aparelhos reais continua para validação final.
+
+Validações executadas: revisão das evidências de responsividade/acessibilidade e `git diff --check`. Não houve publicação, navegador externo, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — condições de participação concluídas tecnicamente — 22/11/2026
+
+CONS-07.5 foi encerrado como implementação técnica. Os CTAs públicos usam as condições de participação como fallback, checkout permanece desativado sem URL validada e o contato não cria destino por padrão. A validação comercial da oferta, dos destinos e de eventual checkout real continua para a etapa final.
+
+Validações executadas: testes de configuração/checkout, smoke público já registrado e `git diff --check`. Não houve checkout configurado, contato externo, publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — política e termos sem mudança de tratamento — 22/11/2026
+
+CONS-10.5 foi encerrado como não aplicável à entrega atual. Nenhuma coleta de lead, formulário, analytics, automação comercial ou tratamento novo de dados foi implementado; Termos e Privacidade foram preservados. Se a decisão futura introduzir coleta ou telemetria, a análise e a aprovação de textos deverão ser reabertas antes da publicação.
+
+Validações executadas: revisão de rotas legais, proteção contra formulários públicos e `git diff --check`. Não houve alteração de documento jurídico, publicação, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — formulário não aplicável à entrega atual — 22/11/2026
+
+CONS-10.4 foi encerrado como não aplicável. Não há formulário aprovado, endpoint, serializer, banco de leads ou coleta pública nesta entrega; o smoke impede que as páginas públicas passem a renderizar formulário sem decisão de privacidade. Caso formulário seja escolhido futuramente, o recorte deve ser reaberto antes da implementação, com minimização de dados, segurança e testes explícitos.
+
+Validações executadas: proteção HTTP contra formulários públicos e `git diff --check`. Não houve formulário criado, transmissão de dados, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — evolução futura excluída desta liberação — 22/11/2026
+
+CONS-14.1 a CONS-14.5 foram encerrados como fora do escopo da liberação atual. Não houve decisão para demonstração, Game independente, preço, cadastro, checkout, convite, automação ou métricas; portanto nenhum desses recursos foi iniciado. Uma decisão futura deve abrir recorte próprio, com regras, privacidade, segurança, testes e autorização de publicação específicos.
+
+Validações executadas: revisão do escopo público atual, da ausência de checkout/formulário/analytics novos e `git diff --check`. Não houve publicação, configuração comercial, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — pendências finais mapeadas por backlog — 22/11/2026
+
+`docs/consultoria/VALIDACAO_FINAL.md` passou a associar cada etapa de retorno, homologação, privacidade, publicação e evolução futura aos IDs remanescentes do plano. O mapeamento não muda estado, não autoriza ações externas e não trata validação final como concluída; ele evita que itens de ativos, privacidade, deploy ou futuro sejam esquecidos durante o aceite.
+
+Validações executadas: conferência de todos os IDs pendentes contra o plano ativo e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.
+
+## Consultoria — contraste e tokens validados tecnicamente — 22/11/2026
+
+CONS-03.5 foi encerrado como validação técnica. A checagem reproduzível cobre pares sólidos de texto, ações, controles, foco, erro e sucesso; tokens e escalas foram centralizados no tema. O resultado não substitui inspeção humana de imagens, opacidade, cascata, leitura em dispositivos ou aceite das aplicações de marca, que permanecem na validação final.
+
+Validações executadas: `npm run check:contrast` e `git diff --check`. Não houve publicação, configuração externa, backend, dados, dependências, commit ou push neste recorte.

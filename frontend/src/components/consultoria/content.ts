@@ -9,6 +9,8 @@ export const consultoria = {
   inclusion: "Quem participa da Mentoria A Última Cartada tem direito de participar do Game Cartada Viva, sem precisar adquirir o game novamente.",
 } as const;
 
+export const pendingContactNotice = "Canal de contato: a confirmar. Enquanto isso, conheça as condições de participação.";
+
 /** Identificação literal fornecida pela consultoria para as superfícies públicas. */
 const confirmedProfessionalIdentity = "Magaly Abreu · Psicóloga · CRP 17/5894";
 
@@ -31,6 +33,7 @@ export const consultoriaPendingDetails = [
   { label: "Instagram oficial", value: getConsultoriaInstagram()?.username ?? "A confirmar" },
   { label: "Contato comercial Herbalife", value: getHerbalifeContact() ? "Configurado; validar destino na revisão final" : "A confirmar" },
   { label: "Instagram comercial Bistrô Slim", value: "A confirmar; não publicar destino sem confirmação" },
+  { label: "Checkout da mentoria", value: "A confirmar; não publicar destino sem aprovação expressa" },
   { label: "Identificação e registro profissional", value: getConsultoriaProfessionalIdentity() ?? "A confirmar" },
 ] as const;
 
@@ -103,6 +106,19 @@ export function getHerbalifeRegistrationUrl() {
   try {
     const url = new URL(process.env.NEXT_PUBLIC_HERBALIFE_REGISTRATION_URL?.trim() ?? "");
     return url.protocol === "https:" && !url.username && !url.password ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Checkout só pode ser habilitado com um destino Hotmart HTTPS explicitamente aprovado. */
+export function getMentorshipCheckoutUrl(raw = process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_URL) {
+  try {
+    const url = new URL(raw?.trim() ?? "");
+    const approvedHosts = new Set(["pay.hotmart.com", "checkout.hotmart.com", "go.hotmart.com"]);
+    return url.protocol === "https:" && approvedHosts.has(url.hostname) && !url.port && !url.username && !url.password && !url.hash
+      ? url.href
+      : null;
   } catch {
     return null;
   }
