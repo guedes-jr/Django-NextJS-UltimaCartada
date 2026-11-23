@@ -9,7 +9,8 @@ As referências recebidas da consultoria para monograma MA e assinatura não for
 | Grupo | Arquivo local | Uso atual observado | Situação documental |
 | --- | --- | --- | --- |
 | Fotografias profissionais | `frontend/public/landing/professional/acauamedia-114.jpg`, `acauamedia-117.jpg`, `acauamedia-126.jpg`, `acauamedia-130.jpg`, `acauamedia-131.jpg`, `acauamedia-135.jpg` | Home, Mentoria, Herbalife e proposta ativada | Identidade da retratada, autoria/origem, licença e autorização de divulgação: **a confirmar** |
-| Marca do game existente | `frontend/public/cartada-viva-mark.png` | Proposta ativada e guia visual | Arquivo preservado; autoria, versão aprovada, variantes permitidas e escopo de uso: **a confirmar** |
+| Marca do game original | `frontend/public/cartada-viva-mark.png` | Preservada como referência | Arquivo preservado; autoria e versão de origem: **a confirmar** |
+| Marca atual do game | `frontend/public/cartada-viva-mark-brand.png` | Home, página do Game, áreas de participante/admin, guia visual e ícones | Variante vinho/ameixa/dourado autorizada pelo responsável em 23/11/2026; aplica-se somente ao Cartada Viva |
 | Ilustração de percurso atual | `frontend/public/consultoria/player-journey.svg` | Proposta ativada do game | Origem, autoria e aprovação de uso: **a confirmar** |
 | Ilustração de percurso legada | `frontend/public/landing/ultima-cartada/player-journey.svg` | Preservada como histórico; não é mais renderizada pela Mentoria legada | Contém “Jogo 1/2/3” e “21 dias de prática”; origem, editável e adequação editorial: **a confirmar** |
 | Cartas ilustradas legadas | `frontend/public/landing/ultima-cartada/carta-pausa.png`, `carta-comunidade.png` | Mentoria legada | Origem, autoria, subtítulos incorporados e permissão de uso: **a confirmar** |

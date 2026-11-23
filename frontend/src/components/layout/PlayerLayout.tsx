@@ -124,7 +124,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
         <div className={styles.brand} data-brand-part="brand">
           {isGameArea && <Image
             className={styles.brandLogo}
-            src="/cartada-viva-mark.png"
+            src="/cartada-viva-mark-brand.png"
             alt=""
             width={58}
             height={58}

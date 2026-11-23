@@ -42,7 +42,7 @@ Essas observações não certificam transparência, resolução final ou arquivo
 - Preservar integralmente a assinatura e o monograma circular MA; não trocar a assinatura por texto em fonte cursiva, reconstruir as letras ou gerar um símbolo semelhante.
 - Mentoria: preservar carta com monograma, estrela e elementos vegetais. Game: preservar carta com monograma e elementos de crescimento. Conferir os originais, sem inferir o desenho a partir do nome.
 - Não distorcer, inclinar, adicionar sombras, brilho, contorno, textura ou filtros de recoloração às logos. Não recortar o círculo nem os traços da assinatura.
-- Manter cores originais preto/branco/dourado enquanto não houver versões adaptadas aprovadas. Cores novas pertencem ao layout e não autorizam recolorir os arquivos.
+- Manter cores originais preto/branco/dourado enquanto não houver versões adaptadas aprovadas. Exceção autorizada em 23/11/2026: o símbolo do Game Cartada Viva possui a variante `cartada-viva-mark-brand.png`, em vinho, ameixa e dourado fosco; usá-la somente nas superfícies do game. As demais marcas continuam preservadas.
 - Preferir originais vetoriais ou PNG transparente em alta resolução. Não simular transparência usando recorte que destrua o desenho ou misturando modos de composição sem revisão.
 - Usar aplicação clara sobre superfície escura e escura sobre clara somente quando a variante original existir. Referências com fundo opaco precisam de composição que respeite esse fundo.
 - Se houver subtítulo antigo incorporado à imagem, obter editável ou preparar uma proposta corrigida para aprovação; não apagar trechos improvisadamente.

@@ -1388,6 +1388,10 @@ O backend falhava antes de iniciar porque o processo herdava `DEBUG=release`, qu
 
 Validações executadas: `DEBUG=release python manage.py check`, `DEBUG=release python manage.py makemigrations --check --dry-run` e `git diff --check`. O check passou; a conferência de migrations não encontrou alterações, mas reportou que a senha local de `cartada_viva_user` não autentica no PostgreSQL. A URL local do frontend foi alinhada a `http://127.0.0.1:8000/api/v1`; ela não é versionada. Não houve migration aplicada, servidor público, alteração de dados, dependências, commit ou push.
 
+## Identidade do Game Cartada Viva — 23/11/2026
+
+Por autorização expressa do responsável, a marca do Game Cartada Viva recebeu uma variante própria em vinho, ameixa e dourado fosco, preservando a composição reconhecível de carta, monograma, folhas e estrela. O original `cartada-viva-mark.png` foi preservado; a variante `cartada-viva-mark-brand.png` passou a ser usada na apresentação pública do game, nos cabeçalhos de participante e administração, no guia visual e nos ícones do aplicativo. A alteração não se estende às marcas da mentoria, do monograma MA ou da assinatura de Magaly.
+
 ## Consultoria — evolução futura excluída desta liberação — 22/11/2026
 
 CONS-14.1 a CONS-14.5 foram encerrados como fora do escopo da liberação atual. Não houve decisão para demonstração, Game independente, preço, cadastro, checkout, convite, automação ou métricas; portanto nenhum desses recursos foi iniciado. Uma decisão futura deve abrir recorte próprio, com regras, privacidade, segurança, testes e autorização de publicação específicos.

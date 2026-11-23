@@ -219,7 +219,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <div className={styles.brand}>
           <Image
             className={styles.brandLogo}
-            src="/cartada-viva-mark.png"
+            src="/cartada-viva-mark-brand.png"
             alt="Cartada Viva"
             width={220}
             height={220}
