@@ -115,7 +115,7 @@ Fotografias de Magaly devem transmitir presença humana e profissional, preserva
 | Formulário, se aprovado | Label persistente, ajuda de finalidade, erro junto ao campo, mensagens de sucesso e envio bloqueado durante processamento |
 | Rodapé | Marca responsável, identificação confirmada, contato real, termos/privacidade e separação comercial clara |
 
-Implementar hover, foco visível, ativo, desabilitado, carregando, erro, vazio e sucesso onde fizer sentido. Botão navega com link; ação usa button. Não desabilitar CTAs apenas visualmente. Áreas de toque de pelo menos 44 × 44 px; altura de botão proposta de 48 px. Foco não pode ficar oculto por header fixo. Respeitar movimento reduzido; transições curtas de 150–200 ms são proposta, sem animação indispensável à compreensão.
+Implementar hover, foco visível, ativo, desabilitado, carregando, erro, vazio e sucesso onde fizer sentido. Botão navega com link; ação usa button. Não desabilitar CTAs apenas visualmente. Áreas de toque de pelo menos 44 × 44 px; altura de botão proposta de 48 px. Foco não pode ficar oculto por header fixo. Respeitar movimento reduzido; transições curtas de 150–220 ms são proposta, sem animação indispensável à compreensão. A base global usa entrada discreta de página, rolagem suave e transições de cor, borda, sombra e opacidade para controles; animações contínuas ou que transmitam informação sozinhas continuam proibidas.
 
 Reutilizar `PublicNavigation`, `Modal`, layouts e componentes de domínio. Preservar suporte a Esc, retorno de foco, labels e estados existentes. Em áreas autenticadas, tabelas e gráficos mantêm informação e ações acessíveis, mesmo quando a apresentação mudar.
 

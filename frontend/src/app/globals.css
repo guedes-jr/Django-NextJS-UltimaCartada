@@ -39,6 +39,10 @@
   --landing-shadow-md: 0 22px 56px rgba(46, 33, 17, 0.09);
   --landing-shadow-lg: 0 34px 90px rgba(46, 33, 17, 0.17);
   --landing-shadow-green: 0 20px 44px rgba(77, 54, 23, 0.22);
+
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 160ms;
+  --motion-base: 220ms;
 }
 
 * {
@@ -49,6 +53,10 @@ html,
 body {
   margin: 0;
   font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -77,6 +85,30 @@ textarea {
   letter-spacing: 0;
 }
 
+:where(a, button, input, select, textarea, summary) {
+  transition:
+    color var(--motion-fast) var(--motion-ease),
+    background-color var(--motion-fast) var(--motion-ease),
+    border-color var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-base) var(--motion-ease),
+    opacity var(--motion-fast) var(--motion-ease),
+    transform var(--motion-fast) var(--motion-ease);
+}
+
+main {
+  animation: page-enter 360ms var(--motion-ease) both;
+}
+
+@media (hover: hover) {
+  :where(button:not(:disabled), [role="button"]):hover {
+    transform: translateY(-1px);
+  }
+
+  :where(a[href]):hover {
+    opacity: 0.9;
+  }
+}
+
 img,
 svg,
 video,
@@ -99,4 +131,31 @@ kbd,
 pre,
 samp {
   font-family: var(--font-mono);
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
