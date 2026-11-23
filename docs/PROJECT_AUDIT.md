@@ -1392,6 +1392,10 @@ Validações executadas: `DEBUG=release python manage.py check`, `DEBUG=release 
 
 Por autorização expressa do responsável, a marca do Game Cartada Viva recebeu uma variante própria em vinho, ameixa e dourado fosco, preservando a composição reconhecível de carta, monograma, folhas e estrela. O original `cartada-viva-mark.png` foi preservado; a variante `cartada-viva-mark-brand.png` passou a ser usada na apresentação pública do game, nos cabeçalhos de participante e administração, no guia visual e nos ícones do aplicativo. A alteração não se estende às marcas da mentoria, do monograma MA ou da assinatura de Magaly.
 
+## Home e Mentoria — retratos distintos — 23/11/2026
+
+A home passou a usar `acauamedia-18.jpg`, retrato acolhedor e frontal de Magaly Abreu; a Mentoria mantém o retrato sóbrio `acauamedia-130.jpg`. A separação evita a repetição da mesma imagem de hero entre as duas propostas sem incluir fotografia nova ou alterar textos, fluxos e dados.
+
 ## Consultoria — evolução futura excluída desta liberação — 22/11/2026
 
 CONS-14.1 a CONS-14.5 foram encerrados como fora do escopo da liberação atual. Não houve decisão para demonstração, Game independente, preço, cadastro, checkout, convite, automação ou métricas; portanto nenhum desses recursos foi iniciado. Uma decisão futura deve abrir recorte próprio, com regras, privacidade, segurança, testes e autorização de publicação específicos.

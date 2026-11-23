@@ -18,7 +18,7 @@ function Pillars() {
 
 export function ConsultoriaHome({ routes = previewRoutes }: { routes?: ConsultoriaRoutes } = {}) {
   return <>
-    <Hero eyebrow="Magaly Abreu · Psicóloga e Mentora" title={<>Você não precisa se culpar<br /><em>para voltar a cuidar de si.</em></>} description="Uma proposta para mulheres cansadas de tantas tentativas de mudança, que desejam desenvolver hábitos saudáveis, compreender suas escolhas e recuperar a confiança em si mesmas." footnote="A mente muda, o corpo flui.">
+    <Hero eyebrow="Magaly Abreu · Psicóloga e Mentora" title={<>Você não precisa se culpar<br /><em>para voltar a cuidar de si.</em></>} description="Uma proposta para mulheres cansadas de tantas tentativas de mudança, que desejam desenvolver hábitos saudáveis, compreender suas escolhas e recuperar a confiança em si mesmas." image="/landing/professional/acauamedia-18.jpg" alt="Magaly Abreu sorrindo, com blazer preto" footnote="A mente muda, o corpo flui.">
       <ActionLink href={routes.mentorship}>Conhecer A Última Cartada</ActionLink>
       <Link className={styles.textLink} href={routes.game}>Conhecer o Game Cartada Viva <ArrowRight size={18} aria-hidden="true" /></Link>
     </Hero>
