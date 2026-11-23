@@ -236,6 +236,11 @@ rm -rf .next
 log "Gerando build do Next.js..."
 npm run build
 
+# O serviço do frontend executa como deploy; o build pode ser disparado por root.
+# Garanta escrita no cache de prerender do Next sem alterar arquivos de ambiente.
+log "Ajustando permissões do build do frontend..."
+sudo chown -R deploy:deploy "$FRONTEND_DIR/.next"
+
 echo "=========================================="
 log "Reiniciando serviços"
 echo "=========================================="
