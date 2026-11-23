@@ -104,7 +104,8 @@ if [ "$CURRENT_REMOTE" != "$REPO_URL" ]; then
 fi
 
 log "Testando acesso SSH ao GitHub..."
-if ! ssh -T git@github.com 2>&1 | grep -Eq "successfully authenticated|You've successfully authenticated|Hi "; then
+GITHUB_SSH_RESULT=$(ssh -T git@github.com 2>&1 || true)
+if ! grep -Eq "successfully authenticated|You've successfully authenticated|Hi " <<< "$GITHUB_SSH_RESULT"; then
   echo ""
   echo "A VPS não tem acesso SSH ao GitHub."
   echo ""
