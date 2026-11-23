@@ -1400,6 +1400,8 @@ A home passou a usar `acauamedia-18.jpg`, retrato acolhedor e frontal de Magaly 
 
 Foram centralizados tokens de duração e curva de animação no CSS global. Páginas recebem entrada curta e controles interativos recebem transições de cor, borda, sombra, opacidade e transformação, com resposta de hover apenas em dispositivos que a suportam. `prefers-reduced-motion` desativa rolagem suave, transições e animações; o movimento não comunica informação indispensável nem altera regras de negócio.
 
+Complemento: cartões e superfícies de oferta receberam elevação discreta ao hover; links que contêm imagens usam zoom sutil; botões respondem ao pressionamento e campos ganham pequeno deslocamento no foco visível. Os efeitos dependem de dispositivo com hover e permanecem reduzidos pela preferência de acessibilidade.
+
 ## Consultoria — evolução futura excluída desta liberação — 22/11/2026
 
 CONS-14.1 a CONS-14.5 foram encerrados como fora do escopo da liberação atual. Não houve decisão para demonstração, Game independente, preço, cadastro, checkout, convite, automação ou métricas; portanto nenhum desses recursos foi iniciado. Uma decisão futura deve abrir recorte próprio, com regras, privacidade, segurança, testes e autorização de publicação específicos.
